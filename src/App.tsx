@@ -1,26 +1,22 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import { Layout } from 'antd'
+import { Routes, Route } from 'react-router-dom'
+import PricingPage from './pages/pricing/PricingPage'
+import SideBar from './components/SideBar'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+type AppProps = {}
+
+const App = (props: AppProps) => {
+	return (
+		<React.Fragment>
+			<Layout style={{ minHeight: '100vh' }}>
+				<SideBar />
+				<Routes>
+					<Route path={'pricing/*' as BasePathname} element={<PricingPage />} />
+				</Routes>
+			</Layout>
+		</React.Fragment>
+	)
 }
 
-export default App;
+export default App

@@ -26,6 +26,7 @@ const ProductLookUpResultItem = (props: ProductLookUpResultItemProps) => {
 		const product = _.find(props.data, formik.values.selection)
 		if (finish && product) {
 			setTargetProduct(product)
+			formik.setFieldValue('product', product)
 		}
 		setStatus(finish && product ? 'success' : finish && !product ? 'error' : 'info')
 
@@ -33,6 +34,7 @@ const ProductLookUpResultItem = (props: ProductLookUpResultItemProps) => {
 			setTargetProduct(null)
 			setStatus('info')
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [props.data, formik.values.selection, props.options, formik.initialValues.selection])
 
 	return (
@@ -61,8 +63,8 @@ const ProductLookUpResultItem = (props: ProductLookUpResultItemProps) => {
 				/>
 			</Col>
 			<Col span={24}>
-				{status === 'success' && targetProduct && (
-					<ProductLookUpResult submitForm={props.submitForm} target={targetProduct} />
+				{status === 'success' && formik.values.product && (
+					<ProductLookUpResult submitForm={props.submitForm} target={formik.values.product} />
 				)}
 			</Col>
 		</Row>

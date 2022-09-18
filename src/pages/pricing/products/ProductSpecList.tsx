@@ -17,7 +17,7 @@ const ProductSpecList = (props: ProductSpecListProps) => {
 		<Row>
 			<Col span={24}>
 				<Typography>
-					<Typography.Title level={2}>{props.name} Calculator</Typography.Title>
+					<Typography.Title level={2}>{props.name} CALCULATOR</Typography.Title>
 					<Typography.Text type='secondary'>
 						Click the button to select desired combination of product specifications.
 					</Typography.Text>

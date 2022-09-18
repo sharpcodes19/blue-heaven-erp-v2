@@ -7,7 +7,7 @@ import useData from './useData'
 
 type SagRodProductProps = {}
 
-const PRODUCT_NAME = 'SagRod'
+const PRODUCT_NAME = 'SAGROD'
 
 const SagRodProduct = (props: SagRodProductProps) => {
 	const { data, options, loading } = useData(PRODUCT_NAME)

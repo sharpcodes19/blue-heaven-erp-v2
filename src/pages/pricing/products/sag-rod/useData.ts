@@ -25,23 +25,22 @@ const useData = (productName: string): Props => {
 				}>
 			> = await axios.all(endpoints.map((endpoint) => instance().get(endpoint)))
 			for (let i = 0; i < responses.length; i++) {
-				responses[i].data.allUser
-					.filter((product) => product.Size && product.Bending && product.Threading && product.cuttingCost)
-					.map((product) => ({
-						name: productName,
-						size: String(product.Size),
-						price: String(product.cuttingCost),
-						width: String(product.Bending),
-						_id: String(product._id),
-						threadLength:
-							product.Threading instanceof Array
-								? product.Threading.map((item) => String(item))
-								: [String(product.Threading)],
-						type: i === 0 ? 'CRS' : '41401045'
-					}))
-					.forEach((product) => {
-						allData.push(product)
-					})
+				allData.push(
+					...responses[i].data.allUser
+						.filter((product) => product.Size && product.Bending && product.Threading && product.cuttingCost)
+						.map((product) => ({
+							name: productName,
+							size: String(product.Size),
+							price: String(product.cuttingCost),
+							width: String(product.Bending),
+							_id: String(product._id),
+							threadLength:
+								product.Threading instanceof Array
+									? product.Threading.map((item) => String(item))
+									: [String(product.Threading)],
+							type: i === 0 ? 'CRS' : '41401045'
+						}))
+				)
 			}
 
 			setOptions(
@@ -94,23 +93,23 @@ const useData = (productName: string): Props => {
 								),
 								'label'
 							)
-						},
-						{
-							accessor: 'price',
-							options: _.uniqBy(
-								_.sortBy(
-									allData.map((item) => ({
-										label: item.price,
-										value: item.price
-									})),
-									'label'
-								),
-								'label'
-							),
-							isNumber: true,
-							isCurrency: true,
-							hideStepComponent: true
 						}
+						// {
+						// 	accessor: 'price',
+						// 	options: _.uniqBy(
+						// 		_.sortBy(
+						// 			allData.map((item) => ({
+						// 				label: item.price,
+						// 				value: item.price
+						// 			})),
+						// 			'label'
+						// 		),
+						// 		'label'
+						// 	),
+						// 	isNumber: true,
+						// 	isCurrency: true,
+						// 	hideStepComponent: true
+						// }
 					],
 					['label', 'value']
 				)

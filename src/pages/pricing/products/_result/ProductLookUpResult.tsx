@@ -1,6 +1,7 @@
 import { Button, Col, Descriptions, InputNumber, Row, Space, Typography } from 'antd'
-import { useFormikContext } from 'formik'
+import { FieldArray, useFormikContext } from 'formik'
 import React from 'react'
+import ProductLookUpResultItemField from './ProductLookUpResultItemField'
 
 type ProductLookUpResultProps = {
 	submitForm: () => any
@@ -18,11 +19,22 @@ const ProductLookUpResult = (props: ProductLookUpResultProps) => {
 						{Object.keys(props.target).map((key) =>
 							props.target[key as keyof FinishedProductProps] instanceof Date || key === '_id' ? null : (
 								<Descriptions.Item label={key} key={key} span={3}>
-									<Typography>
-										<Typography.Text editable={key === '_id' ? false : true}>
-											{(props.target as any)[key]}
-										</Typography.Text>
-									</Typography>
+									{props.target[key as keyof FinishedProductProps] instanceof Array ? (
+										(props.target[key as keyof FinishedProductProps] as []).map((_, index) => (
+											<FieldArray
+												key={index}
+												name={`${key}.${index}`}
+												render={({ name, form }) => (
+													<ProductLookUpResultItemField
+														name={name as keyof FinishedProductProps}
+														target={form.values.selection}
+													/>
+												)}
+											/>
+										))
+									) : (
+										<ProductLookUpResultItemField name={key as keyof FinishedProductProps} target={props.target} />
+									)}
 								</Descriptions.Item>
 							)
 						)}

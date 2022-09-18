@@ -136,6 +136,7 @@ type LagScrewProps = {
 }
 
 type PricingFormProps = {
-	selection: FinishedProductProps
+	selection: FinishedProductProps // pre-selected product
 	quantity: number
+	product?: FinishedProductProps // this one is the item the will be transferred to quantity section
 }

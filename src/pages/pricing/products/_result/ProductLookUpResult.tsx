@@ -7,6 +7,7 @@ import ProductLookUpResultItemField from './ProductLookUpResultItemField'
 type ProductLookUpResultProps = {
 	submitForm: () => any
 	target: FinishedProductProps
+	onShowForm: (value: boolean) => any
 }
 
 const ProductLookUpResult = (props: ProductLookUpResultProps) => {
@@ -50,7 +51,12 @@ const ProductLookUpResult = (props: ProductLookUpResultProps) => {
 			</Row>
 			<Row>
 				<Col span={18}>
-					<Button type='ghost' style={{ marginTop: '1rem' }} disabled={!enableUpdateButton}>
+					<Button
+						type='ghost'
+						style={{ marginTop: '1rem' }}
+						disabled={!enableUpdateButton}
+						onClick={() => props.onShowForm(true)}
+					>
 						Update new changes to database.
 					</Button>
 					<Space align='center' style={{ marginTop: '1rem' }}>

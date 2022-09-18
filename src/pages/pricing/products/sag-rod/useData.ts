@@ -51,7 +51,7 @@ const useData = (productName: string): Props => {
 							alwaysEnabled: true,
 							options: [
 								{ label: 'CRS', value: 'CRS' },
-								{ label: '4140 / 1045', value: '41401045' }
+								{ label: '41401045', value: '41401045' }
 							],
 							originFieldName: 'type'
 						},

@@ -1,6 +1,6 @@
-import instance from '../../../../api/instance'
+import instance from '../../../api/instance'
 
-const postData = (url: string, data: FinishedProductProps, token?: string) =>
+const postData = (url: string, data: any, token?: string) =>
 	new Promise<boolean>((resolve, reject) => {
 		instance(token)
 			.post(url, data)

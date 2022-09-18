@@ -24,7 +24,11 @@ const ProductSpecList = (props: ProductSpecListProps) => {
 					</Typography.Text>
 				</Typography>
 				<div style={{ marginTop: '1rem' }}>
-					<Button onClick={() => props.onShowForm(true)} icon={<FileAddOutlined />}>
+					<Button
+						onClick={props.loading ? undefined : () => props.onShowForm(true)}
+						icon={<FileAddOutlined />}
+						loading={props.loading}
+					>
 						Add new
 					</Button>
 				</div>
@@ -52,7 +56,6 @@ const ProductSpecList = (props: ProductSpecListProps) => {
 							type='primary'
 							disabled={activeStepIndex >= props.options.filter((item) => !item.hideStepComponent).length - 1}
 							onClick={() => setActiveStepIndex((prevState) => prevState + 1)}
-							loading={props.loading}
 						>
 							Next &rarr;
 						</Button>

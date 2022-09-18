@@ -4,7 +4,7 @@ import React from 'react'
 
 type FormFieldProps = {
 	addonBefore: string | undefined
-	isNumber?: boolean
+	type: 'number' | undefined
 	name: string
 }
 
@@ -13,10 +13,27 @@ const FormField = (props: FormFieldProps) => {
 
 	const status = React.useMemo<'error' | undefined>(() => (meta.error && meta.touched ? 'error' : undefined), [meta])
 
-	if (props.isNumber)
-		return <InputNumber {...props} value={field.value} onChange={(value) => helpers.setValue(value)} status={status} />
-
-	return <Input {...props} value={field.value} onChange={(e) => helpers.setValue(e.target.value)} status={status} />
+	return (
+		<React.Fragment>
+			{props.type === 'number' ? (
+				<InputNumber
+					{...props}
+					value={field.value}
+					onChange={(value) => helpers.setValue(value)}
+					status={status}
+					autoComplete='off'
+				/>
+			) : (
+				<Input
+					{...props}
+					value={field.value}
+					onChange={(e) => helpers.setValue(e.target.value)}
+					status={status}
+					autoComplete='off'
+				/>
+			)}
+		</React.Fragment>
+	)
 }
 
 export default FormField

@@ -9,6 +9,7 @@ type ProductLookUpResultItemProps = {
 	data: Array<FinishedProductProps>
 	options: Array<SelectablePricingOptionProps>
 	submitForm: () => any
+	onShowForm: (value: boolean) => any
 }
 
 type Status = 'info' | 'success' | 'error' | 'warning'
@@ -61,7 +62,11 @@ const ProductLookUpResultItem = (props: ProductLookUpResultItemProps) => {
 			</Col>
 			<Col span={24}>
 				{status === 'success' && formik.values.product && (
-					<ProductLookUpResult submitForm={props.submitForm} target={formik.values.product} />
+					<ProductLookUpResult
+						submitForm={props.submitForm}
+						target={formik.values.product}
+						onShowForm={props.onShowForm}
+					/>
 				)}
 			</Col>
 		</Row>

@@ -19,7 +19,7 @@ const App = (props: AppProps) => {
 					{ label: 'Anchor Bolt', key: 'anchor-bolt' },
 					{ label: 'Plate', key: 'plate', disabled: true },
 					{ label: 'Hex Bolt', key: 'hex-bolt' },
-					{ label: 'U Bolt', key: 'u-bolt', disabled: true },
+					{ label: 'U Bolt', key: 'u-bolt' },
 					{ label: 'J Bolt', key: 'j-bolt', disabled: true },
 					{ label: 'Dyna Bolt', key: 'dyna-bolt', disabled: true },
 					{ label: 'Clevis / Loop Hanger', key: 'hanger', disabled: true },

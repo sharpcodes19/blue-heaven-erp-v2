@@ -45,6 +45,7 @@ type FinishedProductProps = {
 	orderQuantity?: string
 	washer?: string
 	hexNut?: string
+	unit?: string
 }
 
 type BasePathname = 'pricing' | 'order' | 'inventory' | 'customer'
@@ -76,21 +77,22 @@ type PlateProps = {}
 
 type HexBoltProps = {
 	_id?: string
-	boltLenght: string
-	cost: string
-	diameterValue: string
-	materialValue: string
-	threadValue: string
-	DateCreated: Date
+	boltLenght?: string
+	cost?: string
+	diameterValue?: string
+	materialValue?: string
+	threadValue?: string
+	DateCreated?: Date
 }
 
 type UBoltProps = {
 	_id?: string
-	Material: string
-	pipeSize: string
-	Price: number
-	uboltSize: string
-	DateCreated: Date
+	Material?: string
+	pipeSize?: string
+	Price?: number
+	uboltSize?: string
+	DateCreated?: Date
+	unit?: string
 }
 
 type JBoltProps = {

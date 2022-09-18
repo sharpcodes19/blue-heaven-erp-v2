@@ -8,6 +8,7 @@ import ProductLookUpResultItem from '../_result/ProductLookUpResultItem'
 import useData from './useData'
 import AddForm from '../_add/AddForm'
 import postData from '../postData'
+import putData from '../putData'
 
 type SagRodProductProps = {}
 
@@ -40,7 +41,7 @@ const SagRodProduct = (props: SagRodProductProps) => {
 				}
 				onSubmit={(values) => {}}
 			>
-				{({ submitForm, initialValues }) => (
+				{({ submitForm, values }) => (
 					<Form>
 						<Row>
 							<Col span={12}>
@@ -54,6 +55,39 @@ const SagRodProduct = (props: SagRodProductProps) => {
 									options={options}
 									submitForm={submitForm}
 									onShowForm={setShowForm}
+									onUpdateProductDetails={() =>
+										new Promise<boolean>((resolve, reject) => {
+											if (values.product && values.product._id) {
+												putData(
+													values.product && values.product.type === 'CRS'
+														? '/api/admin/update/Asszabtcrs/'.concat(values.product._id)
+														: values.product && values.product.type === '41401045'
+														? '/api/admin/update/Asszabt41401045/'.concat(values.product._id)
+														: '',
+													{
+														bending: values.product.width,
+														cuttingCost: values.product.price,
+														size: values.product.size,
+														threading: values.product.threadLength
+														// type: values.product.type
+													} as SagRodProps
+												)
+													.then((success) => {
+														messageApi.open({
+															type: success ? 'success' : 'warning',
+															content: success
+																? 'Success! Product details has been updated.'
+																: 'Failed. Cannot update the product. Please check the values if valid.',
+															duration: 5
+														})
+														resolve(success)
+													})
+													.catch(reject)
+											} else {
+												resolve(false)
+											}
+										})
+									}
 								/>
 							</Col>
 						</Row>

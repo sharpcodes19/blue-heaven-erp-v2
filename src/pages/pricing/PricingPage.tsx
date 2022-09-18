@@ -1,10 +1,9 @@
 import type { CheckboxOptionType } from 'antd'
 import React from 'react'
-import { Routes, Route, useNavigate } from 'react-router-dom'
+import { Routes, Route, useNavigate, Navigate } from 'react-router-dom'
 import { Layout } from 'antd'
 import Products from './Products'
 import pageComponentReducer from './products/reducer'
-import SagRodProduct from './products/sag-rod/SagRodProduct'
 
 type PricingPageProps = {}
 
@@ -26,8 +25,12 @@ const PricingPage = (props: PricingPageProps) => {
 		[]
 	)
 	const [selected, setSelected] = React.useState<string>('sag-rod')
-	const [component, setComponent] = React.useReducer(pageComponentReducer, <SagRodProduct />)
+	const [component, setComponent] = React.useReducer(pageComponentReducer, null)
 	const navigate = useNavigate()
+
+	React.useEffect(() => {
+		setComponent(String(products[0].value))
+	}, [products])
 
 	return (
 		<Layout.Content style={{ padding: '2rem' }}>
@@ -45,6 +48,7 @@ const PricingPage = (props: PricingPageProps) => {
 					{products.map(({ value }, i) => (
 						<Route path={value as string} element={component} key={i} />
 					))}
+					<Route path='*' element={<Navigate to={String(products[0].value)} replace />} />
 				</Routes>
 			</div>
 		</Layout.Content>

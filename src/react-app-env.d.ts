@@ -62,12 +62,12 @@ type AnchorBoltProps = {
 
 type SagRodProps = {
 	_id?: string
-	size: string
-	cuttingCost: number
-	threading: Array<string>
-	bending: number
-	DateCreated: Date
-	type: string
+	size?: string
+	cuttingCost?: number
+	threading?: Array<string>
+	bending?: string
+	DateCreated?: Date
+	type?: string
 }
 
 type PlateProps = {}

@@ -1,4 +1,4 @@
-import { Button, Col, Descriptions, InputNumber, Row, Space } from 'antd'
+import { Button, Col, Descriptions, InputNumber, message, Row, Space, Typography } from 'antd'
 import { FieldArray, useFormikContext } from 'formik'
 import { ShoppingCartOutlined } from '@ant-design/icons'
 import React from 'react'
@@ -8,14 +8,41 @@ type ProductLookUpResultProps = {
 	submitForm: () => any
 	target: FinishedProductProps
 	onShowForm: (value: boolean) => any
+	onUpdateProductDetails: () => Promise<boolean>
 }
 
 const ProductLookUpResult = (props: ProductLookUpResultProps) => {
 	const formik = useFormikContext<PricingFormProps>()
 	const [enableUpdateButton, setEnableUpdateButton] = React.useState<boolean>(false)
+	const [messageApi, contextHolder] = message.useMessage()
+	const [submmiting, setSubmitting] = React.useState<boolean>(false)
+
+	const handleUpdate = React.useCallback(() => {
+		if (formik.values.product && formik.values.product._id) {
+			setSubmitting(true)
+			props
+				.onUpdateProductDetails()
+				.catch((err) => {}) // TODO: add error alert here.
+				.finally(() => {
+					setSubmitting(false)
+					setEnableUpdateButton(false)
+				})
+		} else {
+			messageApi.error({
+				content: (
+					<Typography>
+						<Typography.Text type='danger'>Unable to complete the update request.</Typography.Text>
+						<Typography.Text type='danger'>It is either we cannot find the product id.</Typography.Text>
+						<Typography.Text type='danger'>Product ID: {formik.values.product?._id}</Typography.Text>
+					</Typography>
+				)
+			})
+		}
+	}, [formik.values.product, messageApi, props])
 
 	return (
 		<React.Fragment>
+			{contextHolder}
 			<Row style={{ marginTop: '1rem' }}>
 				<Col>
 					<Descriptions bordered title='PRODUCT DETAILS' size='small'>
@@ -54,8 +81,9 @@ const ProductLookUpResult = (props: ProductLookUpResultProps) => {
 					<Button
 						type='ghost'
 						style={{ marginTop: '1rem' }}
+						onClick={submmiting ? undefined : handleUpdate}
 						disabled={!enableUpdateButton}
-						onClick={() => props.onShowForm(true)}
+						loading={submmiting}
 					>
 						Update new changes to database.
 					</Button>

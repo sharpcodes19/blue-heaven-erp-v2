@@ -1,23 +1,28 @@
 import { Typography } from 'antd'
-import { useFormikContext } from 'formik'
+import { useField, useFormikContext } from 'formik'
 import React from 'react'
 
 type ProductLookUpResultItemFieldProps = {
 	name: keyof FinishedProductProps
 	target: FinishedProductProps
+	onEnableUpdateButton: (value: boolean) => any
 }
 
 const ProductLookUpResultItemField = (props: ProductLookUpResultItemFieldProps) => {
-	const formik = useFormikContext<PricingFormProps>()
+	// const formik = useFormikContext<PricingFormProps>()
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const [field, meta, helpers] = useField(`product.${props.name}`)
 
 	const handleChange = React.useCallback(
 		(value: string) => {
-			formik.setFieldValue('product', {
-				...formik.values.product,
-				[props.name]: value
-			})
+			// formik.setFieldValue('product', {
+			// 	...formik.values.product,
+			// 	[props.name]: value
+			// })
+			helpers.setValue(value)
+			props.onEnableUpdateButton(true)
 		},
-		[formik, props.name]
+		[helpers, props]
 	)
 
 	return (
@@ -29,7 +34,7 @@ const ProductLookUpResultItemField = (props: ProductLookUpResultItemFieldProps) 
 					fontWeight: props.name === 'price' ? '700' : '400'
 				}}
 			>
-				{String(props.target[props.name])}
+				{String(field.value)}
 			</Typography.Text>
 		</Typography>
 	)

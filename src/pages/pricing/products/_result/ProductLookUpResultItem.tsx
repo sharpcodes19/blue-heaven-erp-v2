@@ -15,7 +15,6 @@ type Status = 'info' | 'success' | 'error' | 'warning'
 
 const ProductLookUpResultItem = (props: ProductLookUpResultItemProps) => {
 	const formik = useFormikContext<PricingFormProps>()
-	const [targetProduct, setTargetProduct] = React.useState<FinishedProductProps | null>(null)
 	const [status, setStatus] = React.useState<Status>('info')
 
 	React.useEffect(() => {
@@ -25,13 +24,11 @@ const ProductLookUpResultItem = (props: ProductLookUpResultItemProps) => {
 		const finish = selectedKeyCount >= optionKeyCount
 		const product = _.find(props.data, formik.values.selection)
 		if (finish && product) {
-			setTargetProduct(product)
 			formik.setFieldValue('product', product)
 		}
 		setStatus(finish && product ? 'success' : finish && !product ? 'error' : 'info')
 
 		return () => {
-			setTargetProduct(null)
 			setStatus('info')
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps

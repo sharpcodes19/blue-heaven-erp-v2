@@ -8,6 +8,8 @@ type SelectablePricingOptionProps = {
 	hideStepComponent?: boolean
 	alwaysEnabled?: boolean
 	accessor: string
+	fieldCount?: number
+	originFieldName: string
 }
 
 type ResponseBaseProps<T = unknown> = {
@@ -60,10 +62,10 @@ type AnchorBoltProps = {
 
 type SagRodProps = {
 	_id?: string
-	Size: string
+	size: string
 	cuttingCost: number
-	Threading: Array<string>
-	Bending: number
+	threading: Array<string>
+	bending: number
 	DateCreated: Date
 	type: string
 }

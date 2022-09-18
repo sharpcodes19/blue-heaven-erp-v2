@@ -1,5 +1,6 @@
-import { Button, Col, Descriptions, InputNumber, Row, Space, Typography } from 'antd'
+import { Button, Col, Descriptions, InputNumber, Row, Space } from 'antd'
 import { FieldArray, useFormikContext } from 'formik'
+import { ShoppingCartOutlined } from '@ant-design/icons'
 import React from 'react'
 import ProductLookUpResultItemField from './ProductLookUpResultItemField'
 
@@ -10,6 +11,7 @@ type ProductLookUpResultProps = {
 
 const ProductLookUpResult = (props: ProductLookUpResultProps) => {
 	const formik = useFormikContext<PricingFormProps>()
+	const [enableUpdateButton, setEnableUpdateButton] = React.useState<boolean>(false)
 
 	return (
 		<React.Fragment>
@@ -28,12 +30,17 @@ const ProductLookUpResult = (props: ProductLookUpResultProps) => {
 													<ProductLookUpResultItemField
 														name={name as keyof FinishedProductProps}
 														target={form.values.selection}
+														onEnableUpdateButton={setEnableUpdateButton}
 													/>
 												)}
 											/>
 										))
 									) : (
-										<ProductLookUpResultItemField name={key as keyof FinishedProductProps} target={props.target} />
+										<ProductLookUpResultItemField
+											onEnableUpdateButton={setEnableUpdateButton}
+											name={key as keyof FinishedProductProps}
+											target={props.target}
+										/>
 									)}
 								</Descriptions.Item>
 							)
@@ -43,6 +50,9 @@ const ProductLookUpResult = (props: ProductLookUpResultProps) => {
 			</Row>
 			<Row>
 				<Col span={18}>
+					<Button type='ghost' style={{ marginTop: '1rem' }} disabled={!enableUpdateButton}>
+						Update new changes to database.
+					</Button>
 					<Space align='center' style={{ marginTop: '1rem' }}>
 						<InputNumber
 							min={1}
@@ -53,7 +63,7 @@ const ProductLookUpResult = (props: ProductLookUpResultProps) => {
 							}}
 							value={formik.values.quantity}
 						/>
-						<Button type='primary' onClick={props.submitForm}>
+						<Button type='primary' onClick={props.submitForm} icon={<ShoppingCartOutlined />}>
 							Add to current Quotation table
 						</Button>
 					</Space>

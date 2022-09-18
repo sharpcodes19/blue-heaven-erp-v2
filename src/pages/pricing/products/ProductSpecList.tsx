@@ -8,6 +8,7 @@ type ProductSpecListProps = {
 	name: string
 	options: Array<SelectablePricingOptionProps>
 	loading: boolean
+	onShowForm: (value: boolean) => any
 }
 
 const ProductSpecList = (props: ProductSpecListProps) => {
@@ -23,7 +24,9 @@ const ProductSpecList = (props: ProductSpecListProps) => {
 					</Typography.Text>
 				</Typography>
 				<div style={{ marginTop: '1rem' }}>
-					<Button icon={<FileAddOutlined />}>Add new</Button>
+					<Button onClick={() => props.onShowForm(true)} icon={<FileAddOutlined />}>
+						Add new
+					</Button>
 				</div>
 				<Divider />
 				<div style={{ marginTop: '1rem' }}>

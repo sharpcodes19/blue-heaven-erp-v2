@@ -27,17 +27,17 @@ const useData = (productName: string): Props => {
 			for (let i = 0; i < responses.length; i++) {
 				allData.push(
 					...responses[i].data.allUser
-						.filter((product) => product.Size && product.Bending && product.Threading && product.cuttingCost)
+						.filter((product) => product.size && product.bending && product.threading && product.cuttingCost)
 						.map((product) => ({
 							name: productName,
-							size: String(product.Size),
+							size: String(product.size),
 							price: String(product.cuttingCost),
-							width: String(product.Bending),
+							width: String(product.bending),
 							_id: String(product._id),
 							threadLength:
-								product.Threading instanceof Array
-									? product.Threading.map((item) => String(item))
-									: [String(product.Threading)],
+								product.threading instanceof Array
+									? product.threading.map((item) => String(item))
+									: [String(product.threading)],
 							type: i === 0 ? 'CRS' : '41401045'
 						}))
 				)
@@ -52,11 +52,13 @@ const useData = (productName: string): Props => {
 							options: [
 								{ label: 'CRS', value: 'CRS' },
 								{ label: '4140 / 1045', value: '41401045' }
-							]
+							],
+							originFieldName: 'type'
 						},
 						{
 							unit: 'mm',
 							accessor: 'size',
+							originFieldName: 'size',
 							options: _.uniqBy(
 								_.sortBy(
 									allData.map((item) => ({
@@ -70,10 +72,12 @@ const useData = (productName: string): Props => {
 						},
 						{
 							accessor: 'threadLength',
+							fieldCount: 2,
+							originFieldName: 'threading',
 							options: _.uniqBy(
 								_.sortBy(
 									allData.map((item) => ({
-										label: item.threadLength?.join(',').trim(),
+										label: item.threadLength?.join('x').trim(),
 										value: item.threadLength
 									})),
 									'label'
@@ -83,6 +87,7 @@ const useData = (productName: string): Props => {
 						},
 						{
 							accessor: 'width',
+							originFieldName: 'bending',
 							options: _.uniqBy(
 								_.sortBy(
 									allData.map((item) => ({
@@ -93,23 +98,24 @@ const useData = (productName: string): Props => {
 								),
 								'label'
 							)
+						},
+						{
+							accessor: 'price',
+							originFieldName: 'cuttingCost',
+							options: _.uniqBy(
+								_.sortBy(
+									allData.map((item) => ({
+										label: item.price,
+										value: item.price
+									})),
+									'label'
+								),
+								'label'
+							),
+							isNumber: true,
+							isCurrency: true,
+							hideStepComponent: true
 						}
-						// {
-						// 	accessor: 'price',
-						// 	options: _.uniqBy(
-						// 		_.sortBy(
-						// 			allData.map((item) => ({
-						// 				label: item.price,
-						// 				value: item.price
-						// 			})),
-						// 			'label'
-						// 		),
-						// 		'label'
-						// 	),
-						// 	isNumber: true,
-						// 	isCurrency: true,
-						// 	hideStepComponent: true
-						// }
 					],
 					['label', 'value']
 				)

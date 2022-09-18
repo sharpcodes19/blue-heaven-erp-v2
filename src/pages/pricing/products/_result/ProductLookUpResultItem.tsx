@@ -1,8 +1,7 @@
 import _ from 'lodash'
 import { useFormikContext } from 'formik'
 import React from 'react'
-import { SaveOutlined } from '@ant-design/icons'
-import { Alert, Button, Col, Row } from 'antd'
+import { Alert, Col, Row } from 'antd'
 import ProductLookUpResult from './ProductLookUpResult'
 
 type ProductLookUpResultItemProps = {
@@ -11,6 +10,7 @@ type ProductLookUpResultItemProps = {
 	submitForm: () => any
 	onShowForm: (value: boolean) => any
 	onUpdateProductDetails: () => Promise<boolean>
+	loading: boolean
 }
 
 type Status = 'info' | 'success' | 'error' | 'warning'
@@ -25,16 +25,21 @@ const ProductLookUpResultItem = (props: ProductLookUpResultItemProps) => {
 		const optionKeyCount = props.options.filter((item) => !item.hideStepComponent).length
 		const finish = selectedKeyCount >= optionKeyCount
 		const product = _.find(props.data, formik.values.selection)
-		if (finish && product) {
-			formik.setFieldValue('product', product)
+
+		if (!props.loading) {
+			if (finish && product) {
+				formik.setFieldValue('product', product)
+				setStatus('success')
+			} else if (finish && !product) {
+				setStatus('error')
+			}
 		}
-		setStatus(finish && product ? 'success' : finish && !product ? 'error' : 'info')
 
 		return () => {
 			setStatus('info')
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [props.data, formik.values.selection, props.options, formik.initialValues.selection])
+	}, [props.data, formik.values.selection, props.options, formik.initialValues.selection, props.loading])
 
 	return (
 		<Row style={{ marginTop: '2rem' }}>

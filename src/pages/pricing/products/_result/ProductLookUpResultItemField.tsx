@@ -1,5 +1,5 @@
 import { Typography } from 'antd'
-import { useField, useFormikContext } from 'formik'
+import { useField } from 'formik'
 import React from 'react'
 
 type ProductLookUpResultItemFieldProps = {

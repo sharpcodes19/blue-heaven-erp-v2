@@ -1,6 +1,6 @@
 import React from 'react'
-import { CheckboxOptionType, MenuProps, Radio } from 'antd'
-import { Routes, Route, useNavigate, useLocation } from 'react-router-dom'
+import { MenuProps } from 'antd'
+import { Routes, Route } from 'react-router-dom'
 import { Layout } from 'antd'
 import pageComponentReducer from './products/reducer'
 import SideBar from '../../components/SideBar'

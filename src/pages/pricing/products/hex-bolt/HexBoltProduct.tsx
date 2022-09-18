@@ -51,6 +51,7 @@ const HexBoltProduct = (props: HexBoltProductProps) => {
 						<Row>
 							<Col span={11}>
 								<ProductLookUpResultItem
+									loading={loading}
 									data={data}
 									options={options}
 									submitForm={submitForm}

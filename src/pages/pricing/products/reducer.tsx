@@ -1,5 +1,6 @@
 import AnchorBoltProduct from './anchor-bolt/AnchorBoltProduct'
 import HexBoltProduct from './hex-bolt/HexBoltProduct'
+import JBoltProduct from './j-bolt/JBoltProduct'
 import SagRodProduct from './sag-rod/SagRodProduct'
 import UBoltProduct from './u-bolt/UBoltProduct'
 
@@ -20,6 +21,8 @@ const pageComponentReducer = (state: State, action: Action): State => {
 			return <HexBoltProduct />
 		case 'u-bolt':
 			return <UBoltProduct />
+		case 'j-bolt':
+			return <JBoltProduct />
 	}
 }
 

@@ -20,7 +20,7 @@ const App = (props: AppProps) => {
 					{ label: 'Plate', key: 'plate', disabled: true },
 					{ label: 'Hex Bolt', key: 'hex-bolt' },
 					{ label: 'U Bolt', key: 'u-bolt' },
-					{ label: 'J Bolt', key: 'j-bolt', disabled: true },
+					{ label: 'J Bolt', key: 'j-bolt' },
 					{ label: 'Dyna Bolt', key: 'dyna-bolt', disabled: true },
 					{ label: 'Clevis / Loop Hanger', key: 'hanger', disabled: true },
 					{ label: 'Cylindrical', key: 'cylindrical', disabled: true },

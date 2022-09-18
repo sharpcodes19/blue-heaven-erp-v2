@@ -97,10 +97,10 @@ type UBoltProps = {
 
 type JBoltProps = {
 	_id?: string
-	jboltDiameter: string
-	Lenght: string
-	Price: number
-	DateCreated: Date
+	jboltDiameter?: string
+	Lenght?: string
+	Price?: number
+	DateCreated?: Date
 }
 
 type DynaBoltProps = {

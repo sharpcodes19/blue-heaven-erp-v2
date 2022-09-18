@@ -47,7 +47,7 @@ const ProductLookUpResult = (props: ProductLookUpResultProps) => {
 				<Col>
 					<Descriptions bordered title='PRODUCT DETAILS' size='small'>
 						{Object.keys(props.target).map((key) =>
-							props.target[key as keyof FinishedProductProps] instanceof Date || key === '_id' ? null : (
+							key === 'createdAt' || key === 'updatedAt' || key === '_id' ? null : (
 								<Descriptions.Item label={key} key={key} span={3}>
 									{props.target[key as keyof FinishedProductProps] instanceof Array ? (
 										(props.target[key as keyof FinishedProductProps] as []).map((_, index) => (

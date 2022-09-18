@@ -43,21 +43,23 @@ type FinishedProductProps = {
 	orderItemId?: string
 	quotationId?: string
 	orderQuantity?: string
+	washer?: string
+	hexNut?: string
 }
 
 type BasePathname = 'pricing' | 'order' | 'inventory' | 'customer'
 
 type AnchorBoltProps = {
 	_id?: string
-	sizeA: string
-	inchA: string
-	mm: string
-	bend: string
-	standard: string
-	hexNut: string
-	fW: string
-	total: string
-	typeAnchor: string
+	sizeA?: string
+	inchA?: string
+	mm?: string
+	bend?: string
+	standard?: number
+	hexNut?: string
+	fW?: string
+	total?: number
+	typeAnchor?: string
 }
 
 type SagRodProps = {

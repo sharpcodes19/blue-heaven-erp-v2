@@ -1,3 +1,5 @@
+import AnchorBoltProduct from './anchor-bolt/AnchorBoltProduct'
+import HexBoltProduct from './hex-bolt/HexBoltProduct'
 import SagRodProduct from './sag-rod/SagRodProduct'
 
 type Action = string
@@ -11,6 +13,10 @@ const pageComponentReducer = (state: State, action: Action): State => {
 
 		case 'sag-rod':
 			return <SagRodProduct />
+		case 'anchor-bolt':
+			return <AnchorBoltProduct />
+		case 'hex-bolt':
+			return <HexBoltProduct />
 	}
 }
 

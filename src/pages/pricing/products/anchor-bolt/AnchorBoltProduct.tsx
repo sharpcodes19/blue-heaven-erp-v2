@@ -10,22 +10,24 @@ import AddForm from '../_add/AddForm'
 import postData from '../postData'
 import putData from '../putData'
 
-type SagRodProductProps = {}
+type AnchorBoltProductProps = {}
 
-const PRODUCT_NAME = 'SAGROD'
+const PRODUCT_NAME = 'ANCHOR BOLT'
 
-const SagRodProduct = (props: SagRodProductProps) => {
+const AnchorBoltProduct = (props: AnchorBoltProductProps) => {
 	const { data, options, loading } = useData(PRODUCT_NAME)
 	const [showForm, setShowForm] = React.useState<boolean>(false)
 	const [messageApi, contextHolder] = message.useMessage()
 
 	const postValidation = Yup.object().shape({
-		bending: Yup.string().required('This field is required.'),
-		cuttingCost: Yup.number().required('This field is required.'),
-		size: Yup.string().required('This field is required.'),
-		type: Yup.string().required('This field is required.'),
-		// .oneOf(['CRS', '41401045']),
-		threading: Yup.array().min(1, 'This field should be at least 1 parameter.').of(Yup.number().required())
+		bend: Yup.string().required('This field is required.'),
+		standard: Yup.number().required('This field is required.'),
+		hexNut: Yup.number().required('This field is required.'),
+		fW: Yup.number().required('This field is required.'),
+		sizeA: Yup.string().required('This field is required.'),
+		inchA: Yup.string().required('This field is required.'),
+		typeAnchor: Yup.string().required('This field is required.')
+		// .oneOf(_.uniqBy(data, 'type').map(({ type }) => type)),
 	})
 
 	return (
@@ -40,15 +42,7 @@ const SagRodProduct = (props: SagRodProductProps) => {
 						quantity: 1
 					} as PricingFormProps
 				}
-				onSubmit={(values) => {
-					if (values.product) {
-						const product: FinishedProductProps = {
-							...values.product,
-							quantity: values.quantity
-						}
-						console.log(product)
-					}
-				}}
+				onSubmit={(values) => {}}
 			>
 				{({ submitForm, values }) => (
 					<Form>
@@ -67,20 +61,19 @@ const SagRodProduct = (props: SagRodProductProps) => {
 									onUpdateProductDetails={() =>
 										new Promise<boolean>((resolve, reject) => {
 											if (values.product && values.product._id) {
-												putData(
-													values.product && values.product.type === 'CRS'
-														? '/api/admin/update/Asszabtcrs/'.concat(values.product._id)
-														: values.product && values.product.type === '41401045'
-														? '/api/admin/update/Asszabt41401045/'.concat(values.product._id)
-														: '',
-													{
-														bending: values.product.width,
-														cuttingCost: values.product.price,
-														size: values.product.size,
-														threading: values.product.threadLength
-														// type: values.product.type
-													} as SagRodProps
-												)
+												putData(`/api/admin/update/anchorBolt/${values.product._id}`, {
+													bend: values.product.width,
+													fW: values.product.washer,
+													hexNut: values.product.hexNut,
+													inchA: values.product.length,
+													sizeA: values.product.size,
+													standard: values.product.price,
+													typeAnchor: values.product.type,
+													total:
+														(values.product.price ? parseFloat(values.product.price) : 0) +
+														(values.product.washer ? parseFloat(values.product.washer) : 0) +
+														(values.product.hexNut ? parseFloat(values.product.hexNut) : 0)
+												} as AnchorBoltProps)
 													.then((success) => {
 														messageApi.open({
 															type: success ? 'success' : 'warning',
@@ -113,7 +106,7 @@ const SagRodProduct = (props: SagRodProductProps) => {
 						{}
 					)}
 					onSubmit={(values: any, { setSubmitting }) => {
-						postData(values.type === 'CRS' ? '/api/admin/add/Asszabtcrs' : '/api/admin/add/Asszabt41401045', values)
+						postData('/api/admin/add/anchorBolt', values)
 							.then((success) => {
 								setSubmitting(false)
 								setShowForm(false)
@@ -136,4 +129,4 @@ const SagRodProduct = (props: SagRodProductProps) => {
 	)
 }
 
-export default SagRodProduct
+export default AnchorBoltProduct

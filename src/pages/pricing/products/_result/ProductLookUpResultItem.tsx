@@ -52,13 +52,13 @@ const ProductLookUpResultItem = (props: ProductLookUpResultItemProps) => {
 					}
 					type={status}
 					showIcon
-					action={
-						status === 'error' ? (
-							<Button type='ghost' size='small' icon={<SaveOutlined />}>
-								Add your selection to database
-							</Button>
-						) : undefined
-					}
+					// action={
+					// 	status === 'error' ? (
+					// 		<Button type='ghost' size='small' icon={<SaveOutlined />}>
+					// 			Add your selection to database
+					// 		</Button>
+					// 	) : undefined
+					// }
 				/>
 			</Col>
 			<Col span={24}>

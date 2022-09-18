@@ -1,57 +1,34 @@
-import type { CheckboxOptionType } from 'antd'
 import React from 'react'
-import { Routes, Route, useNavigate, Navigate } from 'react-router-dom'
+import { CheckboxOptionType, MenuProps, Radio } from 'antd'
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom'
 import { Layout } from 'antd'
-import Products from './Products'
 import pageComponentReducer from './products/reducer'
+import SideBar from '../../components/SideBar'
 
-type PricingPageProps = {}
+type PricingPageProps = {
+	menus: MenuProps['items']
+}
 
 const PricingPage = (props: PricingPageProps) => {
-	const products = React.useMemo<Array<CheckboxOptionType>>(
-		() => [
-			{ label: 'Sag Rod', value: 'sag-rod' },
-			{ label: 'Anchor Bolt', value: 'anchor-bolt' },
-			{ label: 'Plate', value: 'plate' },
-			{ label: 'Hex Bolt', value: 'hex-bolt' },
-			{ label: 'U Bolt', value: 'u-bolt' },
-			{ label: 'J Bolt', value: 'j-bolt' },
-			{ label: 'Dyna Bolt', value: 'dyna-bolt' },
-			{ label: 'Clevis or Loop Hanger', value: 'hanger' },
-			{ label: 'Cylindrical', value: 'cylindrical' },
-			{ label: 'Turn Buckle', value: 'turn-buckle' },
-			{ label: 'Lag Screw', value: 'lag-screw' }
-		],
-		[]
-	)
-	const [selected, setSelected] = React.useState<string>('sag-rod')
 	const [component, setComponent] = React.useReducer(pageComponentReducer, null)
-	const navigate = useNavigate()
 
 	React.useEffect(() => {
-		setComponent(String(products[0].value))
-	}, [products])
+		setComponent('sag-rod')
+	}, [])
 
 	return (
-		<Layout.Content style={{ padding: '2rem' }}>
-			<Products
-				items={products}
-				onChange={(product) => {
-					setSelected(product)
-					setComponent(product)
-					navigate(product!)
-				}}
-				selected={selected}
-			/>
-			<div style={{ padding: '1rem 0' }}>
-				<Routes>
-					{products.map(({ value }, i) => (
-						<Route path={value as string} element={component} key={i} />
-					))}
-					<Route path='*' element={<Navigate to={String(products[0].value)} replace />} />
-				</Routes>
-			</div>
-		</Layout.Content>
+		<React.Fragment>
+			<SideBar items={props.menus} onClick={(e) => setComponent(e.key)} />
+			<Layout.Content style={{ padding: '2rem' }}>
+				<div style={{ padding: '1rem 0' }}>
+					<Routes>
+						{(props.menus!.filter((menu) => menu?.key === 'pricing')[0] as any).children.map(({ key }: any) => (
+							<Route path={key} element={component} key={key} />
+						))}
+					</Routes>
+				</div>
+			</Layout.Content>
+		</React.Fragment>
 	)
 }
 

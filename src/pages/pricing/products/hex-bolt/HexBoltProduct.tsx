@@ -10,22 +10,21 @@ import AddForm from '../_add/AddForm'
 import postData from '../postData'
 import putData from '../putData'
 
-type SagRodProductProps = {}
+type HexBoltProductProps = {}
 
-const PRODUCT_NAME = 'SAGROD'
+const PRODUCT_NAME = 'HEX BOLT'
 
-const SagRodProduct = (props: SagRodProductProps) => {
+const HexBoltProduct = (props: HexBoltProductProps) => {
 	const { data, options, loading } = useData(PRODUCT_NAME)
 	const [showForm, setShowForm] = React.useState<boolean>(false)
 	const [messageApi, contextHolder] = message.useMessage()
 
 	const postValidation = Yup.object().shape({
-		bending: Yup.string().required('This field is required.'),
-		cuttingCost: Yup.number().required('This field is required.'),
-		size: Yup.string().required('This field is required.'),
-		type: Yup.string().required('This field is required.'),
-		// .oneOf(['CRS', '41401045']),
-		threading: Yup.array().min(1, 'This field should be at least 1 parameter.').of(Yup.number().required())
+		boltLenght: Yup.string().required('This field is required.'),
+		cost: Yup.number().required('This field is required.'),
+		diameterValue: Yup.string().required('This field is required.'),
+		materialValue: Yup.string().required('This field is required.'),
+		threadValue: Yup.string().required('This field is required.')
 	})
 
 	return (
@@ -40,15 +39,7 @@ const SagRodProduct = (props: SagRodProductProps) => {
 						quantity: 1
 					} as PricingFormProps
 				}
-				onSubmit={(values) => {
-					if (values.product) {
-						const product: FinishedProductProps = {
-							...values.product,
-							quantity: values.quantity
-						}
-						console.log(product)
-					}
-				}}
+				onSubmit={(values) => {}}
 			>
 				{({ submitForm, values }) => (
 					<Form>
@@ -67,20 +58,14 @@ const SagRodProduct = (props: SagRodProductProps) => {
 									onUpdateProductDetails={() =>
 										new Promise<boolean>((resolve, reject) => {
 											if (values.product && values.product._id) {
-												putData(
-													values.product && values.product.type === 'CRS'
-														? '/api/admin/update/Asszabtcrs/'.concat(values.product._id)
-														: values.product && values.product.type === '41401045'
-														? '/api/admin/update/Asszabt41401045/'.concat(values.product._id)
-														: '',
-													{
-														bending: values.product.width,
-														cuttingCost: values.product.price,
-														size: values.product.size,
-														threading: values.product.threadLength
-														// type: values.product.type
-													} as SagRodProps
-												)
+												putData(`/api/admin/update/hexbolt/${values.product._id}`, {
+													boltLenght: values.product.length,
+													cost: values.product.price,
+													DateCreated: values.product.createdAt,
+													diameterValue: values.product.size,
+													materialValue: values.product.type,
+													threadValue: values.product.threadType
+												} as HexBoltProps)
 													.then((success) => {
 														messageApi.open({
 															type: success ? 'success' : 'warning',
@@ -113,7 +98,7 @@ const SagRodProduct = (props: SagRodProductProps) => {
 						{}
 					)}
 					onSubmit={(values: any, { setSubmitting }) => {
-						postData(values.type === 'CRS' ? '/api/admin/add/Asszabtcrs' : '/api/admin/add/Asszabt41401045', values)
+						postData('/api/admin/add/hexbolt', values)
 							.then((success) => {
 								setSubmitting(false)
 								setShowForm(false)
@@ -136,4 +121,4 @@ const SagRodProduct = (props: SagRodProductProps) => {
 	)
 }
 
-export default SagRodProduct
+export default HexBoltProduct

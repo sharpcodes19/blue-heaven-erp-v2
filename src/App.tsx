@@ -21,8 +21,8 @@ const App = (props: AppProps) => {
 					{ label: 'Hex Bolt', key: 'hex-bolt' },
 					{ label: 'U Bolt', key: 'u-bolt' },
 					{ label: 'J Bolt', key: 'j-bolt' },
-					{ label: 'Dyna Bolt', key: 'dyna-bolt', disabled: true },
-					{ label: 'Clevis / Loop Hanger', key: 'hanger', disabled: true },
+					{ label: 'Dyna Bolt', key: 'dyna-bolt' },
+					{ label: 'Clevis / Loop Hanger', key: 'hanger' },
 					{ label: 'Cylindrical', key: 'cylindrical', disabled: true },
 					{ label: 'Turn Buckle', key: 'turn-buckle', disabled: true },
 					{ label: 'Lag Screw', key: 'lag-screw', disabled: true }

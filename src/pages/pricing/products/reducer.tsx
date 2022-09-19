@@ -1,4 +1,6 @@
 import AnchorBoltProduct from './anchor-bolt/AnchorBoltProduct'
+import DynaBoltProduct from './dyna-bolt/DynaBoltProduct'
+import HangerProduct from './hanger/HangerProduct'
 import HexBoltProduct from './hex-bolt/HexBoltProduct'
 import JBoltProduct from './j-bolt/JBoltProduct'
 import SagRodProduct from './sag-rod/SagRodProduct'
@@ -23,6 +25,10 @@ const pageComponentReducer = (state: State, action: Action): State => {
 			return <UBoltProduct />
 		case 'j-bolt':
 			return <JBoltProduct />
+		case 'dyna-bolt':
+			return <DynaBoltProduct />
+		case 'hanger':
+			return <HangerProduct />
 	}
 }
 

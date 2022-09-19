@@ -107,7 +107,7 @@ type DynaBoltProps = {
 	_id?: string
 	dynaboltSize: string
 	Length: string
-	Price: number
+	Price: string
 	DateCreated: Date
 }
 
@@ -115,13 +115,13 @@ type HangerProps = {
 	_id?: string
 	Type: string
 	Size: string
-	Price: number
+	Price: string
 }
 
 type CylindricalProps = {
 	_id?: string
 	cyndicalSize: string
-	Price: number
+	Price: string
 	DateCreated: Date
 }
 
@@ -130,7 +130,7 @@ type TurnBuckleProps = {
 	millimeter: string
 	turnBuckle: string
 	pipeSize: string
-	price: number
+	price: string
 	DateCreated: Date
 }
 
@@ -138,7 +138,7 @@ type LagScrewProps = {
 	_id?: string
 	screwLength: string
 	screwSize: string
-	price: number
+	price: string
 }
 
 type PricingFormProps = {

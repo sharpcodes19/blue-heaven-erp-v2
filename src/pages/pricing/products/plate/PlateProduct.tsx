@@ -1,7 +1,7 @@
+import React from 'react'
 import { Button, Col, Form, InputNumber, Row, Space } from 'antd'
 import { ShoppingCartOutlined } from '@ant-design/icons'
 import { Formik } from 'formik'
-import React from 'react'
 import ProductSpecList from '../ProductSpecList'
 import PlateProductResult from './PlateProductResult'
 import PlateProductSpec from './PlateProductSpec'
@@ -13,7 +13,7 @@ const PRODUCT_NAME: string = 'PLATE'
 const PlateProduct = (props: PlateProductProps) => {
 	return (
 		<Row>
-			<Col span={13}>
+			<Col>
 				<ProductSpecList noPostForm name={PRODUCT_NAME} onShowForm={() => {}} />
 			</Col>
 			<Formik
@@ -42,7 +42,7 @@ const PlateProduct = (props: PlateProductProps) => {
 				}}
 			>
 				{({ initialValues, handleSubmit, setFieldValue, values }) => (
-					<Col span={13}>
+					<Col>
 						<Form autoComplete='off' initialValues={initialValues} onFinish={handleSubmit}>
 							<Row>
 								<Col>

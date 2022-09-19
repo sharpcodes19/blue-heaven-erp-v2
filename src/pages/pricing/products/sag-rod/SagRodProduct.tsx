@@ -53,12 +53,12 @@ const SagRodProduct = (props: SagRodProductProps) => {
 				{({ submitForm, values }) => (
 					<Form>
 						<Row>
-							<Col span={13}>
+							<Col>
 								<ProductSpecList name={PRODUCT_NAME} options={options} loading={loading} onShowForm={setShowForm} />
 							</Col>
 						</Row>
 						<Row>
-							<Col span={11}>
+							<Col>
 								<ProductLookUpResultItem
 									loading={loading}
 									data={data}

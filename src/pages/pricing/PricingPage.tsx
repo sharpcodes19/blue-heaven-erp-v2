@@ -18,24 +18,25 @@ type PricingPageProps = {}
 
 const PricingPage = (props: PricingPageProps) => {
 	return (
-		<Layout.Content style={{ padding: '2rem' }}>
-			<Routes>
-				<Route path='sag-rod' element={<SagRodProduct />} />
-				<Route path='anchor-bolt' element={<AnchorBoltProduct />} />
-				<Route path='hex-bolt' element={<HexBoltProduct />} />
-				<Route path='u-bolt' element={<UBoltProduct />} />
-				<Route path='j-bolt' element={<JBoltProduct />} />
-				<Route path='dyna-bolt' element={<DynaBoltProduct />} />
-				<Route path='hanger' element={<HangerProduct />} />
-				<Route path='cylindrical' element={<CylindricalProduct />} />
-				<Route path='turn-buckle' element={<TurnBuckleProduct />} />
-				<Route path='lag-screw' element={<LagScrewProduct />} />
-				<Route path='plate' element={<PlateProduct />} />
-
-				<Route path='*' element={<Navigate replace to='sag-rod' />} />
-			</Routes>
+		<Layout.Content>
 			<Row>
-				<Col span={13}></Col>
+				<Col span={13}>
+					<Routes>
+						<Route path='sag-rod' element={<SagRodProduct />} />
+						<Route path='anchor-bolt' element={<AnchorBoltProduct />} />
+						<Route path='hex-bolt' element={<HexBoltProduct />} />
+						<Route path='u-bolt' element={<UBoltProduct />} />
+						<Route path='j-bolt' element={<JBoltProduct />} />
+						<Route path='dyna-bolt' element={<DynaBoltProduct />} />
+						<Route path='hanger' element={<HangerProduct />} />
+						<Route path='cylindrical' element={<CylindricalProduct />} />
+						<Route path='turn-buckle' element={<TurnBuckleProduct />} />
+						<Route path='lag-screw' element={<LagScrewProduct />} />
+						<Route path='plate' element={<PlateProduct />} />
+
+						<Route path='*' element={<Navigate replace to='sag-rod' />} />
+					</Routes>
+				</Col>
 				<Outlet />
 				<Col span={11}>QUOTATION GO HERE</Col>
 			</Row>

@@ -158,3 +158,16 @@ type PricingFormProps = {
 	quantity: number
 	product?: FinishedProductProps // this one is the item the will be transferred to quantity section
 }
+
+type CustomerProps = {
+	_id?: string
+	name?: string
+	tin?: string
+	email?: string
+	contact?: string
+	address?: string
+	discount?: string
+	status?: string
+	remarks?: string
+	sourceId?: string
+}

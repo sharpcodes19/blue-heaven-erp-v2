@@ -4,6 +4,7 @@ import DynaBoltProduct from './dyna-bolt/DynaBoltProduct'
 import HangerProduct from './hanger/HangerProduct'
 import HexBoltProduct from './hex-bolt/HexBoltProduct'
 import JBoltProduct from './j-bolt/JBoltProduct'
+import LagScrewProduct from './lag_screw/LagScrewProduct'
 import SagRodProduct from './sag-rod/SagRodProduct'
 import TurnBuckleProduct from './turn_buckle/TurnBuckleProduct'
 import UBoltProduct from './u-bolt/UBoltProduct'
@@ -35,6 +36,8 @@ const pageComponentReducer = (state: State, action: Action): State => {
 			return <CylindricalProduct />
 		case 'turn-buckle':
 			return <TurnBuckleProduct />
+		case 'lag-screw':
+			return <LagScrewProduct />
 	}
 }
 

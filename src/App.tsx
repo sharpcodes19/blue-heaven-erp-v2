@@ -25,7 +25,7 @@ const App = (props: AppProps) => {
 					{ label: 'Clevis / Loop Hanger', key: 'hanger' },
 					{ label: 'Cylindrical', key: 'cylindrical' },
 					{ label: 'Turn Buckle', key: 'turn-buckle' },
-					{ label: 'Lag Screw', key: 'lag-screw', disabled: true }
+					{ label: 'Lag Screw', key: 'lag-screw' }
 				]
 			}
 		],

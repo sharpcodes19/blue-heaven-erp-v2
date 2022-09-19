@@ -1,4 +1,5 @@
 import AnchorBoltProduct from './anchor-bolt/AnchorBoltProduct'
+import CylindricalProduct from './cylindrical/CylindricalProduct'
 import DynaBoltProduct from './dyna-bolt/DynaBoltProduct'
 import HangerProduct from './hanger/HangerProduct'
 import HexBoltProduct from './hex-bolt/HexBoltProduct'
@@ -29,6 +30,8 @@ const pageComponentReducer = (state: State, action: Action): State => {
 			return <DynaBoltProduct />
 		case 'hanger':
 			return <HangerProduct />
+		case 'cylindrical':
+			return <CylindricalProduct />
 	}
 }
 

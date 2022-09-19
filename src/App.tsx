@@ -17,7 +17,7 @@ const App = (props: AppProps) => {
 				children: [
 					{ label: 'SagRod', key: 'sag-rod' },
 					{ label: 'Anchor Bolt', key: 'anchor-bolt' },
-					{ label: 'Plate', key: 'plate', disabled: true },
+					{ label: 'Plate', key: 'plate' },
 					{ label: 'Hex Bolt', key: 'hex-bolt' },
 					{ label: 'U Bolt', key: 'u-bolt' },
 					{ label: 'J Bolt', key: 'j-bolt' },

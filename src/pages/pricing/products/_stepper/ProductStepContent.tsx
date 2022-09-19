@@ -5,7 +5,7 @@ import { useFormikContext } from 'formik'
 
 type ProductStepContentProps = {
 	activeStepIndex: number
-	loading: boolean
+	loading?: boolean
 } & SelectablePricingOptionProps
 
 const ProductStepContent = (props: ProductStepContentProps) => {

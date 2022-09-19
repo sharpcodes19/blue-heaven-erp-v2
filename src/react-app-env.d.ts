@@ -73,7 +73,19 @@ type SagRodProps = {
 	type?: string
 }
 
-type PlateProps = {}
+type PlateProps = {
+	// _id?: string
+	thickness_inch?: number
+	length_inch?: number
+	width_mm?: number
+	perKilogramPrice?: number
+	holeQuantity?: number
+	holePricePerPiece?: number
+	weight?: number
+	totalWithoutHole?: number
+	totalWithHole?: number
+	quantity?: number
+}
 
 type HexBoltProps = {
 	_id?: string

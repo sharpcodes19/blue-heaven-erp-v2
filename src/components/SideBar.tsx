@@ -1,7 +1,7 @@
 import React from 'react'
 import { Layout, Menu, MenuProps } from 'antd'
 import { useNavigate } from 'react-router-dom'
-import { UserOutlined, MoneyCollectOutlined, TagsOutlined } from '@ant-design/icons'
+import { UserOutlined, MoneyCollectOutlined, CarryOutOutlined, TagsOutlined } from '@ant-design/icons'
 
 type SideBarProps = {}
 
@@ -34,6 +34,11 @@ const SideBar = (props: SideBarProps) => {
 					{ label: 'Turn Buckle', key: 'pricing/turn-buckle' },
 					{ label: 'Lag Screw', key: 'pricing/lag-screw' }
 				]
+			},
+			{
+				label: 'Orders',
+				key: 'order',
+				icon: <CarryOutOutlined />
 			},
 			{
 				label: 'Inventory',

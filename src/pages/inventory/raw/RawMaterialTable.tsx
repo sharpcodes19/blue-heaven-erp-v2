@@ -3,18 +3,18 @@ import { SearchOutlined } from '@ant-design/icons'
 import { Button, Col, Input, Row, Table } from 'antd'
 import { useDebounce } from 'use-debounce'
 import columns from './table/useColumns'
-import { FinishedProduct } from '../../../contexts/ProductContext'
+import { RawMaterial } from '../../../contexts/RawMaterialContext'
 
-type ProductTableProps = {
+type RawMaterialTableProps = {
 	onShowForm: (value: boolean) => any
 }
 
-const ProductTable = (props: ProductTableProps) => {
+const RawMaterialTable = (props: RawMaterialTableProps) => {
 	const [text, setText] = React.useState<string>('')
 	const [debouncedValue] = useDebounce(text, 500)
-	const { value } = React.useContext(FinishedProduct)!
+	const { value } = React.useContext(RawMaterial)!
 
-	const data = React.useMemo<Array<FinishedProductProps> | undefined>(() => {
+	const data = React.useMemo<Array<RawMaterialProps> | undefined>(() => {
 		if (!debouncedValue || !value) return value
 
 		return value.filter((a) => a.name?.toLowerCase().includes(debouncedValue.toLowerCase()))
@@ -34,7 +34,7 @@ const ProductTable = (props: ProductTableProps) => {
 					</Col>
 					<Col>
 						<Button type='primary' onClick={() => props.onShowForm(true)}>
-							Add new finished product
+							Add new raw material
 						</Button>
 					</Col>
 				</Row>
@@ -43,11 +43,11 @@ const ProductTable = (props: ProductTableProps) => {
 					columns={columns}
 					dataSource={data}
 					size='small'
-					scroll={{ x: 'calc(930px + 50%)' }}
+					scroll={{ x: 'calc(700px + 50%)' }}
 				/>
 			</Col>
 		</Row>
 	)
 }
 
-export default ProductTable
+export default RawMaterialTable

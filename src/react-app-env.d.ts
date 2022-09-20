@@ -18,6 +18,21 @@ type ResponseBaseProps<T = unknown> = {
 	packet?: T | null
 }
 
+type RawMaterialProps = {
+	_id?: string
+	name: string
+	type?: string
+	diameter?: string
+	weight?: string
+	price?: string
+	quantity?: string
+	orderDate?: string
+	deliveredDate?: string
+	remarks?: string
+	createdAt?: Date
+	updatedAt?: Date
+}
+
 type FinishedProductProps = {
 	_id?: string
 	name: string

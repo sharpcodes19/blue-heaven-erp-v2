@@ -68,7 +68,7 @@ const columns: Array<ColumnType<FinishedProductProps>> = [
 			var y = b.threadType?.toLowerCase() || ''
 			return x < y ? -1 : x > y ? 1 : 0
 		},
-		width: 150,
+		width: 190,
 		render: (value, record) => (
 			<Row>
 				<Col>

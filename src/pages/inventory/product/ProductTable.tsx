@@ -43,7 +43,7 @@ const ProductTable = (props: ProductTableProps) => {
 					columns={columns}
 					dataSource={data}
 					size='small'
-					scroll={{ x: 'calc(930px + 50%)' }}
+					scroll={{ x: 'calc(750px + 50%)' }}
 				/>
 			</Col>
 		</Row>

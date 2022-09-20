@@ -1,7 +1,6 @@
 import Moment from 'moment'
 import React from 'react'
 import { Col, DatePicker, Form, Input, InputNumber, Row } from 'antd'
-import type { DatePickerProps } from 'antd'
 import { useFormikContext } from 'formik'
 
 type RawMaterialFieldProps = {}

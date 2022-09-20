@@ -1,9 +1,9 @@
 import React from 'react'
-import { SearchOutlined, UserAddOutlined } from '@ant-design/icons'
+import { SearchOutlined } from '@ant-design/icons'
 import { Button, Col, Input, Row, Table } from 'antd'
 import { useDebounce } from 'use-debounce'
 import columns from './table/useColumns'
-import { FinishedProduct } from '../../../../contexts/ProductContext'
+import { FinishedProduct } from '../../../contexts/ProductContext'
 
 type ProductTableProps = {
 	onShowForm: (value: boolean) => any

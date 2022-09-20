@@ -4,8 +4,8 @@ import { Formik } from 'formik'
 import React from 'react'
 import ProductTable from './ProductTable'
 import ProductForm from './form/ProductForm'
-import { FinishedProduct } from '../../../../contexts/ProductContext'
-import instance2 from '../../../../api/instance2'
+import { FinishedProduct } from '../../../contexts/ProductContext'
+import instance2 from '../../../api/instance2'
 
 type ProductTabProps = {}
 

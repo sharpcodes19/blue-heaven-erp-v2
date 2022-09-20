@@ -2,8 +2,8 @@ import { Button, Col, message, Popconfirm, Row } from 'antd'
 import { EditFilled, DeleteFilled } from '@ant-design/icons'
 import React from 'react'
 import { useFormikContext } from 'formik'
-import { FinishedProduct } from '../../../../../contexts/ProductContext'
-import instance2 from '../../../../../api/instance2'
+import { FinishedProduct } from '../../../../contexts/ProductContext'
+import instance2 from '../../../../api/instance2'
 
 type OptionCellProps = {
 	record: FinishedProductProps

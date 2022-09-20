@@ -5,6 +5,7 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import PricingPage from './pages/pricing/PricingPage'
 import CustomerPage from './pages/customer/CustomerPage'
 import SideBar from './components/SideBar'
+import CustomerContext from './contexts/CustomerContext'
 
 type AppProps = {}
 
@@ -14,11 +15,13 @@ const App = (props: AppProps) => {
 			<Layout style={{ minHeight: '100vh' }}>
 				<SideBar />
 				<Layout.Content style={{ padding: '2rem' }}>
-					<Routes>
-						<Route path='pricing/*' element={<PricingPage />} />
-						<Route path='customer' element={<CustomerPage />} />
-						<Route path='*' element={<Navigate replace to='/customer' />} />
-					</Routes>
+					<CustomerContext>
+						<Routes>
+							<Route path='pricing/*' element={<PricingPage />} />
+							<Route path='customer' element={<CustomerPage />} />
+							<Route path='*' element={<Navigate replace to='/customer' />} />
+						</Routes>
+					</CustomerContext>
 				</Layout.Content>
 			</Layout>
 		</React.Fragment>

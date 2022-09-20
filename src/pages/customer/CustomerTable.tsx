@@ -3,20 +3,22 @@ import { SearchOutlined, UserAddOutlined } from '@ant-design/icons'
 import { Button, Col, Input, Row, Table } from 'antd'
 import { useDebounce } from 'use-debounce'
 import columns from './table/useColumns'
+import { Customer } from '../../contexts/CustomerContext'
 
 type CustomerTableProps = {
-	data: Array<CustomerProps>
+	onShowForm: (value: boolean) => any
 }
 
 const CustomerTable = (props: CustomerTableProps) => {
 	const [text, setText] = React.useState<string>('')
-	const [value] = useDebounce(text, 500)
+	const [debouncedValue] = useDebounce(text, 500)
+	const { value } = React.useContext(Customer)!
 
-	const data = React.useMemo<Array<CustomerProps>>(() => {
-		if (!value) return props.data
+	const data = React.useMemo<Array<CustomerProps> | undefined>(() => {
+		if (!debouncedValue || !value) return value
 
-		return props.data.filter((a) => a.name?.toLowerCase().includes(value.toLowerCase()))
-	}, [props.data, value])
+		return value.filter((a) => a.name?.toLowerCase().includes(debouncedValue.toLowerCase()))
+	}, [value, debouncedValue])
 
 	return (
 		<Row>
@@ -31,12 +33,18 @@ const CustomerTable = (props: CustomerTableProps) => {
 						/>
 					</Col>
 					<Col>
-						<Button type='primary' icon={<UserAddOutlined />}>
+						<Button type='primary' icon={<UserAddOutlined />} onClick={() => props.onShowForm(true)}>
 							Add new customer
 						</Button>
 					</Col>
 				</Row>
-				<Table columns={columns} dataSource={data} size='small' scroll={{ x: 'calc(700px + 50%)' }} />
+				<Table
+					loading={data === undefined}
+					columns={columns}
+					dataSource={data}
+					size='small'
+					scroll={{ x: 'calc(700px + 50%)' }}
+				/>
 			</Col>
 		</Row>
 	)

@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import { Col, Row, Tag, Tooltip, Typography } from 'antd'
 import { ColumnType } from 'antd/lib/table'
 import OptionCell from './OptionCell'
@@ -6,7 +7,7 @@ const columns: Array<ColumnType<CustomerProps>> = [
 	{
 		title: 'Name',
 		dataIndex: 'name',
-		key: 'name',
+		key: _.uniqueId('name'),
 		fixed: 'left',
 		render: (value, record: CustomerProps) => {
 			const invalid = !record.status || record.status === 'null' || record.status.toLowerCase() === 'n/a'
@@ -44,7 +45,7 @@ const columns: Array<ColumnType<CustomerProps>> = [
 	{
 		title: 'TIN',
 		dataIndex: 'tin',
-		key: 'tin',
+		key: _.uniqueId('tin'),
 		fixed: 'left',
 		width: 150,
 		sorter: (a: CustomerProps, b: CustomerProps) => {
@@ -60,7 +61,7 @@ const columns: Array<ColumnType<CustomerProps>> = [
 	{
 		title: 'Email Address',
 		dataIndex: 'email',
-		key: 'email',
+		key: _.uniqueId('email'),
 		sorter: (a: CustomerProps, b: CustomerProps) => {
 			var x = a.email?.toLowerCase() || ''
 			var y = b.email?.toLowerCase() || ''
@@ -76,7 +77,7 @@ const columns: Array<ColumnType<CustomerProps>> = [
 	{
 		title: 'Contact No.',
 		dataIndex: 'contact',
-		key: 'contact',
+		key: _.uniqueId('contact'),
 		sorter: (a: CustomerProps, b: CustomerProps) => {
 			var x = a.contact?.toLowerCase() || ''
 			var y = b.contact?.toLowerCase() || ''
@@ -91,7 +92,7 @@ const columns: Array<ColumnType<CustomerProps>> = [
 	{
 		title: 'Address',
 		dataIndex: 'address',
-		key: 'address',
+		key: _.uniqueId('address'),
 		sorter: (a: CustomerProps, b: CustomerProps) => {
 			var x = a.address?.toLowerCase() || ''
 			var y = b.address?.toLowerCase() || ''
@@ -106,10 +107,10 @@ const columns: Array<ColumnType<CustomerProps>> = [
 	{
 		title: 'Discount',
 		dataIndex: 'discount',
-		key: 'discount',
+		key: _.uniqueId('discount'),
 		sorter: (a: CustomerProps, b: CustomerProps) => {
-			var x = a.discount?.toLowerCase() || ''
-			var y = b.discount?.toLowerCase() || ''
+			var x = a.discount || ''
+			var y = b.discount || ''
 			return x < y ? -1 : x > y ? 1 : 0
 		},
 		width: 120
@@ -117,7 +118,7 @@ const columns: Array<ColumnType<CustomerProps>> = [
 	{
 		title: 'Remarks',
 		dataIndex: 'remarks',
-		key: 'remarks',
+		key: _.uniqueId('remarks'),
 		sorter: (a: CustomerProps, b: CustomerProps) => {
 			var x = a.remarks?.toLowerCase() || ''
 			var y = b.remarks?.toLowerCase() || ''
@@ -128,7 +129,7 @@ const columns: Array<ColumnType<CustomerProps>> = [
 	{
 		title: 'Action',
 		dataIndex: '_id',
-		key: '_id',
+		key: _.uniqueId('action'),
 		render: (_, record: CustomerProps) => <OptionCell record={record} />,
 		width: 90
 	}

@@ -31,6 +31,10 @@ const items: Array<ItemProps> = [
 		type: 'number'
 	},
 	{
+		key: 'status',
+		label: 'Status'
+	},
+	{
 		key: 'remarks',
 		label: 'Remarks'
 	}

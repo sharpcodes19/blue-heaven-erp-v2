@@ -2,16 +2,16 @@ import { Button, Col, message, Popconfirm, Row } from 'antd'
 import { EditFilled, DeleteFilled } from '@ant-design/icons'
 import React from 'react'
 import { useFormikContext } from 'formik'
-import instance2 from '../../../api/instance2'
-import { Customer } from '../../../contexts/CustomerContext'
+import { FinishedProduct } from '../../../../../contexts/ProductContext'
+import instance2 from '../../../../../api/instance2'
 
 type OptionCellProps = {
-	record: CustomerProps
+	record: FinishedProductProps
 }
 
 const OptionCell = (props: OptionCellProps) => {
-	const formik = useFormikContext<CustomerProps & { visible: boolean }>()
-	const { dispatch, value } = React.useContext(Customer)!
+	const formik = useFormikContext<FinishedProductProps & { visible: boolean }>()
+	const { dispatch, value } = React.useContext(FinishedProduct)!
 	const [messageApi, alertContext] = message.useMessage()
 
 	const handleUpdate = React.useCallback(() => {
@@ -23,7 +23,7 @@ const OptionCell = (props: OptionCellProps) => {
 
 	const handleDelete = React.useCallback(() => {
 		instance2()
-			.delete<ResponseBaseProps<Array<CustomerProps>>>(`/customer/${props.record._id}`)
+			.delete<ResponseBaseProps<Array<FinishedProductProps>>>(`/inventory/finished-product/${props.record._id}`)
 			.then((res) => {
 				dispatch(value?.filter((customer) => customer._id !== props.record._id))
 				messageApi.success(res.data.message)

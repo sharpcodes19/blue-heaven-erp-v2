@@ -6,6 +6,7 @@ import PricingPage from './pages/pricing/PricingPage'
 import CustomerPage from './pages/customer/CustomerPage'
 import SideBar from './components/SideBar'
 import CustomerContext from './contexts/CustomerContext'
+import InventoryPage from './pages/inventory/InventoryPage'
 
 type AppProps = {}
 
@@ -18,6 +19,7 @@ const App = (props: AppProps) => {
 					<CustomerContext>
 						<Routes>
 							<Route path='pricing/*' element={<PricingPage />} />
+							<Route path='inventory/*' element={<InventoryPage />} />
 							<Route path='customer' element={<CustomerPage />} />
 							<Route path='*' element={<Navigate replace to='/customer' />} />
 						</Routes>

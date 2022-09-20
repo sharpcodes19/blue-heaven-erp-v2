@@ -1,23 +1,23 @@
-import { Form, Layout, message, Modal, Typography } from 'antd'
+import { Form, message, Modal, Row, Typography } from 'antd'
 import * as Yup from 'yup'
 import { Formik } from 'formik'
 import React from 'react'
-import instance2 from '../../api/instance2'
-import CustomerTable from './CustomerTable'
-import CustomerForm from './form/CustomerForm'
-import { Customer } from '../../contexts/CustomerContext'
+import ProductTable from './ProductTable'
+import ProductForm from './form/ProductForm'
+import { FinishedProduct } from '../../../../contexts/ProductContext'
+import instance2 from '../../../../api/instance2'
 
-type CustomerPageProps = {}
+type ProductTabProps = {}
 
-const CustomerPage = (props: CustomerPageProps) => {
-	const { dispatch } = React.useContext(Customer)!
+const ProductTab = (props: ProductTabProps) => {
+	const { dispatch } = React.useContext(FinishedProduct)!
 	const [messageApi, alertContext] = message.useMessage()
 
 	const getAll = React.useCallback(
 		() =>
-			new Promise<ResponseBaseProps<Array<CustomerProps>>>((resolve, reject) =>
+			new Promise<ResponseBaseProps<Array<FinishedProductProps>>>((resolve, reject) =>
 				instance2()
-					.get<ResponseBaseProps<Array<CustomerProps>>>('/customer?sort=desc')
+					.get<ResponseBaseProps<Array<FinishedProductProps>>>('/inventory/finished-product?sort=desc')
 					.then((res) => resolve(res.data))
 					.catch(reject)
 			),
@@ -37,39 +37,42 @@ const CustomerPage = (props: CustomerPageProps) => {
 	}, [messageApi, getAll, dispatch])
 
 	return (
-		<Layout.Content>
+		<Row>
 			{alertContext}
-			<Typography.Title level={2}>CUSTOMERS</Typography.Title>
+			<Typography.Title level={2}>FINISHED PRODUCTS</Typography.Title>
 			<Formik
 				validationSchema={Yup.object().shape({
-					address: Yup.string().required('This field is required.'),
-					contact: Yup.string().required('This field is required.'),
-					discount: Yup.number().required('This field is required.'),
-					email: Yup.string().required('This field is required.').email('Not supported email format.'),
 					name: Yup.string().required('This field is required.'),
-					tin: Yup.string().required('This field is required.')
+					// threadLength: Yup.array().min(1, 'This field should be at least 1 parameter.').of(Yup.number().required()),
+					price: Yup.number().positive().required('This field is required.')
 				})}
 				initialValues={
 					{
 						_id: undefined,
-						address: '',
-						contact: '',
-						discount: '',
-						email: '',
 						name: '',
+						threadLength: ['0', '0'],
+						threadType: '',
+						cutLength: '',
+						weight: '',
+						width: '',
+						finishType: '',
+						holeQuantity: '',
+						holeSizes: [],
+						price: '',
+						lead: '',
+						length: '',
 						remarks: '',
-						status: '',
-						tin: '',
+						quantity: 0,
+						size: '',
+						type: '',
 						visible: false
-					} as CustomerProps & { visible: boolean }
+					} as FinishedProductProps & { visible: boolean }
 				}
-				onSubmit={async (customer, { resetForm, setFieldValue }) => {
+				onSubmit={async (product, { resetForm, setFieldValue }) => {
 					const postResponse = await instance2()({
-						method: customer._id ? 'put' : 'post',
-						url: `/customer/${customer._id || ''}`,
-						data: {
-							...customer
-						}
+						method: product._id ? 'put' : 'post',
+						url: `/inventory/finished-product/${product._id || ''}`,
+						data: product
 					})
 					const getAllResponse = await getAll()
 					const newData = getAllResponse.packet
@@ -83,10 +86,10 @@ const CustomerPage = (props: CustomerPageProps) => {
 			>
 				{({ submitForm, values, initialValues, resetForm, setFieldValue }) => (
 					<React.Fragment>
-						<CustomerTable onShowForm={(value) => setFieldValue('visible', value)} />
+						<ProductTable onShowForm={(value) => setFieldValue('visible', value)} />
 						<Modal
 							open={values.visible}
-							title='Add new customer'
+							title='Add new finished product'
 							footer={null}
 							onCancel={() => {
 								setFieldValue('visible', false)
@@ -95,14 +98,14 @@ const CustomerPage = (props: CustomerPageProps) => {
 							maskClosable={false}
 						>
 							<Form autoComplete='off' initialValues={initialValues} onFinish={submitForm}>
-								<CustomerForm />
+								<ProductForm />
 							</Form>
 						</Modal>
 					</React.Fragment>
 				)}
 			</Formik>
-		</Layout.Content>
+		</Row>
 	)
 }
 
-export default CustomerPage
+export default ProductTab

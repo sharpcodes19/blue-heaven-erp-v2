@@ -5,14 +5,14 @@ type CustomerContextProps = {
 }
 
 type Props = {
-	value: Array<CustomerProps>
-	dispatch: React.Dispatch<React.SetStateAction<Array<CustomerProps>>>
+	value: Array<CustomerProps> | undefined
+	dispatch: React.Dispatch<React.SetStateAction<Array<CustomerProps> | undefined>>
 }
 
 export const Customer = React.createContext<Props | null>(null)
 
 const CustomerContext = (props: CustomerContextProps) => {
-	const [value, dispatch] = React.useState<Array<CustomerProps>>([])
+	const [value, dispatch] = React.useState<Array<CustomerProps>>()
 
 	return <Customer.Provider value={{ value, dispatch }}>{props.children}</Customer.Provider>
 }

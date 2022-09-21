@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import { Col, Row, Tag, Tooltip, Typography } from 'antd'
 import { ColumnType } from 'antd/lib/table'
+import OptionCell from './OptionCell'
 // import OptionCell from './OptionCell'
 
 const columns: Array<ColumnType<FinishedProductProps>> = [
@@ -191,14 +192,14 @@ const columns: Array<ColumnType<FinishedProductProps>> = [
 		dataIndex: 'remarks',
 		key: _.uniqueId('remarks'),
 		ellipsis: true
+	},
+	{
+		title: 'Action',
+		dataIndex: '_id',
+		key: _.uniqueId('action'),
+		render: (_, record: FinishedProductProps, index) => <OptionCell index={index} record={record} />,
+		width: 90
 	}
-	// {
-	// 	title: 'Action',
-	// 	dataIndex: '_id',
-	// 	key: _.uniqueId('action'),
-	// 	render: (_, record: FinishedProductProps) => <OptionCell record={record} />,
-	// 	width: 90
-	// }
 ]
 
 export default columns

@@ -8,7 +8,11 @@ const instance2 = (token?: string): AxiosInstance => {
 			Authorization: `Bearer ${token}`
 		}
 	if (!token) delete headers.token
-	const config: AxiosRequestConfig = { headers, baseURL: 'https://apitestblueheavens.herokuapp.com' }
+	const config: AxiosRequestConfig = {
+		headers,
+		baseURL: 'http://localhost:28174'
+		// baseURL: 'https://apitestblueheavens.herokuapp.com'
+	}
 	return axios.create(config)
 }
 

@@ -7,6 +7,7 @@ import SideBar from './components/SideBar'
 import CustomerContext from './contexts/CustomerContext'
 import InventoryPage from './pages/inventory/InventoryPage'
 import OrderPage from './pages/order/OrderPage'
+import OrderContext from './contexts/OrderContext'
 
 type AppProps = {}
 
@@ -21,7 +22,14 @@ const App = (props: AppProps) => {
 							<Route path='pricing/*' element={<PricingPage />} />
 							<Route path='inventory' element={<InventoryPage />} />
 							<Route path='customer' element={<CustomerPage />} />
-							<Route path='order' element={<OrderPage />} />
+							<Route
+								path='order'
+								element={
+									<OrderContext>
+										<OrderPage />
+									</OrderContext>
+								}
+							/>
 							<Route path='*' element={<Navigate replace to='/customer' />} />
 						</Routes>
 					</CustomerContext>

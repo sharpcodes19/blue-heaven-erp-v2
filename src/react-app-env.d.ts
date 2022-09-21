@@ -12,6 +12,33 @@ type SelectablePricingOptionProps = {
 	originFieldName: string
 }
 
+type OrderProps = {
+	_id?: string
+	// quotationId: string
+	orderDate?: Date
+	items: Array<FinishedProductProps>
+	dueDate?: Date
+	status?: Array<string>
+	totalCost?: number
+	amountPaid?: number
+	paymentMethod?: string
+	paymentDate?: string
+	ewtAmount?: number
+	balancePayment?: Array<{
+		amount: number
+		paymentMethod?: string
+		paymentDate?: string
+	}>
+	remarks?: string
+	deliveryDate?: string
+	shippingFee?: number
+	deliveryLocation?: string
+	invoiceNumber?: string
+	customerId?: string
+	createdAt?: Date
+	updatedAt?: Date
+}
+
 type ResponseBaseProps<T = unknown> = {
 	date: Date
 	message: string

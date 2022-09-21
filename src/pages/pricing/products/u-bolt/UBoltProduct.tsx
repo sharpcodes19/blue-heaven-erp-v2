@@ -50,11 +50,7 @@ const UBoltProduct = (props: UBoltProductProps) => {
 			>
 				{({ submitForm, values }) => (
 					<Form>
-						<Row>
-							<Col>
-								<ProductSpecList name={PRODUCT_NAME} options={options} loading={loading} onShowForm={setShowForm} />
-							</Col>
-						</Row>
+						<ProductSpecList name={PRODUCT_NAME} options={options} loading={loading} onShowForm={setShowForm} />
 						<Row>
 							<Col>
 								<ProductLookUpResultItem

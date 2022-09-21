@@ -13,9 +13,7 @@ const PRODUCT_NAME: string = 'PLATE'
 const PlateProduct = (props: PlateProductProps) => {
 	return (
 		<Row>
-			<Col>
-				<ProductSpecList noPostForm name={PRODUCT_NAME} onShowForm={() => {}} />
-			</Col>
+			<ProductSpecList noPostForm name={PRODUCT_NAME} onShowForm={() => {}} />
 			<Formik
 				initialValues={
 					{
@@ -42,7 +40,7 @@ const PlateProduct = (props: PlateProductProps) => {
 				}}
 			>
 				{({ initialValues, handleSubmit, setFieldValue, values }) => (
-					<Col>
+					<Col span={24}>
 						<Form autoComplete='off' initialValues={initialValues} onFinish={handleSubmit}>
 							<Row>
 								<Col>

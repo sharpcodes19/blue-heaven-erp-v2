@@ -46,11 +46,7 @@ const AnchorBoltProduct = (props: AnchorBoltProductProps) => {
 			>
 				{({ submitForm, values }) => (
 					<Form>
-						<Row>
-							<Col>
-								<ProductSpecList name={PRODUCT_NAME} options={options} loading={loading} onShowForm={setShowForm} />
-							</Col>
-						</Row>
+						<ProductSpecList name={PRODUCT_NAME} options={options} loading={loading} onShowForm={setShowForm} />
 						<Row>
 							<Col>
 								<ProductLookUpResultItem

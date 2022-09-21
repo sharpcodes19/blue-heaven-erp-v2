@@ -1,5 +1,15 @@
 /// <reference types="react-scripts" />
 
+type QuotationProps = {
+	_id?: string
+	items?: Array<FinishedProductProps>
+	customerId: string
+	timeLead?: number
+	label: string
+	createdAt?: Date
+	updatedAt?: Date
+}
+
 type SelectablePricingOptionProps = {
 	options: Array<CheckboxOptionType>
 	isNumber?: boolean

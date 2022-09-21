@@ -9,6 +9,7 @@ import useData from './useData'
 import AddForm from '../_add/AddForm'
 import postData from '../postData'
 import putData from '../putData'
+import useAddProductToQuotationTable from '../_quotation/useAddProductToQuotationTable'
 
 type HexBoltProductProps = {}
 
@@ -26,6 +27,7 @@ const HexBoltProduct = (props: HexBoltProductProps) => {
 		materialValue: Yup.string().required('This field is required.'),
 		threadValue: Yup.string().required('This field is required.')
 	})
+	const { handleSubmit } = useAddProductToQuotationTable(messageApi)
 
 	return (
 		<Layout.Content>
@@ -39,7 +41,13 @@ const HexBoltProduct = (props: HexBoltProductProps) => {
 						quantity: 1
 					} as PricingFormProps
 				}
-				onSubmit={(values) => {}}
+				onSubmit={(values) => {
+					const product: FinishedProductProps = {
+						...values.product!,
+						quantity: values.quantity
+					}
+					handleSubmit(product)
+				}}
 			>
 				{({ submitForm, values }) => (
 					<Form>

@@ -7,7 +7,6 @@ import { DateRange } from './OrderPage'
 import { Order } from '../../contexts/OrderContext'
 
 type OrderTableProps = {
-	onShowForm: (value: boolean) => any
 	onChangeDateRange: (value: DateRange) => any
 } & DateRange
 

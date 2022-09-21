@@ -9,6 +9,7 @@ import useData from './useData'
 import AddForm from '../_add/AddForm'
 import postData from '../postData'
 import putData from '../putData'
+import useAddProductToQuotationTable from '../_quotation/useAddProductToQuotationTable'
 
 type CylindricalProductProps = {}
 
@@ -23,6 +24,7 @@ const CylindricalProduct = (props: CylindricalProductProps) => {
 		cyndicalSize: Yup.string().required('This field is required.'),
 		Price: Yup.number().required('This field is required.')
 	})
+	const { handleSubmit } = useAddProductToQuotationTable(messageApi)
 
 	return (
 		<Layout.Content>
@@ -36,7 +38,13 @@ const CylindricalProduct = (props: CylindricalProductProps) => {
 						quantity: 1
 					} as PricingFormProps
 				}
-				onSubmit={(values) => {}}
+				onSubmit={(values) => {
+					const product: FinishedProductProps = {
+						...values.product!,
+						quantity: values.quantity
+					}
+					handleSubmit(product)
+				}}
 			>
 				{({ submitForm, values }) => (
 					<Form>

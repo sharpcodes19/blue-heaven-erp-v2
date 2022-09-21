@@ -15,7 +15,6 @@ export type DateRange = {
 
 const OrderPage = (props: OrderPageProps) => {
 	const [messageApi, alertContext] = message.useMessage()
-	const [showForm, setShowForm] = React.useState<boolean>(false)
 	const customers = React.useContext(Customer)!
 	const [dateRange, setDateRange] = React.useState<DateRange>({
 		from: Moment().startOf('month').startOf('day').toDate(),
@@ -48,7 +47,7 @@ const OrderPage = (props: OrderPageProps) => {
 		<Layout.Content>
 			{alertContext}
 			<Typography.Title level={2}>ORDERS</Typography.Title>
-			<OrderTable {...dateRange} onShowForm={setShowForm} onChangeDateRange={setDateRange} />
+			<OrderTable {...dateRange} onChangeDateRange={setDateRange} />
 		</Layout.Content>
 	)
 }

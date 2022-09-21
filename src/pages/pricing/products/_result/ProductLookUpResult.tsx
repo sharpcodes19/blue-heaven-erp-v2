@@ -77,7 +77,7 @@ const ProductLookUpResult = (props: ProductLookUpResultProps) => {
 				</Col>
 			</Row>
 			<Row>
-				<Col span={18}>
+				<Col span={24}>
 					<Button
 						type='ghost'
 						style={{ marginTop: '1rem' }}
@@ -87,20 +87,24 @@ const ProductLookUpResult = (props: ProductLookUpResultProps) => {
 					>
 						Update new changes to database.
 					</Button>
-					<Space align='center' style={{ marginTop: '1rem' }}>
-						<InputNumber
-							min={1}
-							defaultValue={1}
-							addonBefore='Quantity'
-							onChange={(value) => {
-								formik.setFieldValue('quantity', value)
-							}}
-							value={formik.values.quantity}
-						/>
-						<Button type='primary' onClick={props.submitForm} icon={<ShoppingCartOutlined />}>
-							Add to current Quotation table
-						</Button>
-					</Space>
+				</Col>
+				<Col span={12} style={{ marginTop: '1rem' }}>
+					<InputNumber
+						min={1}
+						defaultValue={1}
+						addonBefore='Quantity'
+						onChange={(value) => {
+							formik.setFieldValue('quantity', value)
+						}}
+						value={formik.values.quantity}
+						style={{
+							maxWidth: 150,
+							marginRight: 10
+						}}
+					/>
+					<Button type='primary' onClick={props.submitForm} icon={<ShoppingCartOutlined />}>
+						Add to current Quotation table
+					</Button>
 				</Col>
 			</Row>
 		</React.Fragment>

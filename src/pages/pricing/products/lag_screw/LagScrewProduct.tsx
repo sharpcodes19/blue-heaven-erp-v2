@@ -9,6 +9,7 @@ import useData from './useData'
 import AddForm from '../_add/AddForm'
 import postData from '../postData'
 import putData from '../putData'
+import useAddProductToQuotationTable from '../_quotation/useAddProductToQuotationTable'
 
 type LagScrewProductProps = {}
 
@@ -24,6 +25,7 @@ const LagScrewProduct = (props: LagScrewProductProps) => {
 		price: Yup.number().required('This field is required.'),
 		screwSize: Yup.string().required('This field is required.')
 	})
+	const { handleSubmit } = useAddProductToQuotationTable(messageApi)
 
 	return (
 		<Layout.Content>
@@ -37,7 +39,13 @@ const LagScrewProduct = (props: LagScrewProductProps) => {
 						quantity: 1
 					} as PricingFormProps
 				}
-				onSubmit={(values) => {}}
+				onSubmit={(values) => {
+					const product: FinishedProductProps = {
+						...values.product!,
+						quantity: values.quantity
+					}
+					handleSubmit(product)
+				}}
 			>
 				{({ submitForm, values }) => (
 					<Form>

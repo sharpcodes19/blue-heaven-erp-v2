@@ -9,6 +9,7 @@ import useData from './useData'
 import AddForm from '../_add/AddForm'
 import postData from '../postData'
 import putData from '../putData'
+import useAddProductToQuotationTable from '../_quotation/useAddProductToQuotationTable'
 
 type AnchorBoltProductProps = {}
 
@@ -29,6 +30,7 @@ const AnchorBoltProduct = (props: AnchorBoltProductProps) => {
 		typeAnchor: Yup.string().required('This field is required.')
 		// .oneOf(_.uniqBy(data, 'type').map(({ type }) => type)),
 	})
+	const { handleSubmit } = useAddProductToQuotationTable(messageApi)
 
 	return (
 		<Layout.Content>
@@ -42,7 +44,14 @@ const AnchorBoltProduct = (props: AnchorBoltProductProps) => {
 						quantity: 1
 					} as PricingFormProps
 				}
-				onSubmit={(values) => {}}
+				onSubmit={(values) => {
+					// instance2().post('/quotation', values.product)
+					const product: FinishedProductProps = {
+						...values.product!,
+						quantity: values.quantity
+					}
+					handleSubmit(product)
+				}}
 			>
 				{({ submitForm, values }) => (
 					<Form>

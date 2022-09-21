@@ -9,6 +9,7 @@ import useData from './useData'
 import AddForm from '../_add/AddForm'
 import postData from '../postData'
 import putData from '../putData'
+import useAddProductToQuotationTable from '../_quotation/useAddProductToQuotationTable'
 
 type JBoltProductProps = {}
 
@@ -24,6 +25,7 @@ const JBoltProduct = (props: JBoltProductProps) => {
 		Price: Yup.number().required('This field is required.'),
 		jboltDiameter: Yup.string().required('This field is required.')
 	})
+	const { handleSubmit } = useAddProductToQuotationTable(messageApi)
 
 	return (
 		<Layout.Content>
@@ -37,7 +39,13 @@ const JBoltProduct = (props: JBoltProductProps) => {
 						quantity: 1
 					} as PricingFormProps
 				}
-				onSubmit={(values) => {}}
+				onSubmit={(values) => {
+					const product: FinishedProductProps = {
+						...values.product!,
+						quantity: values.quantity
+					}
+					handleSubmit(product)
+				}}
 			>
 				{({ submitForm, values }) => (
 					<Form>

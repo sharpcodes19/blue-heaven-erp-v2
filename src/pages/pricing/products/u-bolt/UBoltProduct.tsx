@@ -9,6 +9,7 @@ import useData from './useData'
 import AddForm from '../_add/AddForm'
 import postData from '../postData'
 import putData from '../putData'
+import useAddProductToQuotationTable from '../_quotation/useAddProductToQuotationTable'
 
 type UBoltProductProps = {}
 
@@ -25,6 +26,7 @@ const UBoltProduct = (props: UBoltProductProps) => {
 		uboltSize: Yup.string().required('This field is required.'),
 		Material: Yup.string().required('This field is required.')
 	})
+	const { handleSubmit } = useAddProductToQuotationTable(messageApi)
 
 	return (
 		<Layout.Content>
@@ -41,10 +43,10 @@ const UBoltProduct = (props: UBoltProductProps) => {
 				onSubmit={(values) => {
 					if (values.product) {
 						const product: FinishedProductProps = {
-							...values.product,
+							...values.product!,
 							quantity: values.quantity
 						}
-						console.log(product)
+						handleSubmit(product)
 					}
 				}}
 			>

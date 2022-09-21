@@ -1,18 +1,23 @@
 import React from 'react'
-import { Button, Col, Form, InputNumber, Row, Space } from 'antd'
+import { Button, Col, Form, InputNumber, message, Row, Space } from 'antd'
 import { ShoppingCartOutlined } from '@ant-design/icons'
 import { Formik } from 'formik'
 import ProductSpecList from '../ProductSpecList'
 import PlateProductResult from './PlateProductResult'
 import PlateProductSpec from './PlateProductSpec'
+import useAddProductToQuotationTable from '../_quotation/useAddProductToQuotationTable'
 
 type PlateProductProps = {}
 
 const PRODUCT_NAME: string = 'PLATE'
 
 const PlateProduct = (props: PlateProductProps) => {
+	const [messageApi, alertContext] = message.useMessage()
+	const { handleSubmit } = useAddProductToQuotationTable(messageApi)
+
 	return (
 		<Row>
+			{alertContext}
 			<ProductSpecList noPostForm name={PRODUCT_NAME} onShowForm={() => {}} />
 			<Formik
 				initialValues={
@@ -37,6 +42,7 @@ const PlateProduct = (props: PlateProductProps) => {
 						quantity: values.quantity,
 						size: String(values.thickness_inch)
 					}
+					handleSubmit(product)
 				}}
 			>
 				{({ initialValues, handleSubmit, setFieldValue, values }) => (

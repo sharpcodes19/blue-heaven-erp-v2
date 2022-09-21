@@ -9,6 +9,7 @@ import useData from './useData'
 import AddForm from '../_add/AddForm'
 import postData from '../postData'
 import putData from '../putData'
+import useAddProductToQuotationTable from '../_quotation/useAddProductToQuotationTable'
 
 type SagRodProductProps = {}
 
@@ -24,6 +25,7 @@ const HangerProduct = (props: SagRodProductProps) => {
 		Price: Yup.number().required('This field is required.'),
 		Size: Yup.string().required('This field is required.')
 	})
+	const { handleSubmit } = useAddProductToQuotationTable(messageApi)
 
 	return (
 		<Layout.Content>
@@ -43,7 +45,7 @@ const HangerProduct = (props: SagRodProductProps) => {
 							...values.product,
 							quantity: values.quantity
 						}
-						console.log(product)
+						handleSubmit(product)
 					}
 				}}
 			>

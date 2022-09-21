@@ -9,6 +9,7 @@ import useData from './useData'
 import AddForm from '../_add/AddForm'
 import postData from '../postData'
 import putData from '../putData'
+import useAddProductToQuotationTable from '../_quotation/useAddProductToQuotationTable'
 
 type SagRodProductProps = {}
 
@@ -27,6 +28,7 @@ const SagRodProduct = (props: SagRodProductProps) => {
 		// .oneOf(['CRS', '41401045']),
 		threading: Yup.array().min(1, 'This field should be at least 1 parameter.').of(Yup.number().required())
 	})
+	const { handleSubmit } = useAddProductToQuotationTable(messageApi)
 
 	return (
 		<Layout.Content>
@@ -46,7 +48,7 @@ const SagRodProduct = (props: SagRodProductProps) => {
 							...values.product,
 							quantity: values.quantity
 						}
-						console.log(product)
+						handleSubmit(product)
 					}
 				}}
 			>

@@ -20,6 +20,7 @@ const useCalculator = ({
 	const [weight, setWeight] = React.useState<number>(0)
 	const [totalWithoutHole, setTotalWithoutHole] = React.useState<number>(0)
 	const [totalWithHole, setTotalWithHole] = React.useState<number>(0)
+	// const formik = useFormikContext<PlateProps>()
 
 	React.useEffect(() => {
 		const thickness = Math.round(convert(thickness_inch).from('in').to('mm')) / 1000
@@ -37,6 +38,7 @@ const useCalculator = ({
 
 		const totalWithHole = holeQuantity! * holePricePerPiece! + totalWithoutHole
 		setTotalWithHole(totalWithHole)
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [thickness_inch, length_inch, width_mm, perKilogramPrice, holeQuantity, holePricePerPiece])
 
 	return {

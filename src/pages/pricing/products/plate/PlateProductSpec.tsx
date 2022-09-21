@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form, Col, InputNumber, Row, Space } from 'antd'
+import { Form, Col, InputNumber, Row, Space, Input } from 'antd'
 import { Rule } from 'antd/lib/form'
 import { useFormikContext } from 'formik'
 
@@ -80,6 +80,11 @@ const PlateProductSpec = (props: PlateProductSpecProps) => {
 					</Space>
 				</Row>
 			))}
+			<Col span={24}>
+				<Form.Item name='remarks' label='Remarks'>
+					<Input value={formik.values.remarks} onChange={(e) => formik.setFieldValue('remarks', e.target.value)} />
+				</Form.Item>
+			</Col>
 		</React.Fragment>
 	)
 }

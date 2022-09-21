@@ -34,13 +34,14 @@ const PlateProduct = (props: PlateProductProps) => {
 				onSubmit={(values) => {
 					const product: FinishedProductProps = {
 						holeQuantity: String(values.holeQuantity),
-						remarks: `Price per hole: ${values.holePricePerPiece}, Price per kilo: ${values.perKilogramPrice}`,
+						remarks: `Price per hole: ${values.holePricePerPiece}, Price per kilo: ${values.perKilogramPrice}, ${values.remarks}`,
 						length: String(values.length_inch),
 						width: String(values.width_mm),
 						weight: String(values.weight),
 						name: PRODUCT_NAME,
 						quantity: values.quantity,
-						size: String(values.thickness_inch)
+						size: String(values.thickness_inch),
+						price: String(values.totalWithHole)
 					}
 					handleSubmit(product)
 				}}

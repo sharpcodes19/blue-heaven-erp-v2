@@ -137,6 +137,7 @@ type PlateProps = {
 	totalWithoutHole?: number
 	totalWithHole?: number
 	quantity?: number
+	remarks?: string
 }
 
 type HexBoltProps = {

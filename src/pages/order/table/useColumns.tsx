@@ -81,20 +81,68 @@ const useColumns = (): Props => {
 				dataIndex: 'customerId',
 				key: _.uniqueId('customerId'),
 				render: (value) => {
-					const customer = customers.value?.filter((item, index) => item.sourceId === value || item._id === value)[0]
-					return customer && customer.name ? customer.name : <Tag color='red'>Unknown Customer</Tag>
+					const customer = customers.value?.filter((item) => {
+						// (item.sourceId || item._id) === value
+						// if (item.sourceId) return item.sourceId === value
+						return item._id === value
+					})[0]
+					return customer && customer.name ? customer.name : <Tag color='red'>Unnamed Customer</Tag>
 				}
 			},
 			{
+				title: 'Items',
+				key: _.uniqueId('items'),
+
+				// TODO: populate items in the table
+				render: (_, record: OrderProps) => (
+					<Row>
+						{record.items.map(({ _id, name, type, size, length, width }, i) => (
+							<Col span={24} key={_id}>
+								<Row align='middle'>
+									<Col style={{ marginRight: 10, marginBottom: i > record.items.length - 1 ? undefined : 3 }}>
+										<Typography>
+											<Typography.Text>{name}</Typography.Text>
+										</Typography>
+									</Col>
+									<Col>
+										{type ? (
+											<Tooltip title='Type or Material'>
+												<Tag color='green'>{type}</Tag>
+											</Tooltip>
+										) : null}
+										{size ? (
+											<Tooltip title='Size or Diameter'>
+												<Tag color='orange'>{size}</Tag>
+											</Tooltip>
+										) : null}
+										{length ? (
+											<Tooltip title='Length'>
+												<Tag color='geekblue'>{length}</Tag>
+											</Tooltip>
+										) : null}
+										{width ? (
+											<Tooltip title='Bend or Width'>
+												<Tag color='darkslateblue'>{width}</Tag>
+											</Tooltip>
+										) : null}
+									</Col>
+								</Row>
+							</Col>
+						))}
+					</Row>
+				)
+			},
+			{
 				title: 'Total Cost',
-				dataIndex: 'totalCost',
+				// dataIndex: 'totalCost',
 				key: _.uniqueId('totalCost'),
-				render: (value) => {
+				render: (value, record) => {
+					const totalCost = _.sumBy(record.items, 'price')
 					const amount = new Intl.NumberFormat('en-PH', {
 						style: 'currency',
 						currency: 'PHP'
-					}).format(value || 0)
-					return <Row>{value ? amount : <Tag color='red'>{amount}</Tag>}</Row>
+					}).format(totalCost || 0)
+					return <Row>{totalCost ? amount : <Tag color='red'>{amount}</Tag>}</Row>
 				},
 				width: 110,
 				sorter: (a: OrderProps, b: OrderProps) => {
@@ -105,16 +153,17 @@ const useColumns = (): Props => {
 			},
 			{
 				title: 'Total Paid',
-				dataIndex: 'amountPaid',
+				// dataIndex: 'amountPaid',
 				key: _.uniqueId('amountPaid'),
 				render: (value, record) => {
+					const totalPaid = _.sumBy(record.items, 'amountPaid')
 					const amount = new Intl.NumberFormat('en-PH', {
 						style: 'currency',
 						currency: 'PHP'
-					}).format(value || 0)
+					}).format(totalPaid || 0)
 					return (
 						<Row>
-							{value ? (
+							{totalPaid ? (
 								<Tooltip
 									title={
 										record.paymentDate ? `Paid on ${Moment(record.paymentDate).format('MMM DD, YYYY')}` : undefined
@@ -136,6 +185,7 @@ const useColumns = (): Props => {
 				}
 			},
 			{
+				// TODO: get the sum and display in table.
 				title: 'Partial Payments',
 				key: _.uniqueId('balancePayment'),
 				render: (_, record) => (

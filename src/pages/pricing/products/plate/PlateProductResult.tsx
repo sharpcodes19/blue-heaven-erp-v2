@@ -15,7 +15,6 @@ const PlateProductResult = (props: PlateProductResultProps) => {
 		formik.setFieldValue('weight', weight.toFixed(4))
 		formik.setFieldValue('totalWithHole', totalWithHole)
 		formik.setFieldValue('totalWithoutHole', totalWithoutHole)
-		console.log(123)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [weight, totalWithHole, totalWithoutHole])
 

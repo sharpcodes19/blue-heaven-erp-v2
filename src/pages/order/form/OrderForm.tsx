@@ -75,7 +75,15 @@ const OrderForm = (props: OrderFormProps) => {
 				</Col>
 				<Col>
 					<Form.Item label='Status'>
-						<Input onChange={(e) => setStatus(e.target.value)} value={status} />
+						<Input
+							onChange={(e) => setStatus(e.target.value)}
+							value={status}
+							onBlur={() => {
+								if (status) {
+									formik.setFieldValue('status', [status])
+								}
+							}}
+						/>
 					</Form.Item>
 				</Col>
 			</Row>

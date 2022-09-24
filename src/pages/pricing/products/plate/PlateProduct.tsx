@@ -34,7 +34,11 @@ const PlateProduct = (props: PlateProductProps) => {
 				onSubmit={(values) => {
 					const product: FinishedProductProps = {
 						holeQuantity: String(values.holeQuantity),
-						remarks: `Price per hole: ${values.holePricePerPiece}, Price per kilo: ${values.perKilogramPrice}, ${values.remarks}`,
+						remarks: `Price per hole: ${
+							values.holePricePerPiece
+						}, Price per kilo: ${values.perKilogramPrice}, ${
+							values.remarks || ''
+						}`,
 						length: String(values.length_inch),
 						width: String(values.width_mm),
 						weight: String(values.weight),
@@ -48,7 +52,11 @@ const PlateProduct = (props: PlateProductProps) => {
 			>
 				{({ initialValues, handleSubmit, setFieldValue, values }) => (
 					<Col span={24}>
-						<Form autoComplete='off' initialValues={initialValues} onFinish={handleSubmit}>
+						<Form
+							autoComplete='off'
+							initialValues={initialValues}
+							onFinish={handleSubmit}
+						>
 							<Row>
 								<Col>
 									<PlateProductSpec />
@@ -70,7 +78,11 @@ const PlateProduct = (props: PlateProductProps) => {
 										}}
 										value={values.quantity}
 									/>
-									<Button type='primary' htmlType='submit' icon={<ShoppingCartOutlined />}>
+									<Button
+										type='primary'
+										htmlType='submit'
+										icon={<ShoppingCartOutlined />}
+									>
 										Add to current Quotation table
 									</Button>
 								</Space>

@@ -1,27 +1,13 @@
 import _ from 'lodash'
 import { ColumnType } from 'antd/lib/table'
-import {
-	Button,
-	Col,
-	DatePicker,
-	Input,
-	InputNumber,
-	Row,
-	Space,
-	Tag,
-	Tooltip,
-	Typography
-} from 'antd'
-import { useFormikContext } from 'formik'
+import { Col, Row, Tag, Tooltip, Typography } from 'antd'
 import React from 'react'
-import Moment from 'moment'
 
 type Props = {
 	columns: Array<ColumnType<FinishedProductProps & EditableTableRowProps>>
 }
 
 const useColumns = (): Props => {
-	const formik = useFormikContext<OrderProps>()
 	const columns = React.useMemo<
 		Array<ColumnType<FinishedProductProps & EditableTableRowProps>>
 	>(
@@ -63,7 +49,6 @@ const useColumns = (): Props => {
 				title: 'Product Name',
 				dataIndex: 'name',
 				key: _.uniqueId('name'),
-				fixed: 'left',
 				render: (value, record: FinishedProductProps) => {
 					return (
 						<Row align='middle' style={{ gap: 5 }}>

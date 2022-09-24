@@ -29,7 +29,7 @@ const QuotationSection = (props: QuotationSectionProps) => {
 				data: order,
 				url: `/order/${_id || ''}`
 			})
-			console.log(order)
+			// console.log(order)
 			const message = data.message
 			messageApi.success(message, 5)
 			selectedQuotation.dispatch(undefined)

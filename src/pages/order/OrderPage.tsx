@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import { Form, Layout, message, Modal, Typography } from 'antd'
 import { Formik } from 'formik'
 import Moment from 'moment'
@@ -22,7 +23,7 @@ const OrderPage = (props: OrderPageProps) => {
 		from: Moment().startOf('month').startOf('day').toDate(),
 		to: Moment().endOf('month').endOf('day').toDate()
 	})
-	const { dispatch } = React.useContext(Order)!
+	const { value, dispatch } = React.useContext(Order)!
 
 	React.useEffect(() => {
 		;(async () => {
@@ -63,7 +64,19 @@ const OrderPage = (props: OrderPageProps) => {
 						__v: undefined
 					}
 				})
-					.then(console.log)
+					.then(({ data: { packet } }) => {
+						const isPUT = !!values._id
+						// console.log(isPUT, packet)
+						if (isPUT) {
+							const updatedData = value?.map((order) =>
+								order._id === values._id ? values : order
+							)
+							console.log(updatedData)
+							dispatch(updatedData)
+						} else {
+							dispatch((prevState) => [values, ...(prevState || [])])
+						}
+					})
 					.finally(() => {
 						setFieldValue('visible', false)
 						setSubmitting(false)

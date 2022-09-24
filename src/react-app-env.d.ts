@@ -22,11 +22,22 @@ type SelectablePricingOptionProps = {
 	originFieldName: string
 }
 
+type BalancePaymentProps = {
+	amount: number
+	paymentMethod?: string
+	paymentDate?: string
+}
+
+type EditableTableRowProps = {
+	__new__?: boolean
+	__update__?: boolean
+}
+
 type OrderProps = {
 	_id?: string
 	// quotationId: string
 	orderDate?: Date
-	items: Array<FinishedProductProps>
+	items: Array<FinishedProductProps & EditableTableRowProps>
 	dueDate?: Date
 	status?: Array<string>
 	totalCost?: number
@@ -34,11 +45,7 @@ type OrderProps = {
 	paymentMethod?: string
 	paymentDate?: string
 	ewtAmount?: number
-	balancePayment?: Array<{
-		amount: number
-		paymentMethod?: string
-		paymentDate?: string
-	}>
+	balancePayment?: Array<BalancePaymentProps & EditableTableRowProps>
 	remarks?: string
 	deliveryDate?: string
 	shippingFee?: number

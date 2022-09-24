@@ -23,7 +23,9 @@ const OptionCell = (props: OptionCellProps) => {
 
 	const handleDelete = React.useCallback(() => {
 		instance2()
-			.delete<ResponseBaseProps<Array<OrderProps>>>(`/order/${props.record._id}`)
+			.delete<ResponseBaseProps<Array<OrderProps>>>(
+				`/order/${props.record._id}`
+			)
 			.then((res) => {
 				dispatch(value?.filter((customer) => customer._id !== props.record._id))
 				messageApi.success(res.data.message)
@@ -34,11 +36,24 @@ const OptionCell = (props: OptionCellProps) => {
 		<Row align='middle' gutter={10}>
 			{alertContext}
 			<Col>
-				<Button type='dashed' icon={<EditFilled />} style={{ border: 'none' }} onClick={handleUpdate} />
+				<Button
+					type='dashed'
+					icon={<EditFilled />}
+					style={{ border: 'none' }}
+					onClick={handleUpdate}
+				/>
 			</Col>
 			<Col>
-				<Popconfirm title={`Are you sure to delete this record?`} onConfirm={handleDelete}>
-					<Button type='ghost' danger icon={<DeleteFilled />} style={{ border: 'none' }} />
+				<Popconfirm
+					title={`Are you sure to delete this record?`}
+					onConfirm={handleDelete}
+				>
+					<Button
+						type='ghost'
+						danger
+						icon={<DeleteFilled />}
+						style={{ border: 'none' }}
+					/>
 				</Popconfirm>
 			</Col>
 		</Row>

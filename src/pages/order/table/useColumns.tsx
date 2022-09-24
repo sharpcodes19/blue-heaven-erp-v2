@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import React from 'react'
 import Moment from 'moment'
-import { Col, Row, Tag, Tooltip, Typography } from 'antd'
+import { Col, Row, Space, Tag, Tooltip, Typography } from 'antd'
 import { ColumnType } from 'antd/lib/table'
 import { Customer } from '../../../contexts/CustomerContext'
 import OptionCell from './OptionCell'
@@ -22,13 +22,16 @@ const useColumns = (): Props => {
 				render: (value) =>
 					value ? (
 						<Typography>
-							<Typography.Text>{Moment(value).format('MMM DD, YYYY')}</Typography.Text>
+							<Typography.Text>
+								{Moment(value).format('MMM DD, YYYY')}
+							</Typography.Text>
 						</Typography>
 					) : (
 						<Tag color='volcano'>N/A</Tag>
 					),
 				sorter: (a: OrderProps, b: OrderProps) => {
-					if (a.orderDate && b.orderDate) return Moment(a.orderDate).isBefore(b.orderDate) ? 1 : 0
+					if (a.orderDate && b.orderDate)
+						return Moment(a.orderDate).isBefore(b.orderDate) ? 1 : 0
 					return 0
 				},
 				width: 120
@@ -40,13 +43,16 @@ const useColumns = (): Props => {
 				render: (value) =>
 					value ? (
 						<Typography>
-							<Typography.Text>{Moment(value).format('MMM DD, YYYY')}</Typography.Text>
+							<Typography.Text>
+								{Moment(value).format('MMM DD, YYYY')}
+							</Typography.Text>
 						</Typography>
 					) : (
 						<Tag color='volcano'>N/A</Tag>
 					),
 				sorter: (a: OrderProps, b: OrderProps) => {
-					if (a.dueDate && b.dueDate) return Moment(a.dueDate).isBefore(b.dueDate) ? 1 : 0
+					if (a.dueDate && b.dueDate)
+						return Moment(a.dueDate).isBefore(b.dueDate) ? 1 : 0
 					return 0
 				},
 				width: 120
@@ -86,7 +92,11 @@ const useColumns = (): Props => {
 						// if (item.sourceId) return item.sourceId === value
 						return item._id === value
 					})[0]
-					return customer && customer.name ? customer.name : <Tag color='red'>Unnamed Customer</Tag>
+					return customer && customer.name ? (
+						customer.name
+					) : (
+						<Tag color='red'>Unnamed Customer</Tag>
+					)
 				}
 			},
 			{
@@ -99,7 +109,12 @@ const useColumns = (): Props => {
 						{record.items.map(({ _id, name, type, size, length, width }, i) => (
 							<Col span={24} key={_id}>
 								<Row align='middle'>
-									<Col style={{ marginRight: 10, marginBottom: i > record.items.length - 1 ? undefined : 3 }}>
+									<Col
+										style={{
+											marginRight: 10,
+											marginBottom: i > record.items.length - 1 ? undefined : 3
+										}}
+									>
 										<Typography>
 											<Typography.Text>{name}</Typography.Text>
 										</Typography>
@@ -142,7 +157,9 @@ const useColumns = (): Props => {
 						style: 'currency',
 						currency: 'PHP'
 					}).format(totalCost || 0)
-					return <Row>{totalCost ? amount : <Tag color='red'>{amount}</Tag>}</Row>
+					return (
+						<Row>{totalCost ? amount : <Tag color='red'>{amount}</Tag>}</Row>
+					)
 				},
 				width: 110,
 				sorter: (a: OrderProps, b: OrderProps) => {
@@ -166,7 +183,11 @@ const useColumns = (): Props => {
 							{totalPaid ? (
 								<Tooltip
 									title={
-										record.paymentDate ? `Paid on ${Moment(record.paymentDate).format('MMM DD, YYYY')}` : undefined
+										record.paymentDate
+											? `Paid on ${Moment(record.paymentDate).format(
+													'MMM DD, YYYY'
+											  )}`
+											: undefined
 									}
 								>
 									{amount}
@@ -189,30 +210,33 @@ const useColumns = (): Props => {
 				title: 'Partial Payments',
 				key: _.uniqueId('balancePayment'),
 				render: (_, record) => (
-					<div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+					<div
+						style={{ display: 'flex', flexDirection: 'column', gap: '5px 0' }}
+					>
 						{record.balancePayment?.map((item) => {
 							const amount = new Intl.NumberFormat('en-PH', {
 								style: 'currency',
 								currency: 'PHP'
 							}).format(item.amount || 0)
 							return (
-								<Tooltip title={item.paymentMethod ? `via ${item.paymentMethod}` : undefined}>
-									<Row gutter={3}>
-										<Col>
-											<Tag color={item.amount ? 'orange' : 'red'}>{amount}</Tag>
-										</Col>
+								<Tooltip
+									title={
+										item.paymentMethod ? `via ${item.paymentMethod}` : undefined
+									}
+								>
+									<div>
+										<Tag color={item.amount ? 'orange' : 'red'}>{amount}</Tag>
 										{item.paymentDate ? (
-											<Col>
-												<Tag>{Moment(item.paymentDate).format('MMM DD, YYYY')}</Tag>
-											</Col>
+											<Tag>
+												{Moment(item.paymentDate).format('MMM DD, YYYY')}
+											</Tag>
 										) : null}
-									</Row>
+									</div>
 								</Tooltip>
 							)
 						}) || <Tag color='blue'>N/A</Tag>}
 					</div>
-				),
-				width: 150
+				)
 			},
 			{
 				title: 'EWT',
@@ -223,7 +247,15 @@ const useColumns = (): Props => {
 						style: 'currency',
 						currency: 'PHP'
 					}).format(value || 0)
-					return <Row>{value ? amount : <Tag color='red'>{value ? amount : 'No EWT'}</Tag>}</Row>
+					return (
+						<Row>
+							{value ? (
+								amount
+							) : (
+								<Tag color='red'>{value ? amount : 'No EWT'}</Tag>
+							)}
+						</Row>
+					)
 				},
 				width: 95,
 				sorter: (a: OrderProps, b: OrderProps) => {
@@ -241,7 +273,15 @@ const useColumns = (): Props => {
 						style: 'currency',
 						currency: 'PHP'
 					}).format(value || 0)
-					return <Row>{value ? amount : <Tag color='red'>{value ? amount : 'No Freight'}</Tag>}</Row>
+					return (
+						<Row>
+							{value ? (
+								amount
+							) : (
+								<Tag color='red'>{value ? amount : 'No Freight'}</Tag>
+							)}
+						</Row>
+					)
 				},
 				width: 95,
 				sorter: (a: OrderProps, b: OrderProps) => {
@@ -259,7 +299,9 @@ const useColumns = (): Props => {
 						<Tooltip
 							title={
 								record.deliveryDate
-									? `to be deliver on ${Moment(record.deliveryDate).format('MMM DD, YYYY')}`
+									? `to be deliver on ${Moment(record.deliveryDate).format(
+											'MMM DD, YYYY'
+									  )}`
 									: undefined
 							}
 						>

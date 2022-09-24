@@ -1,9 +1,11 @@
-import { Layout, message, Typography } from 'antd'
+import { Form, Layout, message, Modal, Typography } from 'antd'
+import { Formik } from 'formik'
 import Moment from 'moment'
 import React from 'react'
 import instance2 from '../../api/instance2'
 import { Customer } from '../../contexts/CustomerContext'
 import { Order } from '../../contexts/OrderContext'
+import OrderForm from './form/OrderForm'
 import OrderTable from './OrderTable'
 
 type OrderPageProps = {}
@@ -27,15 +29,17 @@ const OrderPage = (props: OrderPageProps) => {
 			if (!customers.value || !customers.value.length) {
 				const {
 					data: { packet }
-				} = await instance2().get<ResponseBaseProps<Array<CustomerProps>>>('/customer')
+				} = await instance2().get<ResponseBaseProps<Array<CustomerProps>>>(
+					'/customer'
+				)
 				customers.dispatch(packet!)
 			}
 			const {
 				data: { packet }
 			} = await instance2().get<ResponseBaseProps<Array<OrderProps>>>(
-				`/order?sort=desc&from=${Moment(dateRange.from).format('YYYY-MM-DD')}&to=${Moment(dateRange.to).format(
+				`/order?sort=desc&from=${Moment(dateRange.from).format(
 					'YYYY-MM-DD'
-				)}`
+				)}&to=${Moment(dateRange.to).format('YYYY-MM-DD')}`
 				// '/order?sort=desc'
 			)
 			dispatch(packet || [])
@@ -44,11 +48,51 @@ const OrderPage = (props: OrderPageProps) => {
 	}, [messageApi, dateRange])
 
 	return (
-		<Layout.Content>
-			{alertContext}
-			<Typography.Title level={2}>ORDERS</Typography.Title>
-			<OrderTable {...dateRange} onChangeDateRange={setDateRange} />
-		</Layout.Content>
+		<Formik
+			initialValues={
+				{
+					visible: false
+				} as OrderProps & { visible: boolean }
+			}
+			onSubmit={(values, { setFieldValue, setSubmitting }) => {
+				instance2()({
+					method: values._id ? 'put' : 'post',
+					url: `/order/${values._id || ''}`,
+					data: {
+						...values,
+						__v: undefined
+					}
+				})
+					.then(console.log)
+					.finally(() => {
+						setFieldValue('visible', false)
+						setSubmitting(false)
+					})
+			}}
+		>
+			{({ isSubmitting, resetForm, submitForm, values }) => (
+				<React.Fragment>
+					<Layout.Content>
+						{alertContext}
+						<Typography.Title level={2}>ORDERS</Typography.Title>
+						<OrderTable {...dateRange} onChangeDateRange={setDateRange} />
+					</Layout.Content>
+					<Modal
+						onOk={submitForm}
+						okText='Save Changes'
+						open={values.visible}
+						title='Edit order'
+						onCancel={() => {
+							resetForm()
+						}}
+						width={992}
+						confirmLoading={isSubmitting}
+					>
+						<OrderForm />
+					</Modal>
+				</React.Fragment>
+			)}
+		</Formik>
 	)
 }
 

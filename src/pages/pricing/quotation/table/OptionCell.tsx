@@ -27,8 +27,16 @@ const OptionCell = (props: OptionCellProps) => {
 				<Button type='dashed' icon={<EditFilled />} style={{ border: 'none' }} onClick={handleUpdate} />
 			</Col> */}
 			<Col>
-				<Popconfirm title={`Are you sure to delete this record?`} onConfirm={handleDelete}>
-					<Button type='ghost' danger icon={<DeleteFilled />} style={{ border: 'none' }} />
+				<Popconfirm
+					title={`Are you sure to delete this record?`}
+					onConfirm={handleDelete}
+				>
+					<Button
+						type='ghost'
+						danger
+						icon={<DeleteFilled />}
+						style={{ border: 'none' }}
+					/>
 				</Popconfirm>
 			</Col>
 		</Row>

@@ -1,4 +1,4 @@
-import { Descriptions } from 'antd'
+import { Descriptions, Tag } from 'antd'
 import { useFormikContext } from 'formik'
 import React from 'react'
 import useCalculator from './useCalculator'
@@ -26,16 +26,26 @@ const PlateProductResult = (props: PlateProductResultProps) => {
 				{weight}
 			</Descriptions.Item>
 			<Descriptions.Item span={3} label='Total without hole'>
-				{new Intl.NumberFormat('en-PH', {
-					style: 'currency',
-					currency: 'PHP'
-				}).format(totalWithoutHole || 0)}
+				{totalWithoutHole}
+				{
+					<Tag color='green' style={{ marginLeft: '.5rem' }}>
+						{new Intl.NumberFormat('en-PH', {
+							style: 'currency',
+							currency: 'PHP'
+						}).format(Math.ceil(totalWithoutHole / 5) * 5 || 0)}
+					</Tag>
+				}
 			</Descriptions.Item>
 			<Descriptions.Item span={3} label='Total with hole'>
-				{new Intl.NumberFormat('en-PH', {
-					style: 'currency',
-					currency: 'PHP'
-				}).format(totalWithHole || 0)}
+				{totalWithHole}
+				{
+					<Tag color='green' style={{ marginLeft: '.5rem' }}>
+						{new Intl.NumberFormat('en-PH', {
+							style: 'currency',
+							currency: 'PHP'
+						}).format(Math.ceil(totalWithHole / 5) * 5 || 0)}
+					</Tag>
+				}
 			</Descriptions.Item>
 		</Descriptions>
 	)

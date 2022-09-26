@@ -27,13 +27,13 @@ const PlateProductSpec = (props: PlateProductSpecProps) => {
 		],
 		[
 			{
-				name: 'thickness_inch',
-				label: 'Thickness (inch)',
+				name: 'thickness_mm',
+				label: 'Thickness (mm)',
 				rules
 			},
 			{
-				name: 'length_inch',
-				label: 'Length (inch)',
+				name: 'length_mm',
+				label: 'Length (mm)',
 				rules
 			},
 			{

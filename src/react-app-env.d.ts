@@ -134,8 +134,8 @@ type SagRodProps = {
 
 type PlateProps = {
 	// _id?: string
-	thickness_inch?: number
-	length_inch?: number
+	thickness_mm?: number
+	length_mm?: number
 	width_mm?: number
 	perKilogramPrice?: number
 	holeQuantity?: number

@@ -22,8 +22,8 @@ const PlateProduct = (props: PlateProductProps) => {
 			<Formik
 				initialValues={
 					{
-						thickness_inch: 0,
-						length_inch: 0,
+						thickness_mm: 0,
+						length_mm: 0,
 						width_mm: 0,
 						perKilogramPrice: 0,
 						holeQuantity: 0,
@@ -39,12 +39,12 @@ const PlateProduct = (props: PlateProductProps) => {
 						}, Price per kilo: ${values.perKilogramPrice}, ${
 							values.remarks || ''
 						}`,
-						length: String(values.length_inch),
+						length: String(values.length_mm),
 						width: String(values.width_mm),
 						weight: String(values.weight),
 						name: PRODUCT_NAME,
 						quantity: values.quantity,
-						size: String(values.thickness_inch),
+						size: String(values.thickness_mm),
 						price: String(values.totalWithHole)
 					}
 					handleSubmit(product)

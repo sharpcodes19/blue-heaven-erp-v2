@@ -28,17 +28,17 @@ const PlateProductSpec = (props: PlateProductSpecProps) => {
 		[
 			{
 				name: 'thickness_inch',
-				label: 'Thickness',
+				label: 'Thickness (inch)',
 				rules
 			},
 			{
 				name: 'length_inch',
-				label: 'Length',
+				label: 'Length (inch)',
 				rules
 			},
 			{
 				name: 'width_mm',
-				label: 'Width',
+				label: 'Width (mm)',
 				rules
 			}
 		],
@@ -69,10 +69,15 @@ const PlateProductSpec = (props: PlateProductSpecProps) => {
 								<Form.Item name={field.name} label={field.label}>
 									<InputNumber
 										addonBefore={
-											field.name === 'perKilogramPrice' || field.name === 'holePricePerPiece' ? '₱' : undefined
+											field.name === 'perKilogramPrice' ||
+											field.name === 'holePricePerPiece'
+												? '₱'
+												: undefined
 										}
 										value={formik.values[field.name as keyof PlateProps]}
-										onChange={(value) => formik.setFieldValue(field.name, value)}
+										onChange={(value) =>
+											formik.setFieldValue(field.name, value)
+										}
 									/>
 								</Form.Item>
 							</Col>
@@ -82,7 +87,10 @@ const PlateProductSpec = (props: PlateProductSpecProps) => {
 			))}
 			<Col span={24}>
 				<Form.Item name='remarks' label='Remarks'>
-					<Input value={formik.values.remarks} onChange={(e) => formik.setFieldValue('remarks', e.target.value)} />
+					<Input
+						value={formik.values.remarks}
+						onChange={(e) => formik.setFieldValue('remarks', e.target.value)}
+					/>
 				</Form.Item>
 			</Col>
 		</React.Fragment>

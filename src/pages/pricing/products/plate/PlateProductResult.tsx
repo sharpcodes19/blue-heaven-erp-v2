@@ -9,7 +9,9 @@ type PlateProductResultProps = {
 
 const PlateProductResult = (props: PlateProductResultProps) => {
 	const formik = useFormikContext<PlateProps>()
-	const { totalWithHole, totalWithoutHole, weight } = useCalculator(formik.values)
+	const { totalWithHole, totalWithoutHole, weight } = useCalculator(
+		formik.values
+	)
 
 	React.useEffect(() => {
 		formik.setFieldValue('weight', weight.toFixed(4))
@@ -24,10 +26,16 @@ const PlateProductResult = (props: PlateProductResultProps) => {
 				{weight}
 			</Descriptions.Item>
 			<Descriptions.Item span={3} label='Total without hole'>
-				{totalWithoutHole}
+				{new Intl.NumberFormat('en-PH', {
+					style: 'currency',
+					currency: 'PHP'
+				}).format(totalWithoutHole || 0)}
 			</Descriptions.Item>
 			<Descriptions.Item span={3} label='Total with hole'>
-				{totalWithHole}
+				{new Intl.NumberFormat('en-PH', {
+					style: 'currency',
+					currency: 'PHP'
+				}).format(totalWithHole || 0)}
 			</Descriptions.Item>
 		</Descriptions>
 	)

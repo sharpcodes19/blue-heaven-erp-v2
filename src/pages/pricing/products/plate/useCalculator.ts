@@ -1,5 +1,5 @@
 import React from 'react'
-import convert from 'convert-units'
+// import convert from 'convert-units'
 
 type Props = {
 	weight: number
@@ -32,13 +32,13 @@ const useCalculator = ({
 		setWeight(weight)
 
 		const total = weight * STEEL * (perKilogramPrice || 0)
-		console.log(total)
+		// console.log(total)
 		// INFO: Round up by 5
 		// Math.ceil(x/5)*5
 		// const totalWithoutHole = Math.ceil(total / 5) * 5
 		setTotalWithoutHole(total)
 
-		const totalWithHole = holeQuantity! * holePricePerPiece! + total
+		const totalWithHole = (holeQuantity || 0) * holePricePerPiece! + total
 		setTotalWithHole(totalWithHole)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [

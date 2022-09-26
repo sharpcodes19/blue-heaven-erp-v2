@@ -13,7 +13,7 @@ import useAddProductToQuotationTable from '../_quotation/useAddProductToQuotatio
 
 type AnchorBoltProductProps = {}
 
-const PRODUCT_NAME = 'ANCHOR BOLT'
+const PRODUCT_NAME = 'ABOLT'
 
 const AnchorBoltProduct = (props: AnchorBoltProductProps) => {
 	const { data, options, loading } = useData(PRODUCT_NAME)
@@ -55,7 +55,12 @@ const AnchorBoltProduct = (props: AnchorBoltProductProps) => {
 			>
 				{({ submitForm, values }) => (
 					<Form>
-						<ProductSpecList name={PRODUCT_NAME} options={options} loading={loading} onShowForm={setShowForm} />
+						<ProductSpecList
+							name={PRODUCT_NAME}
+							options={options}
+							loading={loading}
+							onShowForm={setShowForm}
+						/>
 						<Row>
 							<Col>
 								<ProductLookUpResultItem
@@ -67,19 +72,28 @@ const AnchorBoltProduct = (props: AnchorBoltProductProps) => {
 									onUpdateProductDetails={() =>
 										new Promise<boolean>((resolve, reject) => {
 											if (values.product && values.product._id) {
-												putData(`/api/admin/update/anchorBolt/${values.product._id}`, {
-													bend: values.product.width,
-													fW: values.product.washer,
-													hexNut: values.product.hexNut,
-													inchA: values.product.length,
-													sizeA: values.product.size,
-													standard: values.product.price,
-													typeAnchor: values.product.type,
-													total:
-														(values.product.price ? parseFloat(values.product.price) : 0) +
-														(values.product.washer ? parseFloat(values.product.washer) : 0) +
-														(values.product.hexNut ? parseFloat(values.product.hexNut) : 0)
-												} as AnchorBoltProps)
+												putData(
+													`/api/admin/update/anchorBolt/${values.product._id}`,
+													{
+														bend: values.product.width,
+														fW: values.product.washer,
+														hexNut: values.product.hexNut,
+														inchA: values.product.length,
+														sizeA: values.product.size,
+														standard: values.product.price,
+														typeAnchor: values.product.type,
+														total:
+															(values.product.price
+																? parseFloat(values.product.price)
+																: 0) +
+															(values.product.washer
+																? parseFloat(values.product.washer)
+																: 0) +
+															(values.product.hexNut
+																? parseFloat(values.product.hexNut)
+																: 0)
+													} as AnchorBoltProps
+												)
 													.then((success) => {
 														messageApi.open({
 															type: success ? 'success' : 'warning',
@@ -106,7 +120,9 @@ const AnchorBoltProduct = (props: AnchorBoltProductProps) => {
 				<Formik
 					initialValues={_.transform(
 						options.map(({ originFieldName, fieldCount }) => ({
-							[originFieldName]: fieldCount ? Array.from({ length: fieldCount }).fill('0') : ''
+							[originFieldName]: fieldCount
+								? Array.from({ length: fieldCount }).fill('0')
+								: ''
 						})),
 						_.ary(_.extend, 2),
 						{}
@@ -124,11 +140,20 @@ const AnchorBoltProduct = (props: AnchorBoltProductProps) => {
 									duration: 5
 								})
 							})
-							.catch(() => messageApi.error('Error! Technical problem has been detected while submmiting your form.'))
+							.catch(() =>
+								messageApi.error(
+									'Error! Technical problem has been detected while submmiting your form.'
+								)
+							)
 					}}
 					validationSchema={postValidation}
 				>
-					<AddForm visible={showForm} onShowForm={setShowForm} productName={PRODUCT_NAME} options={options} />
+					<AddForm
+						visible={showForm}
+						onShowForm={setShowForm}
+						productName={PRODUCT_NAME}
+						options={options}
+					/>
 				</Formik>
 			) : null}
 		</Layout.Content>

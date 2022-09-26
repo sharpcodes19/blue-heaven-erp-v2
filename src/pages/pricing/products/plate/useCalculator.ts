@@ -29,7 +29,7 @@ const useCalculator = ({
 
 		const weight =
 			((((thickness_mm || 0) / 1000) * (length_mm || 0)) / 1000) * width
-		setWeight(weight)
+		setWeight(totalWithoutHole / (perKilogramPrice || 0))
 
 		const total = weight * STEEL * (perKilogramPrice || 0)
 		// console.log(total)

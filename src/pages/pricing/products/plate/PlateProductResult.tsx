@@ -23,11 +23,9 @@ const PlateProductResult = (props: PlateProductResultProps) => {
 	return (
 		<Descriptions bordered title='CALCULATION RESULT' size='small'>
 			<Descriptions.Item label='Weight' span={3}>
-				{totalWithoutHole / (formik.values.perKilogramPrice || 0)}
+				{weight || 0}
 				<Tag color='green' style={{ marginLeft: '.5rem' }}>
-					{(totalWithoutHole / (formik.values.perKilogramPrice || 0))
-						.toFixed(2)
-						.concat(' kg')}
+					{(weight || 0).toFixed(2).concat(' kg')}
 				</Tag>
 			</Descriptions.Item>
 			<Descriptions.Item span={3} label='Total without hole'>

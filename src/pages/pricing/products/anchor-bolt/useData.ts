@@ -11,7 +11,9 @@ type Props = {
 
 const useData = (productName: string): Props => {
 	const [data, setData] = React.useState<Array<FinishedProductProps>>([])
-	const [options, setOptions] = React.useState<Array<SelectablePricingOptionProps>>([])
+	const [options, setOptions] = React.useState<
+		Array<SelectablePricingOptionProps>
+	>([])
 	const [loading, setLoading] = React.useState<boolean>(true)
 
 	React.useEffect(() => {
@@ -27,7 +29,9 @@ const useData = (productName: string): Props => {
 			for (let i = 0; i < responses.length; i++) {
 				allData.push(
 					...responses[i].data.allUser
-						.filter((p) => p.sizeA && p.inchA && p.bend && p.standard && p.typeAnchor)
+						.filter(
+							(p) => p.sizeA && p.inchA && p.bend && p.standard && p.typeAnchor
+						)
 						.map((p) => ({
 							name: productName,
 							_id: p._id,
@@ -37,7 +41,8 @@ const useData = (productName: string): Props => {
 							length: p.inchA,
 							size: p.sizeA,
 							price: String(p.total),
-							type: p.typeAnchor
+							type: p.typeAnchor,
+							threadLength: [p.tl || 'n/a']
 						}))
 				)
 			}
@@ -136,6 +141,28 @@ const useData = (productName: string): Props => {
 							isNumber: true,
 							isCurrency: true,
 							hideStepComponent: true
+						},
+						{
+							accessor: 'threadLength',
+							originFieldName: 'tl',
+							options: _.uniqBy(
+								_.sortBy(
+									allData.map((item) => ({
+										label:
+											item.threadLength instanceof Array
+												? item.threadLength[0]
+												: String(item.threadLength) || '',
+										value:
+											item.threadLength instanceof Array
+												? item.threadLength[0]
+												: String(item.threadLength) || ''
+									})),
+									'label'
+								),
+								'label'
+							),
+							isCurrency: true
+							// hideStepComponent: true
 						},
 						{
 							accessor: 'price',

@@ -27,7 +27,8 @@ const AnchorBoltProduct = (props: AnchorBoltProductProps) => {
 		fW: Yup.number().required('This field is required.'),
 		sizeA: Yup.string().required('This field is required.'),
 		inchA: Yup.string().required('This field is required.'),
-		typeAnchor: Yup.string().required('This field is required.')
+		typeAnchor: Yup.string().required('This field is required.'),
+		tl: Yup.string().required('This field is required.')
 		// .oneOf(_.uniqBy(data, 'type').map(({ type }) => type)),
 	})
 	const { handleSubmit } = useAddProductToQuotationTable(messageApi)
@@ -91,7 +92,10 @@ const AnchorBoltProduct = (props: AnchorBoltProductProps) => {
 																: 0) +
 															(values.product.hexNut
 																? parseFloat(values.product.hexNut)
-																: 0)
+																: 0),
+														tl: values.product.threadLength
+															? values.product.threadLength[0]
+															: 'n/a'
 													} as AnchorBoltProps
 												)
 													.then((success) => {

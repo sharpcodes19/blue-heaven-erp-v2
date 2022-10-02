@@ -120,6 +120,7 @@ type AnchorBoltProps = {
 	fW?: string
 	total?: number
 	typeAnchor?: string
+	tl?: string
 }
 
 type SagRodProps = {

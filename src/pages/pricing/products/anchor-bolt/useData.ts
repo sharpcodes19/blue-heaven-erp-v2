@@ -29,9 +29,7 @@ const useData = (productName: string): Props => {
 			for (let i = 0; i < responses.length; i++) {
 				allData.push(
 					...responses[i].data.allUser
-						.filter(
-							(p) => p.sizeA && p.inchA && p.bend && p.standard && p.typeAnchor
-						)
+						.filter((p) => p.sizeA && p.inchA && p.bend && p.typeAnchor)
 						.map((p) => ({
 							name: productName,
 							_id: p._id,

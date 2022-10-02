@@ -50,7 +50,12 @@ const TurnBuckleProduct = (props: TurnBuckleProductProps) => {
 			>
 				{({ submitForm, values }) => (
 					<Form>
-						<ProductSpecList name={PRODUCT_NAME} options={options} loading={loading} onShowForm={setShowForm} />
+						<ProductSpecList
+							name={PRODUCT_NAME}
+							options={options}
+							loading={loading}
+							onShowForm={setShowForm}
+						/>
 						<Row>
 							<Col>
 								<ProductLookUpResultItem
@@ -62,12 +67,15 @@ const TurnBuckleProduct = (props: TurnBuckleProductProps) => {
 									onUpdateProductDetails={() =>
 										new Promise<boolean>((resolve, reject) => {
 											if (values.product && values.product._id) {
-												putData(`/api/admin/update/turnBuckles/${values.product._id}`, {
-													millimeter: values.product.length,
-													turnBuckle: values.product.type,
-													pipeSize: values.product.size,
-													price: values.product.price
-												} as HexBoltProps)
+												putData(
+													`/api/admin/update/turnBuckles/${values.product._id}`,
+													{
+														millimeter: values.product.length,
+														turnBuckle: values.product.type,
+														pipeSize: values.product.size,
+														price: values.product.price
+													} as TurnBuckleProps
+												)
 													.then((success) => {
 														messageApi.open({
 															type: success ? 'success' : 'warning',
@@ -94,7 +102,9 @@ const TurnBuckleProduct = (props: TurnBuckleProductProps) => {
 				<Formik
 					initialValues={_.transform(
 						options.map(({ originFieldName, fieldCount }) => ({
-							[originFieldName]: fieldCount ? Array.from({ length: fieldCount }).fill('0') : ''
+							[originFieldName]: fieldCount
+								? Array.from({ length: fieldCount }).fill('0')
+								: ''
 						})),
 						_.ary(_.extend, 2),
 						{}
@@ -112,11 +122,20 @@ const TurnBuckleProduct = (props: TurnBuckleProductProps) => {
 									duration: 5
 								})
 							})
-							.catch(() => messageApi.error('Error! Technical problem has been detected while submmiting your form.'))
+							.catch(() =>
+								messageApi.error(
+									'Error! Technical problem has been detected while submmiting your form.'
+								)
+							)
 					}}
 					validationSchema={postValidation}
 				>
-					<AddForm visible={showForm} onShowForm={setShowForm} productName={PRODUCT_NAME} options={options} />
+					<AddForm
+						visible={showForm}
+						onShowForm={setShowForm}
+						productName={PRODUCT_NAME}
+						options={options}
+					/>
 				</Formik>
 			) : null}
 		</Layout.Content>

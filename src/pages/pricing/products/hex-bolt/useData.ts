@@ -11,7 +11,9 @@ type Props = {
 
 const useData = (productName: string): Props => {
 	const [data, setData] = React.useState<Array<FinishedProductProps>>([])
-	const [options, setOptions] = React.useState<Array<SelectablePricingOptionProps>>([])
+	const [options, setOptions] = React.useState<
+		Array<SelectablePricingOptionProps>
+	>([])
 	const [loading, setLoading] = React.useState<boolean>(true)
 
 	React.useEffect(() => {
@@ -27,15 +29,15 @@ const useData = (productName: string): Props => {
 			for (let i = 0; i < responses.length; i++) {
 				allData.push(
 					...responses[i].data.allUser
-						.filter((p) => p.boltLenght && p.diameterValue && p.materialValue && p.threadValue)
+						// .filter((p) => p.threadValue && p.clenght && p.cType && p.hType)
 						.map((p) => ({
 							name: productName,
 							_id: p._id,
-							length: p.boltLenght,
+							length: p.clenght,
 							price: p.cost,
-							size: p.diameterValue,
-							type: p.materialValue,
-							threadType: p.threadValue
+							type: p.cType,
+							threadType: p.threadValue,
+							createdAt: p.DateCreated
 						}))
 				)
 			}
@@ -45,7 +47,7 @@ const useData = (productName: string): Props => {
 					[
 						{
 							accessor: 'type',
-							originFieldName: 'materialValue',
+							originFieldName: 'cType',
 							options: _.uniqBy(
 								_.sortBy(
 									allData.map((item) => ({
@@ -58,23 +60,9 @@ const useData = (productName: string): Props => {
 							)
 						},
 						{
-							accessor: 'size',
-							originFieldName: 'diameterValue',
-							options: _.uniqBy(
-								_.sortBy(
-									allData.map((item) => ({
-										label: item.size,
-										value: item.size
-									})),
-									'label'
-								),
-								'label'
-							)
-						},
-						{
 							unit: 'mm',
 							accessor: 'length',
-							originFieldName: 'boltLenght',
+							originFieldName: 'clenght',
 							options: _.uniqBy(
 								_.sortBy(
 									allData.map((item) => ({

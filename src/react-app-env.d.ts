@@ -149,12 +149,12 @@ type PlateProps = {
 
 type HexBoltProps = {
 	_id?: string
-	boltLenght?: string
-	cost?: string
-	diameterValue?: string
-	materialValue?: string
-	threadValue?: string
-	DateCreated?: Date
+	hType: string
+	threadValue: string
+	clenght: string
+	cType: string
+	cost: string
+	DateCreated: Date
 }
 
 type UBoltProps = {

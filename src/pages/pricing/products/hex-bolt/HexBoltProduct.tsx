@@ -21,10 +21,9 @@ const HexBoltProduct = (props: HexBoltProductProps) => {
 	const [messageApi, contextHolder] = message.useMessage()
 
 	const postValidation = Yup.object().shape({
-		boltLenght: Yup.string().required('This field is required.'),
 		cost: Yup.number().required('This field is required.'),
-		diameterValue: Yup.string().required('This field is required.'),
-		materialValue: Yup.string().required('This field is required.'),
+		clenght: Yup.string().required('This field is required.'),
+		cType: Yup.string().required('This field is required.'),
 		threadValue: Yup.string().required('This field is required.')
 	})
 	const { handleSubmit } = useAddProductToQuotationTable(messageApi)
@@ -51,7 +50,12 @@ const HexBoltProduct = (props: HexBoltProductProps) => {
 			>
 				{({ submitForm, values }) => (
 					<Form>
-						<ProductSpecList name={PRODUCT_NAME} options={options} loading={loading} onShowForm={setShowForm} />
+						<ProductSpecList
+							name={PRODUCT_NAME}
+							options={options}
+							loading={loading}
+							onShowForm={setShowForm}
+						/>
 						<Row>
 							<Col>
 								<ProductLookUpResultItem
@@ -63,14 +67,17 @@ const HexBoltProduct = (props: HexBoltProductProps) => {
 									onUpdateProductDetails={() =>
 										new Promise<boolean>((resolve, reject) => {
 											if (values.product && values.product._id) {
-												putData(`/api/admin/update/hexbolt/${values.product._id}`, {
-													boltLenght: values.product.length,
-													cost: values.product.price,
-													DateCreated: values.product.createdAt,
-													diameterValue: values.product.size,
-													materialValue: values.product.type,
-													threadValue: values.product.threadType
-												} as HexBoltProps)
+												putData(
+													`/api/admin/update/hexbolt/${values.product._id}`,
+													{
+														DateCreated: values.product.createdAt,
+														clenght: values.product.length,
+														cost: values.product.price,
+														cType: values.product.type,
+														threadValue: values.product.threadType
+														// hType: 'n/a'
+													} as HexBoltProps
+												)
 													.then((success) => {
 														messageApi.open({
 															type: success ? 'success' : 'warning',
@@ -97,13 +104,18 @@ const HexBoltProduct = (props: HexBoltProductProps) => {
 				<Formik
 					initialValues={_.transform(
 						options.map(({ originFieldName, fieldCount }) => ({
-							[originFieldName]: fieldCount ? Array.from({ length: fieldCount }).fill('0') : ''
+							[originFieldName]: fieldCount
+								? Array.from({ length: fieldCount }).fill('0')
+								: ''
 						})),
 						_.ary(_.extend, 2),
 						{}
 					)}
 					onSubmit={(values: any, { setSubmitting }) => {
-						postData('/api/admin/add/hexbolt', values)
+						postData('/api/admin/add/hexbolt', {
+							...values,
+							hType: 'n/a'
+						})
 							.then((success) => {
 								setSubmitting(false)
 								setShowForm(false)
@@ -115,11 +127,20 @@ const HexBoltProduct = (props: HexBoltProductProps) => {
 									duration: 5
 								})
 							})
-							.catch(() => messageApi.error('Error! Technical problem has been detected while submmiting your form.'))
+							.catch(() =>
+								messageApi.error(
+									'Error! Technical problem has been detected while submmiting your form.'
+								)
+							)
 					}}
 					validationSchema={postValidation}
 				>
-					<AddForm visible={showForm} onShowForm={setShowForm} productName={PRODUCT_NAME} options={options} />
+					<AddForm
+						visible={showForm}
+						onShowForm={setShowForm}
+						productName={PRODUCT_NAME}
+						options={options}
+					/>
 				</Formik>
 			) : null}
 		</Layout.Content>

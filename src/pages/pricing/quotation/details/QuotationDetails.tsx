@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { Col, Descriptions, Row, Select } from 'antd'
+import { AutoComplete, Col, Descriptions, Row, Select } from 'antd'
 import React from 'react'
 import { Customer } from '../../../../contexts/CustomerContext'
 import { SelectedQuotation } from '../../../../contexts/SelectedQuotationContext'
@@ -28,7 +28,7 @@ const QuotationDetails = (props: QuotationDetailsProps) => {
 			<Col span={10}>
 				<Descriptions>
 					<Descriptions.Item label='Customer Name' labelStyle={labelStyle}>
-						<Select
+						{/* <Select
 							options={_.sortBy(options, 'label')}
 							style={{ width: '100%' }}
 							onChange={(value) => {
@@ -37,6 +37,16 @@ const QuotationDetails = (props: QuotationDetailsProps) => {
 									customerId: value
 								}))
 							}}
+						/> */}
+						<AutoComplete
+							style={{ width: '100%' }}
+							options={_.sortBy(options, 'label')}
+							placeholder='Search customer name'
+							filterOption={(inputValue, option) =>
+								option!.label
+									?.toUpperCase()
+									.indexOf(inputValue.toUpperCase()) !== -1
+							}
 						/>
 					</Descriptions.Item>
 				</Descriptions>

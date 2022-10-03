@@ -23,7 +23,7 @@ const App = (props: AppProps) => {
 							<Route path='inventory' element={<InventoryPage />} />
 							<Route path='customer' element={<CustomerPage />} />
 							<Route
-								path='order'
+								path='order/*'
 								element={
 									<OrderContext>
 										<OrderPage />

@@ -1,5 +1,5 @@
-import _ from 'lodash'
-import { Form, Layout, message, Modal, Typography } from 'antd'
+import { Button, Layout, message, Modal, Typography } from 'antd'
+import { useReactToPrint } from 'react-to-print'
 import { Formik } from 'formik'
 import Moment from 'moment'
 import React from 'react'
@@ -8,6 +8,8 @@ import { Customer } from '../../contexts/CustomerContext'
 import { Order } from '../../contexts/OrderContext'
 import OrderForm from './form/OrderForm'
 import OrderTable from './OrderTable'
+import { Navigate, Route, Routes } from 'react-router-dom'
+import PrintPreview from './print/PrintPreview'
 
 type OrderPageProps = {}
 
@@ -24,6 +26,11 @@ const OrderPage = (props: OrderPageProps) => {
 		to: Moment().endOf('month').endOf('day').toDate()
 	})
 	const { value, dispatch } = React.useContext(Order)!
+	const printComponentRef = React.useRef<any>(null)
+
+	const handlePrint = useReactToPrint({
+		content: () => printComponentRef.current
+	})
 
 	React.useEffect(() => {
 		;(async () => {
@@ -88,7 +95,11 @@ const OrderPage = (props: OrderPageProps) => {
 					<Layout.Content>
 						{alertContext}
 						<Typography.Title level={2}>ORDERS</Typography.Title>
-						<OrderTable {...dateRange} onChangeDateRange={setDateRange} />
+						<OrderTable
+							{...dateRange}
+							onChangeDateRange={setDateRange}
+							ref={printComponentRef}
+						/>
 					</Layout.Content>
 					<Modal
 						onOk={submitForm}
@@ -102,6 +113,10 @@ const OrderPage = (props: OrderPageProps) => {
 						confirmLoading={isSubmitting}
 					>
 						<OrderForm />
+						<Routes>
+							<Route path='print' element={<PrintPreview data={values} />} />
+							<Route path='*' element={<Navigate replace to='' />} />
+						</Routes>
 					</Modal>
 				</React.Fragment>
 			)}

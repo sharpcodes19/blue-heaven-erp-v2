@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import Moment from 'moment'
 import {
+	AutoComplete,
 	Col,
 	DatePicker,
 	Form,
@@ -26,7 +27,11 @@ const OrderForm = (props: OrderFormProps) => {
 			__update__?: boolean
 		}
 	>()
-	const customers = React.useContext(Customer)!
+	const { value } = React.useContext(Customer)!
+	const [customer, setCustomer] = React.useState<Array<CustomerProps>>(
+		value || []
+	)
+	const [keyword, setKeyword] = React.useState<string>('')
 
 	const [status, setStatus] = React.useState<string>('')
 
@@ -88,19 +93,34 @@ const OrderForm = (props: OrderFormProps) => {
 				</Col>
 			</Row>
 			<Form.Item label='Customer Name'>
-				<Select
+				<AutoComplete
+					style={{ width: '100%' }}
 					options={_.sortBy(
-						customers.value?.map(({ _id, name }) => ({
+						customer?.map(({ _id, name }) => ({
 							label: name,
 							value: _id
 						})),
 						'label'
 					)}
-					style={{ width: '100%' }}
-					onChange={(value) => {
-						formik.setFieldValue('customerId', value)
-					}}
-					value={formik.values.customerId}
+					placeholder='Search customer name'
+					filterOption={(inputValue, option) =>
+						option!.label?.toUpperCase().indexOf(inputValue.toUpperCase()) !==
+						-1
+					}
+					// style={{ width: '100%' }}
+					// onChange={(value) => {
+					// 	formik.setFieldValue('customerId', value)
+					// }}
+					// onSearch={(keyword) => {
+					// 	setKeyword(keyword)
+					// 	setCustomer(
+					// 		keyword.length > 0
+					// 			? customer?.filter((cus) => cus.name?.includes(keyword))
+					// 			: value || []
+					// 	)
+					// }}
+					// searchValue={keyword}
+					// value={formik.values.customerId}
 				/>
 			</Form.Item>
 			<Row style={{ gap: '2ch' }}>

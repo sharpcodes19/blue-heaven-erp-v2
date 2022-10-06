@@ -18,7 +18,11 @@ const ProductStepContent = (props: ProductStepContentProps) => {
 				<Radio.Group
 					options={props.options}
 					optionType='button'
-					value={formik.values.selection[props.accessor as keyof FinishedProductProps]}
+					value={
+						formik.values.selection[
+							props.accessor as keyof FinishedProductProps
+						]
+					}
 					onChange={(e) => {
 						formik.setFieldValue('selection', {
 							...formik.values.selection,

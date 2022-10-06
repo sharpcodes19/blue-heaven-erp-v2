@@ -1,7 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 import axios, { AxiosResponse } from 'axios'
-import instance from '../../../../api/instance'
+import instance2 from '../../../../api/instance2'
 
 type Props = {
 	data: Array<FinishedProductProps>
@@ -20,27 +20,41 @@ const useData = (productName: string): Props => {
 		;(async () => {
 			setLoading(true)
 			let allData: Array<FinishedProductProps> = []
-			const endpoints: Array<string> = ['/api/admin/get/query/anchorBolt']
+			const endpoints: Array<string> = ['/product/abolt']
 			const responses: Array<
-				AxiosResponse<{
-					allUser: Array<AnchorBoltProps>
-				}>
-			> = await axios.all(endpoints.map((endpoint) => instance().get(endpoint)))
+				AxiosResponse<ResponseBaseProps<Array<AnchorBoltProps>>>
+			> = await axios.all(
+				endpoints.map((endpoint) => instance2().get(endpoint))
+			)
 			for (let i = 0; i < responses.length; i++) {
 				allData.push(
-					...responses[i].data.allUser
-						.filter((p) => p.sizeA && p.inchA && p.bend && p.typeAnchor)
+					...responses[i].data
+						.packet!.filter(
+							(p) =>
+								p.diameter &&
+								p.steel &&
+								p.bend &&
+								p.lengthByMillimeter !== 'per inch' &&
+								p.lengthByInches !== 'per inch' &&
+								p.hexNut &&
+								p.fW &&
+								p.thread
+						)
 						.map((p) => ({
 							name: productName,
 							_id: p._id,
 							hexNut: p.hexNut,
 							width: p.bend,
 							washer: p.fW,
-							length: p.inchA,
-							size: p.sizeA,
-							price: String(p.total),
-							type: p.typeAnchor,
-							threadLength: [p.tl || 'n/a']
+							length: p.lengthByInches,
+							size: p.diameter,
+							price: p.price,
+							type: p.steel,
+							threadLength: [p.thread!],
+							hexNutPrice: +(p.hexNutPrice || 0),
+							washerPrice: +(p.fWPrice || 0),
+							totalPricePerSet: +(p.totalPerSet || 0),
+							length_mm: p.lengthByMillimeter
 						}))
 				)
 			}
@@ -49,23 +63,9 @@ const useData = (productName: string): Props => {
 				_.sortBy(
 					[
 						{
-							accessor: 'type',
-							originFieldName: 'typeAnchor',
-							options: _.uniqBy(
-								_.sortBy(
-									allData.map((item) => ({
-										label: item.type,
-										value: item.type
-									})),
-									'label'
-								),
-								'label'
-							)
-						},
-						{
 							unit: 'in',
 							accessor: 'size',
-							originFieldName: 'sizeA',
+							originFieldName: 'diameter',
 							options: _.uniqBy(
 								_.sortBy(
 									allData.map((item) => ({
@@ -75,12 +75,28 @@ const useData = (productName: string): Props => {
 									'label'
 								),
 								'label'
-							)
+							),
+							label: 'Diameter'
+						},
+						{
+							accessor: 'type',
+							originFieldName: 'steel',
+							options: _.uniqBy(
+								_.sortBy(
+									allData.map((item) => ({
+										label: item.type,
+										value: item.type
+									})),
+									'label'
+								),
+								'label'
+							),
+							label: 'Steel'
 						},
 						{
 							unit: 'in',
 							accessor: 'length',
-							originFieldName: 'inchA',
+							originFieldName: 'lengthByInches',
 							options: _.uniqBy(
 								_.sortBy(
 									allData.map((item) => ({
@@ -90,7 +106,26 @@ const useData = (productName: string): Props => {
 									'label'
 								),
 								'label'
-							)
+							),
+							label: 'Length (in)'
+						},
+						{
+							unit: 'mm',
+							accessor: 'length_mm',
+							originFieldName: 'lengthByMillimeter',
+							options: _.uniqBy(
+								_.sortBy(
+									allData.map((item) => ({
+										label: item.length_mm,
+										value: item.length_mm
+									})),
+									'label'
+								),
+								'label'
+							),
+							hideStepComponent: true,
+							isNumber: true,
+							label: 'Length (mm)'
 						},
 						{
 							accessor: 'width',
@@ -104,7 +139,27 @@ const useData = (productName: string): Props => {
 									'label'
 								),
 								'label'
-							)
+							),
+							isNumber: true,
+							label: 'Bend'
+						},
+						{
+							accessor: 'price',
+							originFieldName: 'price',
+							options: _.uniqBy(
+								_.sortBy(
+									allData.map((item) => ({
+										label: item.price,
+										value: item.price
+									})),
+									'label'
+								),
+								'label'
+							),
+							isNumber: true,
+							isCurrency: true,
+							hideStepComponent: true,
+							label: 'Price'
 						},
 						{
 							accessor: 'hexNut',
@@ -119,15 +174,31 @@ const useData = (productName: string): Props => {
 								),
 								'label'
 							),
+							label: 'Hex Nut'
+						},
+						{
+							accessor: 'hexNutPrice',
+							originFieldName: 'hexNutPrice',
+							options: _.uniqBy(
+								_.sortBy(
+									allData.map((item) => ({
+										label: item.hexNutPrice,
+										value: item.hexNutPrice
+									})),
+									'label'
+								),
+								'label'
+							),
 							isNumber: true,
 							isCurrency: true,
-							hideStepComponent: true
+							hideStepComponent: true,
+							label: 'Hex Nut Price'
 						},
 						{
 							accessor: 'washer',
 							originFieldName: 'fW',
-							options: _.uniqBy(
-								_.sortBy(
+							options: _.sortBy(
+								_.uniqBy(
 									allData.map((item) => ({
 										label: item.washer,
 										value: item.washer
@@ -136,13 +207,29 @@ const useData = (productName: string): Props => {
 								),
 								'label'
 							),
+							label: 'Washer'
+						},
+						{
+							accessor: 'washerPrice',
+							originFieldName: 'fWPrice',
+							options: _.uniqBy(
+								_.sortBy(
+									allData.map((item) => ({
+										label: item.washerPrice,
+										value: item.washerPrice
+									})),
+									'label'
+								),
+								'label'
+							),
 							isNumber: true,
 							isCurrency: true,
-							hideStepComponent: true
+							hideStepComponent: true,
+							label: 'Washer Price'
 						},
 						{
 							accessor: 'threadLength',
-							originFieldName: 'tl',
+							originFieldName: 'thread',
 							options: _.uniqBy(
 								_.sortBy(
 									allData.map((item) => ({
@@ -159,17 +246,19 @@ const useData = (productName: string): Props => {
 								),
 								'label'
 							),
-							isCurrency: true
+							isCurrency: true,
+							isNumber: true,
+							label: 'Thread Length'
 							// hideStepComponent: true
 						},
 						{
-							accessor: 'price',
-							originFieldName: 'standard',
+							accessor: 'totalPricePerSet',
+							originFieldName: 'totalPerSet',
 							options: _.uniqBy(
 								_.sortBy(
 									allData.map((item) => ({
-										label: item.price,
-										value: item.price
+										label: item.totalPricePerSet,
+										value: item.totalPricePerSet
 									})),
 									'label'
 								),
@@ -177,7 +266,8 @@ const useData = (productName: string): Props => {
 							),
 							isNumber: true,
 							isCurrency: true,
-							hideStepComponent: true
+							hideStepComponent: true,
+							label: 'Total Price per Set'
 						}
 					],
 					['label', 'value']

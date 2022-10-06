@@ -1,15 +1,16 @@
 import * as Yup from 'yup'
 import _ from 'lodash'
 import React from 'react'
-import { Col, Layout, message, Row } from 'antd'
+import { Button, Col, Layout, message, Row, Typography } from 'antd'
+import { FileAddOutlined } from '@ant-design/icons'
 import { Form, Formik } from 'formik'
-import ProductSpecList from '../ProductSpecList'
-import ProductLookUpResultItem from '../_result/ProductLookUpResultItem'
 import useData from './useData'
 import AddForm from '../_add/AddForm'
-import postData from '../postData'
-import putData from '../putData'
 import useAddProductToQuotationTable from '../_quotation/useAddProductToQuotationTable'
+import instance2 from '../../../../api/instance2'
+import ProductSpecSelector from './ProductSpecSelector'
+import ProductLookUpResult from '../_result/ProductLookUpResult'
+import ProductLookUpResultItem from '../_result/ProductLookUpResultItem'
 
 type AnchorBoltProductProps = {}
 
@@ -21,15 +22,18 @@ const AnchorBoltProduct = (props: AnchorBoltProductProps) => {
 	const [messageApi, contextHolder] = message.useMessage()
 
 	const postValidation = Yup.object().shape({
-		bend: Yup.string().required('This field is required.'),
-		standard: Yup.number().required('This field is required.'),
-		hexNut: Yup.number().required('This field is required.'),
-		fW: Yup.number().required('This field is required.'),
-		sizeA: Yup.string().required('This field is required.'),
-		inchA: Yup.string().required('This field is required.'),
-		typeAnchor: Yup.string().required('This field is required.'),
-		tl: Yup.string().required('This field is required.')
-		// .oneOf(_.uniqBy(data, 'type').map(({ type }) => type)),
+		diameter: Yup.string().required('This field is required.'),
+		steel: Yup.string().required('This field is required.'),
+		bend: Yup.number().required('This field is required.'),
+		lengthByInches: Yup.string().required('This field is required.'),
+		lengthByMillimeter: Yup.number().required('This field is required.'),
+		thread: Yup.string().required('This field is required.'),
+		price: Yup.number().positive().required('This field is required.'),
+		hexNut: Yup.string().required('This field is required.'),
+		hexNutPrice: Yup.number().positive().required('This field is required.'),
+		fW: Yup.string().required('This field is required.'),
+		fWPrice: Yup.number().required('This field is required.'),
+		totalPerSet: Yup.number().positive().required('This field is required.')
 	})
 	const { handleSubmit } = useAddProductToQuotationTable(messageApi)
 
@@ -54,69 +58,66 @@ const AnchorBoltProduct = (props: AnchorBoltProductProps) => {
 					handleSubmit(product)
 				}}
 			>
-				{({ submitForm, values }) => (
+				{({ values, submitForm }) => (
 					<Form>
-						<ProductSpecList
-							name={PRODUCT_NAME}
-							options={options}
-							loading={loading}
-							onShowForm={setShowForm}
-						/>
 						<Row>
 							<Col>
-								<ProductLookUpResultItem
-									loading={loading}
-									data={data}
-									options={options}
-									submitForm={submitForm}
-									onShowForm={setShowForm}
-									onUpdateProductDetails={() =>
-										new Promise<boolean>((resolve, reject) => {
-											if (values.product && values.product._id) {
-												putData(
-													`/api/admin/update/anchorBolt/${values.product._id}`,
-													{
-														bend: values.product.width,
-														fW: values.product.washer,
-														hexNut: values.product.hexNut,
-														inchA: values.product.length,
-														sizeA: values.product.size,
-														standard: values.product.price,
-														typeAnchor: values.product.type,
-														total:
-															(values.product.price
-																? parseFloat(values.product.price)
-																: 0) +
-															(values.product.washer
-																? parseFloat(values.product.washer)
-																: 0) +
-															(values.product.hexNut
-																? parseFloat(values.product.hexNut)
-																: 0),
-														tl: values.product.threadLength
-															? values.product.threadLength[0]
-															: 'n/a'
-													} as AnchorBoltProps
-												)
-													.then((success) => {
-														messageApi.open({
-															type: success ? 'success' : 'warning',
-															content: success
-																? 'Success! Product details has been updated.'
-																: 'Failed. Cannot update the product. Please check the values if valid.',
-															duration: 5
-														})
-														resolve(success)
-													})
-													.catch(reject)
-											} else {
-												resolve(false)
-											}
-										})
-									}
-								/>
+								<Typography>
+									<Typography.Title level={2}>
+										{PRODUCT_NAME} CALCULATOR
+									</Typography.Title>
+									{/* <Typography.Text type='secondary'>
+								Click the button to select desired combination of product
+								specifications.
+							</Typography.Text> */}
+								</Typography>
+								<div style={{ marginTop: '1rem' }}>
+									<Button
+										onClick={loading ? undefined : () => setShowForm(true)}
+										icon={<FileAddOutlined />}
+										loading={loading}
+									>
+										Add new
+									</Button>
+								</div>
 							</Col>
 						</Row>
+						<ProductSpecSelector data={data} />
+						<ProductLookUpResultItem
+							loading={loading}
+							data={data}
+							options={options}
+							submitForm={submitForm}
+							onShowForm={setShowForm}
+							onUpdateProductDetails={() =>
+								new Promise<boolean>((resolve, reject) => {
+									// if (values.product && values.product._id) {
+									// 	putData(
+									// 		`/api/admin/update/cyndical/${values.product._id}`,
+									// 		{
+									// 			// _id: values.product._id,
+									// 			DateCreated: values.product.createdAt,
+									// 			Price: values.product.price,
+									// 			cyndicalSize: values.product.size
+									// 		} as CylindricalProps
+									// 	)
+									// 		.then((success) => {
+									// 			messageApi.open({
+									// 				type: success ? 'success' : 'warning',
+									// 				content: success
+									// 					? 'Success! Product details has been updated.'
+									// 					: 'Failed. Cannot update the product. Please check the values if valid.',
+									// 				duration: 5
+									// 			})
+									// 			resolve(success)
+									// 		})
+									// 		.catch(reject)
+									// } else {
+									// 	resolve(false)
+									// }
+								})
+							}
+						/>
 					</Form>
 				)}
 			</Formik>
@@ -132,15 +133,13 @@ const AnchorBoltProduct = (props: AnchorBoltProductProps) => {
 						{}
 					)}
 					onSubmit={(values: any, { setSubmitting }) => {
-						postData('/api/admin/add/anchorBolt', values)
-							.then((success) => {
+						instance2()
+							.post<ResponseBaseProps>('/product/abolt', values)
+							.then(({ data: { message } }) => {
 								setSubmitting(false)
 								setShowForm(false)
-								messageApi.open({
-									type: success ? 'success' : 'warning',
-									content: success
-										? 'Success! Your form has been submitted.'
-										: 'Failed. Cannot add your form at the moment. Please try again later.',
+								messageApi.success({
+									content: message,
 									duration: 5
 								})
 							})

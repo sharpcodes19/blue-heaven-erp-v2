@@ -21,7 +21,8 @@ const ProductSpecList = (props: ProductSpecListProps) => {
 				<Typography>
 					<Typography.Title level={2}>{props.name} CALCULATOR</Typography.Title>
 					<Typography.Text type='secondary'>
-						Click the button to select desired combination of product specifications.
+						Click the button to select desired combination of product
+						specifications.
 					</Typography.Text>
 				</Typography>
 				{!props.noPostForm && (
@@ -40,7 +41,9 @@ const ProductSpecList = (props: ProductSpecListProps) => {
 					<div style={{ marginTop: '1rem' }}>
 						<Steps current={activeStepIndex}>
 							{props.options.map(({ accessor, hideStepComponent }) =>
-								hideStepComponent ? null : <Steps.Step key={accessor} title={_.capitalize(accessor)} />
+								hideStepComponent ? null : (
+									<Steps.Step key={accessor} title={_.capitalize(accessor)} />
+								)
 							)}
 						</Steps>
 						<ProductStepContent
@@ -48,7 +51,9 @@ const ProductSpecList = (props: ProductSpecListProps) => {
 							activeStepIndex={activeStepIndex}
 							loading={props.loading}
 						/>
-						<div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+						<div
+							style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}
+						>
 							<Button
 								type='primary'
 								disabled={activeStepIndex <= 0}
@@ -58,7 +63,12 @@ const ProductSpecList = (props: ProductSpecListProps) => {
 							</Button>
 							<Button
 								type='primary'
-								disabled={activeStepIndex >= props.options.filter((item) => !item.hideStepComponent).length - 1}
+								disabled={
+									activeStepIndex >=
+									props.options.filter((item) => !item.hideStepComponent)
+										.length -
+										1
+								}
 								onClick={() => setActiveStepIndex((prevState) => prevState + 1)}
 							>
 								Next &rarr;

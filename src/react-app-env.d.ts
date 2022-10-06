@@ -20,6 +20,7 @@ type SelectablePricingOptionProps = {
 	accessor: string
 	fieldCount?: number
 	originFieldName: string
+	label?: string
 }
 
 type BalancePaymentProps = {
@@ -87,6 +88,7 @@ type FinishedProductProps = {
 	finishType?: string
 	weight?: string
 	length?: string
+	length_mm?: string
 	width?: string
 	cutLength?: string
 	holeQuantity?: string
@@ -105,22 +107,31 @@ type FinishedProductProps = {
 	washer?: string
 	hexNut?: string
 	unit?: string
+	washerPrice?: number
+	hexNutPrice?: number
+	totalPricePerSet?: number
 }
 
 type BasePathname = 'pricing' | 'order' | 'inventory' | 'customer'
 
 type AnchorBoltProps = {
 	_id?: string
-	sizeA?: string
-	inchA?: string
-	mm?: string
+	diameter?: string
+	steel?: string
+	lengthByInches?: string
+	lengthByMillimeter?: string
 	bend?: string
-	standard?: number
+	thread?: string
+	price?: string
 	hexNut?: string
+	hexNutPrice?: string
+	hexNutQuantity?: string
 	fW?: string
-	total?: number
-	typeAnchor?: string
-	tl?: string
+	fWPrice?: string
+	fWQuantity?: string
+	totalPerSet?: string
+	totalPrice?: string
+	csvSource?: string
 }
 
 type SagRodProps = {

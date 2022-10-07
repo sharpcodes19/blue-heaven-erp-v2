@@ -9,7 +9,6 @@ import AddForm from '../_add/AddForm'
 import useAddProductToQuotationTable from '../_quotation/useAddProductToQuotationTable'
 import instance2 from '../../../../api/instance2'
 import ProductSpecSelector from './ProductSpecSelector'
-import ProductLookUpResult from '../_result/ProductLookUpResult'
 import ProductLookUpResultItem from '../_result/ProductLookUpResultItem'
 
 type AnchorBoltProductProps = {}
@@ -46,16 +45,27 @@ const AnchorBoltProduct = (props: AnchorBoltProductProps) => {
 						selection: {
 							name: PRODUCT_NAME
 						},
-						quantity: 1
+						quantity: 1,
+						hexNutQuantity: 0,
+						fWQuantity: 0
 					} as PricingFormProps
 				}
 				onSubmit={(values) => {
 					// instance2().post('/quotation', values.product)
+					const washer = values.fWQuantity * (values.product?.fWPrice || 0)
+					const nut = values.hexNutQuantity * (values.product?.hexNutPrice || 0)
+					const price = +(values.product?.price || 0)
+
 					const product: FinishedProductProps = {
 						...values.product!,
-						quantity: values.quantity
+						name: PRODUCT_NAME,
+						quantity: values.quantity,
+						hexNutQuantity: values.hexNutQuantity,
+						fWQuantity: values.fWQuantity,
+						price: String((washer + nut + price) * values.quantity)
 					}
 					handleSubmit(product)
+					console.log(washer, nut, price, product)
 				}}
 			>
 				{({ values, submitForm }) => (
@@ -84,6 +94,7 @@ const AnchorBoltProduct = (props: AnchorBoltProductProps) => {
 						</Row>
 						<ProductSpecSelector data={data} />
 						<ProductLookUpResultItem
+							productName={PRODUCT_NAME}
 							loading={loading}
 							data={data}
 							options={options}

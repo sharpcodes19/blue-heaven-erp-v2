@@ -1,8 +1,6 @@
-import { AutoComplete, Button, Col, Descriptions, Row } from 'antd'
+import { AutoComplete, Col, Descriptions, Row } from 'antd'
 import { useFormikContext } from 'formik'
 import _ from 'lodash'
-import React, { useState } from 'react'
-import instance2 from '../../../../api/instance2'
 
 type Props = {
 	data: Array<FinishedProductProps>
@@ -191,15 +189,15 @@ const ProductSpecSelector = (props: Props) => {
 										label: new Intl.NumberFormat('en-PH', {
 											style: 'currency',
 											currency: 'PHP'
-										}).format(+(item.washerPrice || 0)),
-										value: String(item.washerPrice)
+										}).format(+(item.fWPrice || 0)),
+										value: String(item.fWPrice)
 									})),
 									'label'
 								),
 								'label'
 							)}
 							onChange={(value) => {
-								formik.setFieldValue('selection.washerPrice', value)
+								formik.setFieldValue('selection.fWPrice', value)
 							}}
 						/> */}
 					</Descriptions.Item>

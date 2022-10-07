@@ -1,4 +1,12 @@
-import { Button, Col, Descriptions, InputNumber, message, Row, Space, Typography } from 'antd'
+import {
+	Button,
+	Col,
+	Descriptions,
+	InputNumber,
+	message,
+	Row,
+	Typography
+} from 'antd'
 import { FieldArray, useFormikContext } from 'formik'
 import { ShoppingCartOutlined } from '@ant-design/icons'
 import React from 'react'
@@ -13,7 +21,8 @@ type ProductLookUpResultProps = {
 
 const ProductLookUpResult = (props: ProductLookUpResultProps) => {
 	const formik = useFormikContext<PricingFormProps>()
-	const [enableUpdateButton, setEnableUpdateButton] = React.useState<boolean>(false)
+	const [enableUpdateButton, setEnableUpdateButton] =
+		React.useState<boolean>(false)
 	const [messageApi, contextHolder] = message.useMessage()
 	const [submmiting, setSubmitting] = React.useState<boolean>(false)
 
@@ -31,9 +40,15 @@ const ProductLookUpResult = (props: ProductLookUpResultProps) => {
 			messageApi.error({
 				content: (
 					<Typography>
-						<Typography.Text type='danger'>Unable to complete the update request.</Typography.Text>
-						<Typography.Text type='danger'>It is either we cannot find the product id.</Typography.Text>
-						<Typography.Text type='danger'>Product ID: {formik.values.product?._id}</Typography.Text>
+						<Typography.Text type='danger'>
+							Unable to complete the update request.
+						</Typography.Text>
+						<Typography.Text type='danger'>
+							It is either we cannot find the product id.
+						</Typography.Text>
+						<Typography.Text type='danger'>
+							Product ID: {formik.values.product?._id}
+						</Typography.Text>
 					</Typography>
 				)
 			})
@@ -47,22 +62,27 @@ const ProductLookUpResult = (props: ProductLookUpResultProps) => {
 				<Col>
 					<Descriptions bordered title='PRODUCT DETAILS' size='small'>
 						{Object.keys(props.target).map((key) =>
-							key === 'createdAt' || key === 'updatedAt' || key === '_id' ? null : (
+							key === 'createdAt' ||
+							key === 'updatedAt' ||
+							key === '_id' ? null : (
 								<Descriptions.Item label={key} key={key} span={3}>
-									{props.target[key as keyof FinishedProductProps] instanceof Array ? (
-										(props.target[key as keyof FinishedProductProps] as []).map((_, index) => (
-											<FieldArray
-												key={index}
-												name={`${key}.${index}`}
-												render={({ name, form }) => (
-													<ProductLookUpResultItemField
-														name={name as keyof FinishedProductProps}
-														target={form.values.selection}
-														onEnableUpdateButton={setEnableUpdateButton}
-													/>
-												)}
-											/>
-										))
+									{props.target[key as keyof FinishedProductProps] instanceof
+									Array ? (
+										(props.target[key as keyof FinishedProductProps] as []).map(
+											(_, index) => (
+												<FieldArray
+													key={index}
+													name={`${key}.${index}`}
+													render={({ name, form }) => (
+														<ProductLookUpResultItemField
+															name={name as keyof FinishedProductProps}
+															target={form.values.selection}
+															onEnableUpdateButton={setEnableUpdateButton}
+														/>
+													)}
+												/>
+											)
+										)
 									) : (
 										<ProductLookUpResultItemField
 											onEnableUpdateButton={setEnableUpdateButton}
@@ -88,6 +108,36 @@ const ProductLookUpResult = (props: ProductLookUpResultProps) => {
 						Update new changes to database.
 					</Button>
 				</Col>
+				{props.target.name === 'ABOLT' ? (
+					<Col span={24} style={{ marginTop: '1rem' }}>
+						<InputNumber
+							min={1}
+							defaultValue={1}
+							addonBefore='Hex Nut Qty'
+							onChange={(value) => {
+								formik.setFieldValue('hexNutQuantity', value)
+							}}
+							value={formik.values.hexNutQuantity}
+							style={{
+								maxWidth: 170,
+								marginRight: 10
+							}}
+						/>
+						<InputNumber
+							min={1}
+							defaultValue={1}
+							addonBefore='FW Qty'
+							onChange={(value) => {
+								formik.setFieldValue('fWQuantity', value)
+							}}
+							value={formik.values.fWQuantity}
+							style={{
+								maxWidth: 130,
+								marginRight: 10
+							}}
+						/>
+					</Col>
+				) : null}
 				<Col span={12} style={{ marginTop: '1rem' }}>
 					<InputNumber
 						min={1}
@@ -102,7 +152,11 @@ const ProductLookUpResult = (props: ProductLookUpResultProps) => {
 							marginRight: 10
 						}}
 					/>
-					<Button type='primary' onClick={props.submitForm} icon={<ShoppingCartOutlined />}>
+					<Button
+						type='primary'
+						onClick={props.submitForm}
+						icon={<ShoppingCartOutlined />}
+					>
 						Add to current Quotation table
 					</Button>
 				</Col>

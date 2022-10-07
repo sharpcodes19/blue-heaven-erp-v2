@@ -41,17 +41,24 @@ const CylindricalProduct = (props: CylindricalProductProps) => {
 				onSubmit={(values) => {
 					const product: FinishedProductProps = {
 						...values.product!,
-						quantity: values.quantity
+						quantity: values.quantity,
+						totalPricePerSet: values.quantity * +(values.product?.price || 0)
 					}
 					handleSubmit(product)
 				}}
 			>
 				{({ submitForm, values }) => (
 					<Form>
-						<ProductSpecList name={PRODUCT_NAME} options={options} loading={loading} onShowForm={setShowForm} />
+						<ProductSpecList
+							name={PRODUCT_NAME}
+							options={options}
+							loading={loading}
+							onShowForm={setShowForm}
+						/>
 						<Row>
 							<Col>
 								<ProductLookUpResultItem
+									productName={PRODUCT_NAME}
 									loading={loading}
 									data={data}
 									options={options}
@@ -60,12 +67,15 @@ const CylindricalProduct = (props: CylindricalProductProps) => {
 									onUpdateProductDetails={() =>
 										new Promise<boolean>((resolve, reject) => {
 											if (values.product && values.product._id) {
-												putData(`/api/admin/update/cyndical/${values.product._id}`, {
-													// _id: values.product._id,
-													DateCreated: values.product.createdAt,
-													Price: values.product.price,
-													cyndicalSize: values.product.size
-												} as CylindricalProps)
+												putData(
+													`/api/admin/update/cyndical/${values.product._id}`,
+													{
+														// _id: values.product._id,
+														DateCreated: values.product.createdAt,
+														Price: values.product.price,
+														cyndicalSize: values.product.size
+													} as CylindricalProps
+												)
 													.then((success) => {
 														messageApi.open({
 															type: success ? 'success' : 'warning',
@@ -92,7 +102,9 @@ const CylindricalProduct = (props: CylindricalProductProps) => {
 				<Formik
 					initialValues={_.transform(
 						options.map(({ originFieldName, fieldCount }) => ({
-							[originFieldName]: fieldCount ? Array.from({ length: fieldCount }).fill('0') : ''
+							[originFieldName]: fieldCount
+								? Array.from({ length: fieldCount }).fill('0')
+								: ''
 						})),
 						_.ary(_.extend, 2),
 						{}
@@ -110,11 +122,20 @@ const CylindricalProduct = (props: CylindricalProductProps) => {
 									duration: 5
 								})
 							})
-							.catch(() => messageApi.error('Error! Technical problem has been detected while submmiting your form.'))
+							.catch(() =>
+								messageApi.error(
+									'Error! Technical problem has been detected while submmiting your form.'
+								)
+							)
 					}}
 					validationSchema={postValidation}
 				>
-					<AddForm visible={showForm} onShowForm={setShowForm} productName={PRODUCT_NAME} options={options} />
+					<AddForm
+						visible={showForm}
+						onShowForm={setShowForm}
+						productName={PRODUCT_NAME}
+						options={options}
+					/>
 				</Formik>
 			) : null}
 		</Layout.Content>

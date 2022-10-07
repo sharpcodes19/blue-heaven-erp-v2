@@ -43,7 +43,8 @@ const HangerProduct = (props: SagRodProductProps) => {
 					if (values.product) {
 						const product: FinishedProductProps = {
 							...values.product,
-							quantity: values.quantity
+							quantity: values.quantity,
+							totalPricePerSet: values.quantity * +(values.product?.price || 0)
 						}
 						handleSubmit(product)
 					}
@@ -51,10 +52,16 @@ const HangerProduct = (props: SagRodProductProps) => {
 			>
 				{({ submitForm, values }) => (
 					<Form>
-						<ProductSpecList name={PRODUCT_NAME} options={options} loading={loading} onShowForm={setShowForm} />
+						<ProductSpecList
+							name={PRODUCT_NAME}
+							options={options}
+							loading={loading}
+							onShowForm={setShowForm}
+						/>
 						<Row>
 							<Col>
 								<ProductLookUpResultItem
+									productName={PRODUCT_NAME}
 									loading={loading}
 									data={data}
 									options={options}
@@ -63,12 +70,17 @@ const HangerProduct = (props: SagRodProductProps) => {
 									onUpdateProductDetails={() =>
 										new Promise<boolean>((resolve, reject) => {
 											if (values.product && values.product._id) {
-												putData('/api/admin/update/loopClevis/'.concat(values.product._id), {
-													Type: values.product.type,
-													Size: values.product.size,
-													Price: values.product.price,
-													_id: values.product._id
-												} as HangerProps)
+												putData(
+													'/api/admin/update/loopClevis/'.concat(
+														values.product._id
+													),
+													{
+														Type: values.product.type,
+														Size: values.product.size,
+														Price: values.product.price,
+														_id: values.product._id
+													} as HangerProps
+												)
 													.then((success) => {
 														messageApi.open({
 															type: success ? 'success' : 'warning',
@@ -95,7 +107,9 @@ const HangerProduct = (props: SagRodProductProps) => {
 				<Formik
 					initialValues={_.transform(
 						options.map(({ originFieldName, fieldCount }) => ({
-							[originFieldName]: fieldCount ? Array.from({ length: fieldCount }).fill('0') : ''
+							[originFieldName]: fieldCount
+								? Array.from({ length: fieldCount }).fill('0')
+								: ''
 						})),
 						_.ary(_.extend, 2),
 						{}
@@ -113,11 +127,20 @@ const HangerProduct = (props: SagRodProductProps) => {
 									duration: 5
 								})
 							})
-							.catch(() => messageApi.error('Error! Technical problem has been detected while submmiting your form.'))
+							.catch(() =>
+								messageApi.error(
+									'Error! Technical problem has been detected while submmiting your form.'
+								)
+							)
 					}}
 					validationSchema={postValidation}
 				>
-					<AddForm visible={showForm} onShowForm={setShowForm} productName={PRODUCT_NAME} options={options} />
+					<AddForm
+						visible={showForm}
+						onShowForm={setShowForm}
+						productName={PRODUCT_NAME}
+						options={options}
+					/>
 				</Formik>
 			) : null}
 		</Layout.Content>

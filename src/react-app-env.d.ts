@@ -107,9 +107,11 @@ type FinishedProductProps = {
 	washer?: string
 	hexNut?: string
 	unit?: string
-	washerPrice?: number
+	fWPrice?: number
 	hexNutPrice?: number
 	totalPricePerSet?: number
+	fWQuantity?: number
+	hexNutQuantity?: number
 }
 
 type BasePathname = 'pricing' | 'order' | 'inventory' | 'customer'
@@ -228,6 +230,8 @@ type LagScrewProps = {
 type PricingFormProps = {
 	selection: FinishedProductProps // pre-selected product
 	quantity: number
+	fWQuantity: number
+	hexNutQuantity: number
 	product?: FinishedProductProps // this one is the item the will be transferred to quantity section
 }
 

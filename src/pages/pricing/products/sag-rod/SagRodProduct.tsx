@@ -26,7 +26,9 @@ const SagRodProduct = (props: SagRodProductProps) => {
 		size: Yup.string().required('This field is required.'),
 		type: Yup.string().required('This field is required.'),
 		// .oneOf(['CRS', '41401045']),
-		threading: Yup.array().min(1, 'This field should be at least 1 parameter.').of(Yup.number().required())
+		threading: Yup.array()
+			.min(1, 'This field should be at least 1 parameter.')
+			.of(Yup.number().required())
 	})
 	const { handleSubmit } = useAddProductToQuotationTable(messageApi)
 
@@ -46,7 +48,8 @@ const SagRodProduct = (props: SagRodProductProps) => {
 					if (values.product) {
 						const product: FinishedProductProps = {
 							...values.product,
-							quantity: values.quantity
+							quantity: values.quantity,
+							totalPricePerSet: values.quantity * +(values.product?.price || 0)
 						}
 						handleSubmit(product)
 					}
@@ -54,10 +57,16 @@ const SagRodProduct = (props: SagRodProductProps) => {
 			>
 				{({ submitForm, values }) => (
 					<Form>
-						<ProductSpecList name={PRODUCT_NAME} options={options} loading={loading} onShowForm={setShowForm} />
+						<ProductSpecList
+							name={PRODUCT_NAME}
+							options={options}
+							loading={loading}
+							onShowForm={setShowForm}
+						/>
 						<Row>
 							<Col>
 								<ProductLookUpResultItem
+									productName={PRODUCT_NAME}
 									loading={loading}
 									data={data}
 									options={options}
@@ -68,9 +77,14 @@ const SagRodProduct = (props: SagRodProductProps) => {
 											if (values.product && values.product._id) {
 												putData(
 													values.product && values.product.type === 'CRS'
-														? '/api/admin/update/Asszabtcrs/'.concat(values.product._id)
-														: values.product && values.product.type === '41401045'
-														? '/api/admin/update/Asszabt41401045/'.concat(values.product._id)
+														? '/api/admin/update/Asszabtcrs/'.concat(
+																values.product._id
+														  )
+														: values.product &&
+														  values.product.type === '41401045'
+														? '/api/admin/update/Asszabt41401045/'.concat(
+																values.product._id
+														  )
 														: '',
 													{
 														bending: values.product.width,
@@ -106,13 +120,20 @@ const SagRodProduct = (props: SagRodProductProps) => {
 				<Formik
 					initialValues={_.transform(
 						options.map(({ originFieldName, fieldCount }) => ({
-							[originFieldName]: fieldCount ? Array.from({ length: fieldCount }).fill('0') : ''
+							[originFieldName]: fieldCount
+								? Array.from({ length: fieldCount }).fill('0')
+								: ''
 						})),
 						_.ary(_.extend, 2),
 						{}
 					)}
 					onSubmit={(values: any, { setSubmitting }) => {
-						postData(values.type === 'CRS' ? '/api/admin/add/Asszabtcrs' : '/api/admin/add/Asszabt41401045', values)
+						postData(
+							values.type === 'CRS'
+								? '/api/admin/add/Asszabtcrs'
+								: '/api/admin/add/Asszabt41401045',
+							values
+						)
 							.then((success) => {
 								setSubmitting(false)
 								setShowForm(false)
@@ -124,11 +145,20 @@ const SagRodProduct = (props: SagRodProductProps) => {
 									duration: 5
 								})
 							})
-							.catch(() => messageApi.error('Error! Technical problem has been detected while submmiting your form.'))
+							.catch(() =>
+								messageApi.error(
+									'Error! Technical problem has been detected while submmiting your form.'
+								)
+							)
 					}}
 					validationSchema={postValidation}
 				>
-					<AddForm visible={showForm} onShowForm={setShowForm} productName={PRODUCT_NAME} options={options} />
+					<AddForm
+						visible={showForm}
+						onShowForm={setShowForm}
+						productName={PRODUCT_NAME}
+						options={options}
+					/>
 				</Formik>
 			) : null}
 		</Layout.Content>

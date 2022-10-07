@@ -12,6 +12,7 @@ type ProductLookUpResultItemProps = {
 	onShowForm: (value: boolean) => any
 	onUpdateProductDetails: () => Promise<boolean>
 	loading: boolean
+	productName: string
 }
 
 type Status = 'info' | 'success' | 'error' | 'warning'
@@ -48,7 +49,7 @@ const ProductLookUpResultItem = (props: ProductLookUpResultItemProps) => {
 						// hexNutPrice: formik.values.selection.hexNutPrice,
 						// hexNutQuantity?: string
 						fW: formik.values.selection.washer
-						// fWPrice: formik.values.selection.washerPrice
+						// fWPrice: formik.values.selection.fWPrice
 						// fWQuantity?: string
 						// totalPerSet?: string
 						// totalPrice?: string
@@ -62,7 +63,10 @@ const ProductLookUpResultItem = (props: ProductLookUpResultItemProps) => {
 
 			if (!props.loading) {
 				if (finish && product) {
-					formik.setFieldValue('product', product)
+					formik.setFieldValue('product', {
+						...product,
+						name: props.productName
+					})
 					setStatus('success')
 				} else if (finish && !product) {
 					setStatus('error')

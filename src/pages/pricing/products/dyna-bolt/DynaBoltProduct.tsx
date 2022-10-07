@@ -42,17 +42,24 @@ const DynaBoltProduct = (props: DynaBoltProductProps) => {
 				onSubmit={(values) => {
 					const product: FinishedProductProps = {
 						...values.product!,
-						quantity: values.quantity
+						quantity: values.quantity,
+						totalPricePerSet: values.quantity * +(values.product?.price || 0)
 					}
 					handleSubmit(product)
 				}}
 			>
 				{({ submitForm, values }) => (
 					<Form>
-						<ProductSpecList name={PRODUCT_NAME} options={options} loading={loading} onShowForm={setShowForm} />
+						<ProductSpecList
+							name={PRODUCT_NAME}
+							options={options}
+							loading={loading}
+							onShowForm={setShowForm}
+						/>
 						<Row>
 							<Col>
 								<ProductLookUpResultItem
+									productName={PRODUCT_NAME}
 									loading={loading}
 									data={data}
 									options={options}
@@ -61,12 +68,15 @@ const DynaBoltProduct = (props: DynaBoltProductProps) => {
 									onUpdateProductDetails={() =>
 										new Promise<boolean>((resolve, reject) => {
 											if (values.product && values.product._id) {
-												putData(`/api/admin/update/dynabolt/${values.product._id}`, {
-													_id: values.product._id,
-													DateCreated: values.product.createdAt,
-													dynaboltSize: values.product.size,
-													Length: values.product.length
-												} as DynaBoltProps)
+												putData(
+													`/api/admin/update/dynabolt/${values.product._id}`,
+													{
+														_id: values.product._id,
+														DateCreated: values.product.createdAt,
+														dynaboltSize: values.product.size,
+														Length: values.product.length
+													} as DynaBoltProps
+												)
 													.then((success) => {
 														messageApi.open({
 															type: success ? 'success' : 'warning',
@@ -93,7 +103,9 @@ const DynaBoltProduct = (props: DynaBoltProductProps) => {
 				<Formik
 					initialValues={_.transform(
 						options.map(({ originFieldName, fieldCount }) => ({
-							[originFieldName]: fieldCount ? Array.from({ length: fieldCount }).fill('0') : ''
+							[originFieldName]: fieldCount
+								? Array.from({ length: fieldCount }).fill('0')
+								: ''
 						})),
 						_.ary(_.extend, 2),
 						{}
@@ -111,11 +123,20 @@ const DynaBoltProduct = (props: DynaBoltProductProps) => {
 									duration: 5
 								})
 							})
-							.catch(() => messageApi.error('Error! Technical problem has been detected while submmiting your form.'))
+							.catch(() =>
+								messageApi.error(
+									'Error! Technical problem has been detected while submmiting your form.'
+								)
+							)
 					}}
 					validationSchema={postValidation}
 				>
-					<AddForm visible={showForm} onShowForm={setShowForm} productName={PRODUCT_NAME} options={options} />
+					<AddForm
+						visible={showForm}
+						onShowForm={setShowForm}
+						productName={PRODUCT_NAME}
+						options={options}
+					/>
 				</Formik>
 			) : null}
 		</Layout.Content>

@@ -6,20 +6,10 @@ import OptionCell from './OptionCell'
 
 const columns: Array<ColumnType<FinishedProductProps>> = [
 	{
-		title: 'Quantity',
-		dataIndex: 'quantity',
-		key: _.uniqueId('quantity'),
-		sorter: (a: FinishedProductProps, b: FinishedProductProps) => {
-			var x = a.quantity || ''
-			var y = b.quantity || ''
-			return x < y ? -1 : x > y ? 1 : 0
-		},
-		width: 110
-	},
-	{
 		title: 'Product Name',
 		dataIndex: 'name',
 		key: _.uniqueId('name'),
+		width: 360,
 		render: (value, record: FinishedProductProps) => {
 			return (
 				<Row align='middle' style={{ gap: 5 }}>
@@ -85,7 +75,9 @@ const columns: Array<ColumnType<FinishedProductProps>> = [
 				<Col>
 					<Tooltip title='Thread Length'>
 						<Typography>
-							<Tag color={value ? 'forestgreen' : 'volcano'}>{value || 'N/A'}</Tag>
+							<Tag color={value ? 'forestgreen' : 'volcano'}>
+								{value || 'N/A'}
+							</Tag>
 						</Typography>
 					</Tooltip>
 				</Col>
@@ -144,7 +136,9 @@ const columns: Array<ColumnType<FinishedProductProps>> = [
 				<Col>
 					<Tooltip title='No. of holes'>
 						<Typography>
-							<Tag color={value ? 'forestgreen' : 'volcano'}>{value || 'N/A'}</Tag>
+							<Tag color={value ? 'forestgreen' : 'volcano'}>
+								{value || 'N/A'}
+							</Tag>
 						</Typography>
 					</Tooltip>
 				</Col>
@@ -188,6 +182,45 @@ const columns: Array<ColumnType<FinishedProductProps>> = [
 		width: 115
 	},
 	{
+		title: 'Quantity',
+		dataIndex: 'quantity',
+		key: _.uniqueId('quantity'),
+		sorter: (a: FinishedProductProps, b: FinishedProductProps) => {
+			var x = a.quantity || ''
+			var y = b.quantity || ''
+			return x < y ? -1 : x > y ? 1 : 0
+		},
+		width: 110
+	},
+	{
+		title: 'Total Price',
+		dataIndex: 'totalPricePerSet',
+		key: _.uniqueId('totalPricePerSet'),
+		sorter: (a: FinishedProductProps, b: FinishedProductProps) => {
+			var x = String(a.totalPricePerSet)?.toLowerCase() || ''
+			var y = String(b.totalPricePerSet)?.toLowerCase() || ''
+			return x < y ? -1 : x > y ? 1 : 0
+		},
+		render: (value) => {
+			const amount = new Intl.NumberFormat('en-PH', {
+				style: 'currency',
+				currency: 'PHP'
+			}).format(value || 0)
+			return (
+				<Row>
+					{value ? (
+						amount
+					) : (
+						<Tooltip title={amount}>
+							<Tag color='red'>FREE</Tag>
+						</Tooltip>
+					)}
+				</Row>
+			)
+		},
+		width: 115
+	},
+	{
 		title: 'Remarks',
 		dataIndex: 'remarks',
 		key: _.uniqueId('remarks'),
@@ -197,7 +230,9 @@ const columns: Array<ColumnType<FinishedProductProps>> = [
 		title: 'Action',
 		dataIndex: '_id',
 		key: _.uniqueId('action'),
-		render: (_, record: FinishedProductProps, index) => <OptionCell index={index} record={record} />,
+		render: (_, record: FinishedProductProps, index) => (
+			<OptionCell index={index} record={record} />
+		),
 		width: 90
 	}
 ]

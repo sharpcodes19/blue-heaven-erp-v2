@@ -210,13 +210,13 @@ const useData = (productName: string): Props => {
 							label: 'Washer'
 						},
 						{
-							accessor: 'washerPrice',
+							accessor: 'fWPrice',
 							originFieldName: 'fWPrice',
 							options: _.uniqBy(
 								_.sortBy(
 									allData.map((item) => ({
-										label: item.washerPrice,
-										value: item.washerPrice
+										label: item.fWPrice,
+										value: item.fWPrice
 									})),
 									'label'
 								),

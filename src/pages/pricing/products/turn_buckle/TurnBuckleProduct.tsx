@@ -43,7 +43,8 @@ const TurnBuckleProduct = (props: TurnBuckleProductProps) => {
 				onSubmit={(values) => {
 					const product: FinishedProductProps = {
 						...values.product!,
-						quantity: values.quantity
+						quantity: values.quantity,
+						totalPricePerSet: values.quantity * +(values.product?.price || 0)
 					}
 					handleSubmit(product)
 				}}
@@ -59,6 +60,7 @@ const TurnBuckleProduct = (props: TurnBuckleProductProps) => {
 						<Row>
 							<Col>
 								<ProductLookUpResultItem
+									productName={PRODUCT_NAME}
 									loading={loading}
 									data={data}
 									options={options}

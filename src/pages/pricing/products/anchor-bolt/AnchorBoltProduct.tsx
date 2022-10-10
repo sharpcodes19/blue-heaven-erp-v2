@@ -62,7 +62,8 @@ const AnchorBoltProduct = (props: AnchorBoltProductProps) => {
 						quantity: values.quantity,
 						hexNutQuantity: values.hexNutQuantity,
 						fWQuantity: values.fWQuantity,
-						price: String((washer + nut + price) * values.quantity)
+						totalPricePerSet: (washer + nut + price) * values.quantity,
+						price: String(washer + nut + price)
 					}
 					handleSubmit(product)
 					console.log(washer, nut, price, product)

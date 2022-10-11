@@ -29,7 +29,8 @@ const useColumns = (): Props => {
 						<Tag color='volcano'>N/A</Tag>
 					),
 				sorter: (a: OrderProps, b: OrderProps) => {
-					if (a.orderDate && b.orderDate) return Moment(a.orderDate).isBefore(b.orderDate) ? 1 : 0
+					if (a.orderDate && b.orderDate)
+						return Moment(a.orderDate).isBefore(b.orderDate) ? 1 : 0
 					return 0
 				},
 				width: 120
@@ -81,7 +82,12 @@ const useColumns = (): Props => {
 				title: 'Customer Name',
 				dataIndex: 'customerId',
 				key: _.uniqueId('customerId'),
-				render: (value) => value || <Tag color='red'>Unnamed Customer</Tag>
+				render: (value) => {
+					const lookUpCustomerName: string | undefined = customers.value?.filter(
+						(c) => c._id === value
+					)[0]?.name
+					return lookUpCustomerName || <Tag color='red'>Unnamed Customer</Tag>
+				}
 			},
 			{
 				title: 'Items',
@@ -122,7 +128,15 @@ const useColumns = (): Props => {
 					return (
 						<Row>
 							{totalPaid ? (
-								<Tooltip title={record.paymentDate ? `Paid on ${Moment(record.paymentDate).format('MMM DD, YYYY')}` : undefined}>{amount}</Tooltip>
+								<Tooltip
+									title={
+										record.paymentDate
+											? `Paid on ${Moment(record.paymentDate).format('MMM DD, YYYY')}`
+											: undefined
+									}
+								>
+									{amount}
+								</Tooltip>
 							) : (
 								<Tag color='red'>{amount}</Tag>
 							)}
@@ -148,10 +162,14 @@ const useColumns = (): Props => {
 								currency: 'PHP'
 							}).format(item.amount || 0)
 							return (
-								<Tooltip title={item.paymentMethod ? `via ${item.paymentMethod}` : undefined}>
+								<Tooltip
+									title={item.paymentMethod ? `via ${item.paymentMethod}` : undefined}
+								>
 									<div>
 										<Tag color={item.amount ? 'orange' : 'red'}>{amount}</Tag>
-										{item.paymentDate ? <Tag>{Moment(item.paymentDate).format('MMM DD, YYYY')}</Tag> : null}
+										{item.paymentDate ? (
+											<Tag>{Moment(item.paymentDate).format('MMM DD, YYYY')}</Tag>
+										) : null}
 									</div>
 								</Tooltip>
 							)
@@ -168,7 +186,11 @@ const useColumns = (): Props => {
 						style: 'currency',
 						currency: 'PHP'
 					}).format(value || 0)
-					return <Row>{value ? amount : <Tag color='red'>{value ? amount : 'No EWT'}</Tag>}</Row>
+					return (
+						<Row>
+							{value ? amount : <Tag color='red'>{value ? amount : 'No EWT'}</Tag>}
+						</Row>
+					)
 				},
 				width: 95,
 				sorter: (a: OrderProps, b: OrderProps) => {
@@ -186,7 +208,11 @@ const useColumns = (): Props => {
 						style: 'currency',
 						currency: 'PHP'
 					}).format(value || 0)
-					return <Row>{value ? amount : <Tag color='red'>{value ? amount : 'No Freight'}</Tag>}</Row>
+					return (
+						<Row>
+							{value ? amount : <Tag color='red'>{value ? amount : 'No Freight'}</Tag>}
+						</Row>
+					)
 				},
 				width: 95,
 				sorter: (a: OrderProps, b: OrderProps) => {
@@ -201,7 +227,15 @@ const useColumns = (): Props => {
 				key: _.uniqueId('deliveryLocation'),
 				render: (value, record) =>
 					value ? (
-						<Tooltip title={record.deliveryDate ? `to be deliver on ${Moment(record.deliveryDate).format('MMM DD, YYYY')}` : undefined}>
+						<Tooltip
+							title={
+								record.deliveryDate
+									? `to be deliver on ${Moment(record.deliveryDate).format(
+											'MMM DD, YYYY'
+									  )}`
+									: undefined
+							}
+						>
 							<Typography>
 								<Typography.Text>{value}</Typography.Text>
 							</Typography>

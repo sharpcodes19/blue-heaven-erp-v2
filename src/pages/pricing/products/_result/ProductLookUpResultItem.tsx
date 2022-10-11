@@ -23,27 +23,19 @@ const ProductLookUpResultItem = (props: ProductLookUpResultItemProps) => {
 
 	React.useEffect(() => {
 		;(async () => {
-			const selectedKeyCount =
-				Object.keys(formik.values.selection).length -
-				Object.keys(formik.initialValues.selection).length
-			const optionKeyCount = props.options.filter(
-				(item) => !item.hideStepComponent
-			).length
+			const selectedKeyCount = Object.keys(formik.values.selection).length - Object.keys(formik.initialValues.selection).length
+			const optionKeyCount = props.options.filter((item) => !item.hideStepComponent).length
 			const finish = selectedKeyCount >= optionKeyCount
-			let product
+			let product: FinishedProductProps | undefined
 			if (formik.values.selection.name === 'ABOLT') {
-				const response = await instance2().get<
-					ResponseBaseProps<Array<AnchorBoltProps>>
-				>('/product/abolt', {
+				const response = await instance2().get<ResponseBaseProps<Array<AnchorBoltProps>>>('/product/abolt', {
 					params: {
 						diameter: formik.values.selection.size,
 						steel: formik.values.selection.type,
 						// lengthByInches?: string
 						lengthByMillimeter: formik.values.selection.length_mm,
 						bend: formik.values.selection.width,
-						thread: formik.values.selection.threadLength
-							? formik.values.selection.threadLength[0]
-							: undefined,
+						thread: formik.values.selection.threadLength ? formik.values.selection.threadLength[0] : undefined,
 						price: formik.values.selection.price,
 						hexNut: formik.values.selection.hexNut,
 						// hexNutPrice: formik.values.selection.hexNutPrice,
@@ -56,7 +48,24 @@ const ProductLookUpResultItem = (props: ProductLookUpResultItemProps) => {
 						// csvSource?: string
 					}
 				})
-				product = response.data.packet?.at(0)
+				const abolt: AnchorBoltProps | undefined = response.data.packet?.at(0)
+				if (abolt)
+					product = {
+						name: props.productName,
+						_id: abolt._id,
+						fWPrice: +(abolt.fWPrice || 0),
+						hexNut: abolt.hexNut,
+						hexNutPrice: +(abolt.hexNutPrice || 0),
+						length_mm: abolt.lengthByMillimeter,
+						length: abolt.lengthByInches,
+						price: abolt.price,
+						size: abolt.diameter,
+						threadLength: [String(abolt.thread)],
+						totalPricePerSet: +(abolt.totalPerSet || 0),
+						type: abolt.steel,
+						washer: abolt.fW,
+						width: abolt.bend
+					}
 			} else {
 				product = _.find(props.data, formik.values.selection)
 			}
@@ -78,13 +87,7 @@ const ProductLookUpResultItem = (props: ProductLookUpResultItemProps) => {
 			setStatus('info')
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [
-		props.data,
-		formik.values.selection,
-		props.options,
-		formik.initialValues.selection,
-		props.loading
-	])
+	}, [props.data, formik.values.selection, props.options, formik.initialValues.selection, props.loading])
 
 	return (
 		<Row style={{ marginTop: '2rem' }}>
@@ -113,12 +116,7 @@ const ProductLookUpResultItem = (props: ProductLookUpResultItemProps) => {
 			</Col>
 			<Col span={24}>
 				{status === 'success' && formik.values.product && (
-					<ProductLookUpResult
-						submitForm={props.submitForm}
-						target={formik.values.product}
-						onShowForm={props.onShowForm}
-						onUpdateProductDetails={props.onUpdateProductDetails}
-					/>
+					<ProductLookUpResult submitForm={props.submitForm} target={formik.values.product} onShowForm={props.onShowForm} onUpdateProductDetails={props.onUpdateProductDetails} />
 				)}
 			</Col>
 		</Row>

@@ -66,7 +66,6 @@ const AnchorBoltProduct = (props: AnchorBoltProductProps) => {
 						price: String(washer + nut + price)
 					}
 					handleSubmit(product)
-					console.log(washer, nut, price, product)
 				}}
 			>
 				{({ values, submitForm }) => (
@@ -74,20 +73,14 @@ const AnchorBoltProduct = (props: AnchorBoltProductProps) => {
 						<Row>
 							<Col>
 								<Typography>
-									<Typography.Title level={2}>
-										{PRODUCT_NAME} CALCULATOR
-									</Typography.Title>
+									<Typography.Title level={2}>{PRODUCT_NAME} CALCULATOR</Typography.Title>
 									{/* <Typography.Text type='secondary'>
 								Click the button to select desired combination of product
 								specifications.
 							</Typography.Text> */}
 								</Typography>
 								<div style={{ marginTop: '1rem' }}>
-									<Button
-										onClick={loading ? undefined : () => setShowForm(true)}
-										icon={<FileAddOutlined />}
-										loading={loading}
-									>
+									<Button onClick={loading ? undefined : () => setShowForm(true)} icon={<FileAddOutlined />} loading={loading}>
 										Add new
 									</Button>
 								</div>
@@ -137,9 +130,7 @@ const AnchorBoltProduct = (props: AnchorBoltProductProps) => {
 				<Formik
 					initialValues={_.transform(
 						options.map(({ originFieldName, fieldCount }) => ({
-							[originFieldName]: fieldCount
-								? Array.from({ length: fieldCount }).fill('0')
-								: ''
+							[originFieldName]: fieldCount ? Array.from({ length: fieldCount }).fill('0') : ''
 						})),
 						_.ary(_.extend, 2),
 						{}
@@ -155,20 +146,11 @@ const AnchorBoltProduct = (props: AnchorBoltProductProps) => {
 									duration: 5
 								})
 							})
-							.catch(() =>
-								messageApi.error(
-									'Error! Technical problem has been detected while submmiting your form.'
-								)
-							)
+							.catch(() => messageApi.error('Error! Technical problem has been detected while submmiting your form.'))
 					}}
 					validationSchema={postValidation}
 				>
-					<AddForm
-						visible={showForm}
-						onShowForm={setShowForm}
-						productName={PRODUCT_NAME}
-						options={options}
-					/>
+					<AddForm visible={showForm} onShowForm={setShowForm} productName={PRODUCT_NAME} options={options} />
 				</Formik>
 			) : null}
 		</Layout.Content>

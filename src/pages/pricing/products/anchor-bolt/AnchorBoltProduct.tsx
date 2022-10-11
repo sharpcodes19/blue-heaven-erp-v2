@@ -96,30 +96,37 @@ const AnchorBoltProduct = (props: AnchorBoltProductProps) => {
 							onShowForm={setShowForm}
 							onUpdateProductDetails={() =>
 								new Promise<boolean>((resolve, reject) => {
-									// if (values.product && values.product._id) {
-									// 	putData(
-									// 		`/api/admin/update/cyndical/${values.product._id}`,
-									// 		{
-									// 			// _id: values.product._id,
-									// 			DateCreated: values.product.createdAt,
-									// 			Price: values.product.price,
-									// 			cyndicalSize: values.product.size
-									// 		} as CylindricalProps
-									// 	)
-									// 		.then((success) => {
-									// 			messageApi.open({
-									// 				type: success ? 'success' : 'warning',
-									// 				content: success
-									// 					? 'Success! Product details has been updated.'
-									// 					: 'Failed. Cannot update the product. Please check the values if valid.',
-									// 				duration: 5
-									// 			})
-									// 			resolve(success)
-									// 		})
-									// 		.catch(reject)
-									// } else {
-									// 	resolve(false)
-									// }
+									if (values.product && values.product._id) {
+										instance2()
+											.put(`/product/abolt/${values.product._id}`, {
+												diameter: values.product!.size,
+												steel: values.product!.type,
+												// lengthByInches?: string
+												lengthByMillimeter: values.product!.length_mm,
+												bend: values.product!.width,
+												thread: values.product!.threadLength ? values.product!.threadLength[0] : undefined,
+												price: values.product!.price,
+												hexNut: values.product!.hexNut,
+												hexNutPrice: values.product!.hexNutPrice,
+												// hexNutQuantity?: string
+												fW: values.product!.washer,
+												fWPrice: values.product!.fWPrice,
+												// fWQuantity?: string
+												totalPerSet: String(values.product.totalPricePerSet)
+												// totalPrice?: string
+												// csvSource?: string
+											} as AnchorBoltProps)
+											.then(({ data }) => {
+												messageApi.success({
+													content: data.message,
+													duration: 5
+												})
+												resolve(true)
+											})
+											.catch(reject)
+									} else {
+										resolve(false)
+									}
 								})
 							}
 						/>

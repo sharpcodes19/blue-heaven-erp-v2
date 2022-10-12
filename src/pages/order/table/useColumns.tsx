@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import React from 'react'
 import Moment from 'moment'
-import { Col, Row, Space, Tag, Tooltip, Typography } from 'antd'
+import { Col, Row, Tag, Tooltip, Typography } from 'antd'
 import { ColumnType } from 'antd/lib/table'
 import { Customer } from '../../../contexts/CustomerContext'
 import OptionCell from './OptionCell'
@@ -20,7 +20,7 @@ const useColumns = (): Props => {
 				title: 'Order Date',
 				dataIndex: 'orderDate',
 				key: _.uniqueId('orderDate'),
-				render: (value) =>
+				render: (value?: Date | null) =>
 					value ? (
 						<Typography>
 							<Typography.Text>{Moment(value).format('MMM DD, YYYY')}</Typography.Text>
@@ -86,7 +86,7 @@ const useColumns = (): Props => {
 					const lookUpCustomerName: string | undefined = customers.value?.filter(
 						(c) => c._id === value
 					)[0]?.name
-					return lookUpCustomerName || <Tag color='red'>Unnamed Customer</Tag>
+					return lookUpCustomerName || value || <Tag color='red'>Unnamed Customer</Tag>
 				}
 			},
 			{
@@ -260,7 +260,7 @@ const useColumns = (): Props => {
 				dataIndex: '_id',
 				key: _.uniqueId('action'),
 				render: (_, record: OrderProps) => <OptionCell record={record} />,
-				width: 90
+				width: 150
 			}
 		],
 		[customers.value]

@@ -8,7 +8,6 @@ import { Order } from '../../contexts/OrderContext'
 
 type OrderTableProps = {
 	onChangeDateRange: (value: DateRange) => any
-	ref?: React.MutableRefObject<HTMLDivElement>
 } & DateRange
 
 const OrderTable = (props: OrderTableProps) => {
@@ -37,7 +36,6 @@ const OrderTable = (props: OrderTableProps) => {
 					dataSource={value}
 					size='small'
 					scroll={{ x: 'calc(1100px + 50%)' }}
-					ref={props.ref}
 				/>
 			</Col>
 		</Row>

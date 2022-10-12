@@ -1,5 +1,4 @@
-import { Button, Layout, message, Modal, Typography } from 'antd'
-import { useReactToPrint } from 'react-to-print'
+import { Layout, message, Modal, Typography } from 'antd'
 import { Formik } from 'formik'
 import Moment from 'moment'
 import React from 'react'
@@ -26,28 +25,21 @@ const OrderPage = (props: OrderPageProps) => {
 		to: Moment().endOf('month').endOf('day').toDate()
 	})
 	const { value, dispatch } = React.useContext(Order)!
-	const printComponentRef = React.useRef<any>(null)
-
-	const handlePrint = useReactToPrint({
-		content: () => printComponentRef.current
-	})
 
 	React.useEffect(() => {
 		;(async () => {
 			if (!customers.value || !customers.value.length) {
 				const {
 					data: { packet }
-				} = await instance2().get<ResponseBaseProps<Array<CustomerProps>>>(
-					'/customer'
-				)
+				} = await instance2().get<ResponseBaseProps<Array<CustomerProps>>>('/customer')
 				customers.dispatch(packet!)
 			}
 			const {
 				data: { packet }
 			} = await instance2().get<ResponseBaseProps<Array<OrderProps>>>(
-				`/order?sort=desc&from=${Moment(dateRange.from).format(
-					'YYYY-MM-DD'
-				)}&to=${Moment(dateRange.to).format('YYYY-MM-DD')}`
+				`/order?sort=desc&from=${Moment(dateRange.from).format('YYYY-MM-DD')}&to=${Moment(
+					dateRange.to
+				).format('YYYY-MM-DD')}`
 				// '/order?sort=desc'
 			)
 			dispatch(packet || [])
@@ -95,11 +87,7 @@ const OrderPage = (props: OrderPageProps) => {
 					<Layout.Content>
 						{alertContext}
 						<Typography.Title level={2}>ORDERS</Typography.Title>
-						<OrderTable
-							{...dateRange}
-							onChangeDateRange={setDateRange}
-							ref={printComponentRef}
-						/>
+						<OrderTable {...dateRange} onChangeDateRange={setDateRange} />
 					</Layout.Content>
 					<Modal
 						onOk={submitForm}
@@ -113,11 +101,10 @@ const OrderPage = (props: OrderPageProps) => {
 						confirmLoading={isSubmitting}
 					>
 						<OrderForm />
-						<Routes>
-							<Route path='print' element={<PrintPreview data={values} />} />
-							<Route path='*' element={<Navigate replace to='' />} />
-						</Routes>
 					</Modal>
+					<Routes>
+						<Route path='print' element={<PrintPreview />} />
+					</Routes>
 				</React.Fragment>
 			)}
 		</Formik>

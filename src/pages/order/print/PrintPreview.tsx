@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import Moment from 'moment'
 import React from 'react'
-import { Col, Descriptions, Divider, List, Modal, Row, Space, Typography } from 'antd'
+import { Col, Descriptions, Divider, Modal, Row, Typography } from 'antd'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useReactToPrint } from 'react-to-print'
 import parseName from './useName'

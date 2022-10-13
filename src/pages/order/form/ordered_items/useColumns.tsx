@@ -2,6 +2,7 @@ import _ from 'lodash'
 import { ColumnType } from 'antd/lib/table'
 import { Col, Row, Tag, Tooltip, Typography } from 'antd'
 import React from 'react'
+import ItemNameCell from '../../table/cells/ItemNameCell'
 
 type Props = {
 	columns: Array<ColumnType<FinishedProductProps & EditableTableRowProps>>
@@ -49,38 +50,45 @@ const useColumns = (): Props => {
 				title: 'Product Name',
 				dataIndex: 'name',
 				key: _.uniqueId('name'),
-				render: (value, record: FinishedProductProps) => {
-					return (
-						<Row align='middle' style={{ gap: 5 }}>
-							<Col style={{ marginRight: 10 }}>
-								<Typography>
-									<Typography.Text>{value}</Typography.Text>
-								</Typography>
-							</Col>
-							<Col>
-								{record.type ? (
-									<Tooltip title='Type or Material'>
-										<Tag color='green'>{record.type}</Tag>
-									</Tooltip>
-								) : null}
-								{record.size ? (
-									<Tooltip title='Size or Diameter'>
-										<Tag color='orange'>{record.size}</Tag>
-									</Tooltip>
-								) : null}
-								{record.length ? (
-									<Tooltip title='Length'>
-										<Tag color='geekblue'>{record.length}</Tag>
-									</Tooltip>
-								) : null}
-								{record.width ? (
-									<Tooltip title='Bend or Width'>
-										<Tag color='darkslateblue'>{record.width}</Tag>
-									</Tooltip>
-								) : null}
-							</Col>
-						</Row>
-					)
+				// render: (value, record: FinishedProductProps) => {
+				// 	return (
+				// 		<Row align='middle' style={{ gap: 5 }}>
+				// 			<Col style={{ marginRight: 10 }}>
+				// 				<Typography>
+				// 					<Typography.Text>{value}</Typography.Text>
+				// 				</Typography>
+				// 			</Col>
+				// 			<Col>
+				// 				{record.type ? (
+				// 					<Tooltip title='Type or Material'>
+				// 						<Tag color='green'>{record.type}</Tag>
+				// 					</Tooltip>
+				// 				) : null}
+				// 				{record.size ? (
+				// 					<Tooltip title='Size or Diameter'>
+				// 						<Tag color='orange'>{record.size}</Tag>
+				// 					</Tooltip>
+				// 				) : null}
+				// 				{record.length ? (
+				// 					<Tooltip title='Length'>
+				// 						<Tag color='geekblue'>{record.length}</Tag>
+				// 					</Tooltip>
+				// 				) : null}
+				// 				{record.width ? (
+				// 					<Tooltip title='Bend or Width'>
+				// 						<Tag color='darkslateblue'>{record.width}</Tag>
+				// 					</Tooltip>
+				// 				) : null}
+				// 			</Col>
+				// 		</Row>
+				// 	)
+				// },
+
+				render: (_, product: FinishedProductProps) => {
+					const record: OrderProps = {
+						items: [product]
+					}
+					return <ItemNameCell record={record} />
 				},
 				sorter: (a: FinishedProductProps, b: FinishedProductProps) => {
 					var x = a.name?.toLowerCase() || ''
@@ -136,9 +144,7 @@ const useColumns = (): Props => {
 						<Col>
 							<Tooltip title='No. of holes'>
 								<Typography>
-									<Tag color={value ? 'forestgreen' : 'volcano'}>
-										{value || 'N/A'}
-									</Tag>
+									<Tag color={value ? 'forestgreen' : 'volcano'}>{value || 'N/A'}</Tag>
 								</Typography>
 							</Tooltip>
 						</Col>

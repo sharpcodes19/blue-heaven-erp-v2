@@ -1,16 +1,5 @@
-import _ from 'lodash'
 import Moment from 'moment'
-import {
-	AutoComplete,
-	Col,
-	DatePicker,
-	Form,
-	Input,
-	InputNumber,
-	Row,
-	Select,
-	Tabs
-} from 'antd'
+import { Col, DatePicker, Form, Input, InputNumber, Row, Tabs } from 'antd'
 import { useFormikContext } from 'formik'
 import React from 'react'
 import { Customer } from '../../../contexts/CustomerContext'
@@ -27,11 +16,7 @@ const OrderForm = (props: OrderFormProps) => {
 			__update__?: boolean
 		}
 	>()
-	const { value } = React.useContext(Customer)!
-	const [customer, setCustomer] = React.useState<Array<CustomerProps>>(
-		value || []
-	)
-	const [keyword, setKeyword] = React.useState<string>('')
+	const { value: customers } = React.useContext(Customer)!
 
 	const [status, setStatus] = React.useState<string>('')
 
@@ -57,9 +42,7 @@ const OrderForm = (props: OrderFormProps) => {
 				<Col>
 					<Form.Item label='Order Date'>
 						<DatePicker
-							value={
-								formik.values.orderDate ? Moment(formik.values.orderDate) : null
-							}
+							value={formik.values.orderDate ? Moment(formik.values.orderDate) : null}
 							onChange={(value) => {
 								if (value) formik.setFieldValue('orderDate', value.toDate())
 							}}
@@ -69,9 +52,7 @@ const OrderForm = (props: OrderFormProps) => {
 				<Col>
 					<Form.Item label='Due Date'>
 						<DatePicker
-							value={
-								formik.values.dueDate ? Moment(formik.values.dueDate) : null
-							}
+							value={formik.values.dueDate ? Moment(formik.values.dueDate) : null}
 							onChange={(value) => {
 								if (value) formik.setFieldValue('dueDate', value.toDate())
 							}}
@@ -93,20 +74,23 @@ const OrderForm = (props: OrderFormProps) => {
 				</Col>
 			</Row>
 			<Form.Item label='Customer Name'>
-				<AutoComplete
-					style={{ width: '100%' }}
-					options={_.sortBy(
-						customer?.map(({ _id, name }) => ({
-							label: name,
-							value: _id
-						})),
-						'label'
-					)}
+				<Input
 					placeholder='Search customer name'
-					filterOption={(inputValue, option) =>
-						option!.label?.toUpperCase().indexOf(inputValue.toUpperCase()) !==
-						-1
-					}
+					style={{ width: '100%' }}
+					onChange={(e) => {
+						formik.setFieldValue('customerId', e.target.value)
+					}}
+					value={formik.values.customerId}
+					// options={_.sortBy(
+					// 	customers?.map(({ _id, name }) => ({
+					// 		label: name,
+					// 		value: _id
+					// 	})),
+					// 	'label'
+					// )}
+					// filterOption={(inputValue, option) =>
+					// 	option!.label?.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+					// }
 					// style={{ width: '100%' }}
 					// onChange={(value) => {
 					// 	formik.setFieldValue('customerId', value)

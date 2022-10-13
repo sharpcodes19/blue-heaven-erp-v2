@@ -92,7 +92,6 @@ const useColumns = (): Props => {
 			{
 				title: 'Items',
 				key: _.uniqueId('items'),
-				// TODO: populate items in the table
 				render: (_, record: OrderProps) => <ItemNameCell record={record} />
 			},
 			{

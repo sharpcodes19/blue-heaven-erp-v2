@@ -21,7 +21,9 @@ const QuotationSection = (props: QuotationSectionProps) => {
 				selectedQuotation.value!
 			const order: OrderProps = {
 				customerId,
-				items: items || []
+				items: items || [],
+				orderDate: new Date()
+				// quotationNumber: undefined // the backend will handle its value
 			}
 			// console.log(order)
 			const { data } = await instance2()({

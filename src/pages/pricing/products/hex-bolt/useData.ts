@@ -11,9 +11,7 @@ type Props = {
 
 const useData = (productName: string): Props => {
 	const [data, setData] = React.useState<Array<FinishedProductProps>>([])
-	const [options, setOptions] = React.useState<
-		Array<SelectablePricingOptionProps>
-	>([])
+	const [options, setOptions] = React.useState<Array<SelectablePricingOptionProps>>([])
 	const [loading, setLoading] = React.useState<boolean>(true)
 
 	React.useEffect(() => {
@@ -29,15 +27,19 @@ const useData = (productName: string): Props => {
 			for (let i = 0; i < responses.length; i++) {
 				allData.push(
 					...responses[i].data.allUser
-						// .filter((p) => p.threadValue && p.clenght && p.cType && p.hType)
+						.filter(
+							(p) => p.threadValue && p.boltLenght && p.materialValue && p.threadValue
+						)
 						.map((p) => ({
 							name: productName,
 							_id: p._id,
-							length: p.clenght,
+							length: p.boltLenght,
 							price: p.cost,
-							type: p.cType,
+							type: p.materialValue,
 							threadType: p.threadValue,
-							createdAt: p.DateCreated
+							createdAt: p.DateCreated,
+							hexNut: p.hexNut,
+							washer: p.fW
 						}))
 				)
 			}
@@ -47,7 +49,7 @@ const useData = (productName: string): Props => {
 					[
 						{
 							accessor: 'type',
-							originFieldName: 'cType',
+							originFieldName: 'threadValue',
 							options: _.uniqBy(
 								_.sortBy(
 									allData.map((item) => ({
@@ -62,7 +64,7 @@ const useData = (productName: string): Props => {
 						{
 							unit: 'mm',
 							accessor: 'length',
-							originFieldName: 'clenght',
+							originFieldName: 'boltLenght',
 							options: _.uniqBy(
 								_.sortBy(
 									allData.map((item) => ({
@@ -82,6 +84,34 @@ const useData = (productName: string): Props => {
 									allData.map((item) => ({
 										label: item.threadType,
 										value: item.threadType
+									})),
+									'label'
+								),
+								'label'
+							)
+						},
+						{
+							accessor: 'hexNut',
+							originFieldName: 'hexNut',
+							options: _.uniqBy(
+								_.sortBy(
+									allData.map((item) => ({
+										label: item.hexNut,
+										value: item.hexNut
+									})),
+									'label'
+								),
+								'label'
+							)
+						},
+						{
+							accessor: 'washer',
+							originFieldName: 'fW',
+							options: _.uniqBy(
+								_.sortBy(
+									allData.map((item) => ({
+										label: item.washer,
+										value: item.washer
 									})),
 									'label'
 								),

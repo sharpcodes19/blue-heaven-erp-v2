@@ -24,7 +24,9 @@ const HexBoltProduct = (props: HexBoltProductProps) => {
 		cost: Yup.number().required('This field is required.'),
 		clenght: Yup.string().required('This field is required.'),
 		cType: Yup.string().required('This field is required.'),
-		threadValue: Yup.string().required('This field is required.')
+		threadValue: Yup.string().required('This field is required.'),
+		hexNut: Yup.string().required('This field is required.'),
+		fW: Yup.string().required('This field is required.')
 	})
 	const { handleSubmit } = useAddProductToQuotationTable(messageApi)
 
@@ -69,17 +71,16 @@ const HexBoltProduct = (props: HexBoltProductProps) => {
 									onUpdateProductDetails={() =>
 										new Promise<boolean>((resolve, reject) => {
 											if (values.product && values.product._id) {
-												putData(
-													`/api/admin/update/hexbolt/${values.product._id}`,
-													{
-														DateCreated: values.product.createdAt,
-														clenght: values.product.length,
-														cost: values.product.price,
-														cType: values.product.type,
-														threadValue: values.product.threadType
-														// hType: 'n/a'
-													} as HexBoltProps
-												)
+												putData(`/api/admin/update/hexbolt/${values.product._id}`, {
+													DateCreated: values.product.createdAt,
+													boltLenght: values.product.length,
+													cost: values.product.price,
+													materialValue: values.product.type,
+													threadValue: values.product.threadType,
+													hexNut: values.product.hexNut,
+													fW: values.product.washer
+													// hType: 'n/a'
+												} as HexBoltProps)
 													.then((success) => {
 														messageApi.open({
 															type: success ? 'success' : 'warning',

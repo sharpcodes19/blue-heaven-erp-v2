@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import Moment from 'moment'
 import React from 'react'
 // import { SearchOutlined } from '@ant-design/icons'
@@ -8,6 +7,7 @@ import { DateRange } from './OrderPage'
 import { Order } from '../../contexts/OrderContext'
 import OrderSearch from './OrderSearch'
 import { useFormikContext } from 'formik'
+import { Customer } from '../../contexts/CustomerContext'
 
 type OrderTableProps = {
 	onChangeDateRange: (value: DateRange) => any
@@ -15,10 +15,11 @@ type OrderTableProps = {
 
 const OrderTable = (props: OrderTableProps) => {
 	const { columns } = useColumns()
-	const { value } = React.useContext(Order)!
+	const { value: orders } = React.useContext(Order)!
 	const [filteredData, setFilteredData] = React.useState<Array<OrderProps> | undefined>(
-		value
+		orders
 	)
+	const { value: customers } = React.useContext(Customer)!
 
 	const formik = useFormikContext<
 		OrderProps & {
@@ -29,28 +30,36 @@ const OrderTable = (props: OrderTableProps) => {
 	>()
 
 	React.useEffect(() => {
-		if (value) {
+		if (orders) {
 			if (formik.values.searchKeyword) {
 				setFilteredData(
-					value.filter((order) => {
-						if (formik.values.searchType === 'Customer')
-							return order.customerId
-								?.toLowerCase()
-								.includes(formik.values.searchKeyword.toLowerCase())
-						return (
-							order.items?.findIndex((item) =>
-								item.name
-									.toLowerCase()
+					orders.filter((order) => {
+						if (formik.values.searchType === 'Customer') {
+							if (
+								order.customerId
+									?.toLowerCase()
 									.includes(formik.values.searchKeyword.toLowerCase())
+							)
+								return true
+							const index =
+								customers?.findIndex(({ name }) =>
+									name?.toLowerCase().includes(formik.values.searchKeyword.toLowerCase())
+								) || -1
+							if (index > -1) return true
+							return false
+						}
+						return (
+							order.items?.findIndex(({ name }) =>
+								name.toLowerCase().includes(formik.values.searchKeyword.toLowerCase())
 							) > -1
 						)
 					})
 				)
 			} else {
-				setFilteredData(value)
+				setFilteredData(orders)
 			}
 		}
-	}, [formik.values, value])
+	}, [formik.values, orders])
 
 	return (
 		<Row>
@@ -70,7 +79,7 @@ const OrderTable = (props: OrderTableProps) => {
 				/>
 				<OrderSearch />
 				<Table
-					loading={value === undefined}
+					loading={orders === undefined}
 					columns={columns}
 					dataSource={filteredData}
 					size='small'

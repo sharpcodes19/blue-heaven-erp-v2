@@ -31,7 +31,7 @@ const OrderSearch = (props: Props) => {
 			style={{ minWidth: 120 }}
 		>
 			<Select.Option value='Customer'>Customer</Select.Option>
-			<Select.Option value='Item'>Item</Select.Option>
+			<Select.Option value='Item'>Item Name</Select.Option>
 		</Select>
 	)
 

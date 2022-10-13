@@ -41,6 +41,24 @@ const ItemNameComponent = (props: Props) => {
 						{props.washer && props.washer !== '0' ? `${props.washer}FW` : ''}
 					</Col>
 				)
+			case 'u-bolt':
+			case 'j-bolt':
+			case 'dynabolt':
+			case 'turn buckle':
+			case 'lag screw':
+				return (
+					<Col>
+						{props.name} {props.type} {props.size} x {props.length}
+					</Col>
+				)
+			case 'hanger':
+			case 'cylindrical':
+				return (
+					<Col>
+						{props.type}
+						{props.name} {props.size}
+					</Col>
+				)
 		}
 	}, [props])
 

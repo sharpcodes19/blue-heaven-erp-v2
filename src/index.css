@@ -23,3 +23,31 @@ code {
 td {
 	vertical-align: text-top;
 }
+
+.print-list {
+	padding: 0;
+	display: flex;
+	list-style: none;
+}
+
+.print-list li :nth-of-type(even) article {
+	background-color: #f8f7f9;
+}
+
+.print-list article {
+	display: flex;
+	gap: 10px 20px;
+	padding: 2px 3px;
+}
+
+.print-list article span:nth-child(1) {
+	min-width: 70px;
+}
+
+.print-list article span:nth-child(2) {
+	min-width: 30px;
+}
+
+.print-list article span:nth-child(3) {
+	flex: 1;
+}

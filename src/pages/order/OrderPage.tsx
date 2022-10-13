@@ -7,7 +7,7 @@ import { Customer } from '../../contexts/CustomerContext'
 import { Order } from '../../contexts/OrderContext'
 import OrderForm from './form/OrderForm'
 import OrderTable from './OrderTable'
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import PrintPreview from './print/PrintPreview'
 
 type OrderPageProps = {}
@@ -51,8 +51,14 @@ const OrderPage = (props: OrderPageProps) => {
 		<Formik
 			initialValues={
 				{
-					visible: false
-				} as OrderProps & { visible: boolean }
+					visible: false,
+					searchKeyword: '',
+					searchType: 'Customer'
+				} as OrderProps & {
+					visible: boolean
+					searchKeyword: string
+					searchType: 'Customer' | 'Item'
+				}
 			}
 			onSubmit={(values, { setFieldValue, setSubmitting }) => {
 				instance2()({

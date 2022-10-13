@@ -1,12 +1,4 @@
-import {
-	Button,
-	Col,
-	Descriptions,
-	InputNumber,
-	message,
-	Row,
-	Typography
-} from 'antd'
+import { Button, Col, Descriptions, InputNumber, message, Row, Typography } from 'antd'
 import { FieldArray, useFormikContext } from 'formik'
 import { ShoppingCartOutlined } from '@ant-design/icons'
 import React from 'react'
@@ -21,8 +13,7 @@ type ProductLookUpResultProps = {
 
 const ProductLookUpResult = (props: ProductLookUpResultProps) => {
 	const formik = useFormikContext<PricingFormProps>()
-	const [enableUpdateButton, setEnableUpdateButton] =
-		React.useState<boolean>(false)
+	const [enableUpdateButton, setEnableUpdateButton] = React.useState<boolean>(false)
 	const [messageApi, contextHolder] = message.useMessage()
 	const [submmiting, setSubmitting] = React.useState<boolean>(false)
 
@@ -62,12 +53,9 @@ const ProductLookUpResult = (props: ProductLookUpResultProps) => {
 				<Col>
 					<Descriptions bordered title='PRODUCT DETAILS' size='small'>
 						{Object.keys(props.target).map((key) =>
-							key === 'createdAt' ||
-							key === 'updatedAt' ||
-							key === '_id' ? null : (
+							key === 'createdAt' || key === 'updatedAt' || key === '_id' ? null : (
 								<Descriptions.Item label={key} key={key} span={3}>
-									{props.target[key as keyof FinishedProductProps] instanceof
-									Array ? (
+									{props.target[key as keyof FinishedProductProps] instanceof Array ? (
 										(props.target[key as keyof FinishedProductProps] as []).map(
 											(_, index) => (
 												<FieldArray
@@ -111,7 +99,7 @@ const ProductLookUpResult = (props: ProductLookUpResultProps) => {
 				{props.target.name === 'ABOLT' ? (
 					<Col span={24} style={{ marginTop: '1rem' }}>
 						<InputNumber
-							min={1}
+							min={0}
 							defaultValue={1}
 							addonBefore='Hex Nut Qty'
 							onChange={(value) => {
@@ -124,7 +112,7 @@ const ProductLookUpResult = (props: ProductLookUpResultProps) => {
 							}}
 						/>
 						<InputNumber
-							min={1}
+							min={0}
 							defaultValue={1}
 							addonBefore='FW Qty'
 							onChange={(value) => {

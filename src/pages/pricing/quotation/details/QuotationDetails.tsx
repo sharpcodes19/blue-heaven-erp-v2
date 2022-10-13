@@ -1,8 +1,9 @@
 import _ from 'lodash'
-import { AutoComplete, Col, Descriptions, Row, Select } from 'antd'
+import { AutoComplete, Col, Descriptions, Row } from 'antd'
 import React from 'react'
 import { Customer } from '../../../../contexts/CustomerContext'
 import { SelectedQuotation } from '../../../../contexts/SelectedQuotationContext'
+import instance2 from '../../../../api/instance2'
 
 type QuotationDetailsProps = {}
 
@@ -12,16 +13,32 @@ const labelStyle = {
 
 const QuotationDetails = (props: QuotationDetailsProps) => {
 	const { value: selectedOrder, dispatch } = React.useContext(SelectedQuotation)!
-	const customers = React.useContext(Customer)!
-
-	const options = React.useMemo<Array<any> | undefined>(
-		() =>
-			customers.value?.map((customer) => ({
-				value: customer.name,
-				key: customer._id
-			})),
-		[customers.value]
+	const { value: customers, dispatch: setCustomers } = React.useContext(Customer)!
+	const [options, setOptions] = React.useState<Array<any> | undefined>(
+		customers?.map(({ name }) => ({
+			label: name,
+			value: name
+		}))
 	)
+
+	React.useEffect(() => {
+		;(async () => {
+			let _cust: Array<CustomerProps> = []
+			if (!customers || !customers.length) {
+				const {
+					data: { packet }
+				} = await instance2().get<ResponseBaseProps<Array<CustomerProps>>>('/customer')
+				_cust.push(...packet!)
+				setOptions(
+					_cust.map(({ name }) => ({
+						label: name,
+						value: name
+					}))
+				)
+				setCustomers(_cust)
+			}
+		})()
+	}, [customers, setCustomers])
 
 	return (
 		<Row style={{ marginTop: '1rem' }}>
@@ -42,7 +59,9 @@ const QuotationDetails = (props: QuotationDetailsProps) => {
 							style={{ width: '100%' }}
 							options={_.sortBy(options, 'label')}
 							placeholder='Search customer name'
-							filterOption={(inputValue, option) => option!.label?.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
+							filterOption={(inputValue, option) =>
+								option!.label?.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+							}
 							onChange={(value) => {
 								dispatch({
 									...selectedOrder!,

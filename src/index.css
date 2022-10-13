@@ -19,3 +19,7 @@ code {
 .pricing-creator-form .ant-descriptions {
 	margin-bottom: 20px !important;
 }
+
+td {
+	vertical-align: text-top;
+}

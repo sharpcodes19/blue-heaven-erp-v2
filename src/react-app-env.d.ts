@@ -55,6 +55,7 @@ type OrderProps = {
 	customerId?: string
 	createdAt?: Date
 	updatedAt?: Date
+	quotationNumber?: string
 }
 
 type ResponseBaseProps<T = unknown> = {

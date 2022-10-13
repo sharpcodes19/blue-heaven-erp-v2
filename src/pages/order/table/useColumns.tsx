@@ -35,31 +35,31 @@ const useColumns = (): Props => {
 				},
 				width: 120
 			},
+			// {
+			// 	title: 'Due Date',
+			// 	dataIndex: 'dueDate',
+			// 	key: _.uniqueId('dueDate'),
+			// 	render: (value) =>
+			// 		value ? (
+			// 			<Typography>
+			// 				<Typography.Text>{Moment(value).format('MMM DD, YYYY')}</Typography.Text>
+			// 			</Typography>
+			// 		) : (
+			// 			<Tag color='volcano'>N/A</Tag>
+			// 		),
+			// 	sorter: (a: OrderProps, b: OrderProps) => {
+			// 		if (a.dueDate && b.dueDate) return Moment(a.dueDate).isBefore(b.dueDate) ? 1 : 0
+			// 		return 0
+			// 	},
+			// 	width: 120
+			// },
 			{
-				title: 'Due Date',
-				dataIndex: 'dueDate',
-				key: _.uniqueId('dueDate'),
-				render: (value) =>
-					value ? (
-						<Typography>
-							<Typography.Text>{Moment(value).format('MMM DD, YYYY')}</Typography.Text>
-						</Typography>
-					) : (
-						<Tag color='volcano'>N/A</Tag>
-					),
-				sorter: (a: OrderProps, b: OrderProps) => {
-					if (a.dueDate && b.dueDate) return Moment(a.dueDate).isBefore(b.dueDate) ? 1 : 0
-					return 0
-				},
+				title: 'Quotation #',
+				dataIndex: 'quotationNumber',
+				key: _.uniqueId('quotationNumber'),
+				render: (value) => value || <Tag color='red'>N/A</Tag>,
 				width: 120
 			},
-			// {
-			// 	title: 'Qty',
-			// 	dataIndex: 'quantity',
-			// 	key: _.uniqueId('quantity'),
-			// 	render: (value) => value || <Tag color='red'>0</Tag>,
-			// 	width: 50
-			// },
 			{
 				title: 'Status',
 				dataIndex: 'status',
@@ -92,7 +92,6 @@ const useColumns = (): Props => {
 			{
 				title: 'Items',
 				key: _.uniqueId('items'),
-
 				// TODO: populate items in the table
 				render: (_, record: OrderProps) => <ItemNameCell record={record} />
 			},

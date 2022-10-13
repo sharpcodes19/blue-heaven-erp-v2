@@ -1,5 +1,5 @@
 import React from 'react'
-import { Col, Row, Tag, Tooltip, Typography } from 'antd'
+import { Col, Row } from 'antd'
 
 type Props = {
 	style?: React.CSSProperties
@@ -9,30 +9,26 @@ const ItemNameComponent = (props: Props) => {
 	const spec = React.useMemo<React.ReactNode | undefined>(() => {
 		switch (props.name.toLowerCase()) {
 			default:
-				return undefined
-			case 'abolt':
 				return (
 					<Col>
-						{props.type ? (
-							<Tooltip title='Type or Material'>
-								<Tag color='green'>{props.type}</Tag>
-							</Tooltip>
-						) : null}
-						{props.size ? (
-							<Tooltip title='Diameter'>
-								<Tag color='orange'>{props.size}</Tag>
-							</Tooltip>
-						) : null}
-						{props.length ? (
-							<Tooltip title='Length'>
-								<Tag color='geekblue'>{props.length}</Tag>
-							</Tooltip>
-						) : null}
-						{props.width ? (
-							<Tooltip title='Bend'>
-								<Tag color='darkslateblue'>{props.width}</Tag>
-							</Tooltip>
-						) : null}
+						{props.name} {props.type}
+					</Col>
+				)
+			case 'abolt':
+			case 'sagrod':
+				return (
+					<Col>
+						{props.name} {props.type} {props.size} x {props.length} TL{' '}
+						{props.threadLength?.join('&')}{' '}
+						{props.hexNut && `w/ ${props.hexNut}N${props.washer ? ' & ' : ''}`}{' '}
+						{props.washer ? `${props.washer}FW` : ''}
+					</Col>
+				)
+			case 'plate':
+				return (
+					<Col>
+						{props.name} {props.size} x {props.length}{' '}
+						{props.holeQuantity ? `w/ ${props.holeQuantity}HOLES` : ''}
 					</Col>
 				)
 		}
@@ -40,19 +36,7 @@ const ItemNameComponent = (props: Props) => {
 
 	return (
 		<Col span={24}>
-			<Row align='middle'>
-				<Col
-					style={{
-						marginRight: 10,
-						...props.style
-					}}
-				>
-					<Typography>
-						<Typography.Text>{props.name}</Typography.Text>
-					</Typography>
-				</Col>
-				{spec}
-			</Row>
+			<Row align='middle'>{spec}</Row>
 		</Col>
 	)
 }

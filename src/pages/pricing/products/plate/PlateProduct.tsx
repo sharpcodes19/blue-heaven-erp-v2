@@ -9,7 +9,7 @@ import useAddProductToQuotationTable from '../_quotation/useAddProductToQuotatio
 
 type PlateProductProps = {}
 
-const PRODUCT_NAME: string = 'PLATE'
+const PRODUCT_NAME: string = 'MSP'
 
 const PlateProduct = (props: PlateProductProps) => {
 	const [messageApi, alertContext] = message.useMessage()
@@ -34,18 +34,19 @@ const PlateProduct = (props: PlateProductProps) => {
 				onSubmit={(values) => {
 					const product: FinishedProductProps = {
 						holeQuantity: String(values.holeQuantity),
-						remarks: `Price per hole: ${
-							values.holePricePerPiece
-						}, Price per kilo: ${values.perKilogramPrice}, ${
-							values.remarks || ''
-						}`,
+						remarks: `Price per hole: ${values.holePricePerPiece}, Price per kilo: ${
+							values.perKilogramPrice
+						}, ${values.remarks || ''}`,
 						length: String(values.length_mm),
 						width: String(values.width_mm),
-						weight: String(values.weight),
+						weight: String(Math.ceil((values.weight || 0) / 5) * 5 || 0),
 						name: PRODUCT_NAME,
 						quantity: values.quantity,
 						size: String(values.thickness_mm),
-						price: String(values.totalWithHole)
+						price: String(Math.ceil((values.totalWithHole || 0) / 5) * 5 || 0),
+						totalPricePerSet:
+							(Math.ceil((values.totalWithHole || 0) / 5) * 5 || 0) *
+							(values.quantity || 0)
 					}
 					handleSubmit(product)
 				}}

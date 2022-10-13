@@ -80,7 +80,11 @@ const AnchorBoltProduct = (props: AnchorBoltProductProps) => {
 							</Typography.Text> */}
 								</Typography>
 								<div style={{ marginTop: '1rem' }}>
-									<Button onClick={loading ? undefined : () => setShowForm(true)} icon={<FileAddOutlined />} loading={loading}>
+									<Button
+										onClick={loading ? undefined : () => setShowForm(true)}
+										icon={<FileAddOutlined />}
+										loading={loading}
+									>
 										Add new
 									</Button>
 								</div>
@@ -104,7 +108,9 @@ const AnchorBoltProduct = (props: AnchorBoltProductProps) => {
 												// lengthByInches?: string
 												lengthByMillimeter: values.product!.length_mm,
 												bend: values.product!.width,
-												thread: values.product!.threadLength ? values.product!.threadLength[0] : undefined,
+												thread: values.product!.threadLength
+													? values.product!.threadLength[0]
+													: undefined,
 												price: values.product!.price,
 												hexNut: values.product!.hexNut,
 												hexNutPrice: values.product!.hexNutPrice,
@@ -137,7 +143,9 @@ const AnchorBoltProduct = (props: AnchorBoltProductProps) => {
 				<Formik
 					initialValues={_.transform(
 						options.map(({ originFieldName, fieldCount }) => ({
-							[originFieldName]: fieldCount ? Array.from({ length: fieldCount }).fill('0') : ''
+							[originFieldName]: fieldCount
+								? Array.from({ length: fieldCount }).fill('0')
+								: ''
 						})),
 						_.ary(_.extend, 2),
 						{}
@@ -153,11 +161,20 @@ const AnchorBoltProduct = (props: AnchorBoltProductProps) => {
 									duration: 5
 								})
 							})
-							.catch(() => messageApi.error('Error! Technical problem has been detected while submmiting your form.'))
+							.catch(() =>
+								messageApi.error(
+									'Error! Technical problem has been detected while submmiting your form.'
+								)
+							)
 					}}
 					validationSchema={postValidation}
 				>
-					<AddForm visible={showForm} onShowForm={setShowForm} productName={PRODUCT_NAME} options={options} />
+					<AddForm
+						visible={showForm}
+						onShowForm={setShowForm}
+						productName={PRODUCT_NAME}
+						options={options}
+					/>
 				</Formik>
 			) : null}
 		</Layout.Content>

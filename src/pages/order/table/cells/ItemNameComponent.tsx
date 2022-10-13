@@ -31,6 +31,16 @@ const ItemNameComponent = (props: Props) => {
 						{props.holeQuantity ? `w/ ${props.holeQuantity}HOLES` : ''}
 					</Col>
 				)
+			case 'hbolt':
+				return (
+					<Col>
+						{props.name} {props.type} {props.length} {props.threadType}{' '}
+						{props.hexNut &&
+							props.hexNut !== '0' &&
+							`w/ ${props.hexNut}N${props.washer ? ' & ' : ''}`}{' '}
+						{props.washer && props.washer !== '0' ? `${props.washer}FW` : ''}
+					</Col>
+				)
 		}
 	}, [props])
 

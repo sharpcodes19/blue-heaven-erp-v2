@@ -13,7 +13,7 @@ import useAddProductToQuotationTable from '../_quotation/useAddProductToQuotatio
 
 type HexBoltProductProps = {}
 
-const PRODUCT_NAME = 'HEX BOLT'
+const PRODUCT_NAME = 'HBOLT'
 
 const HexBoltProduct = (props: HexBoltProductProps) => {
 	const { data, options, loading } = useData(PRODUCT_NAME)

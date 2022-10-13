@@ -7,7 +7,6 @@ import { DateRange } from './OrderPage'
 import { Order } from '../../contexts/OrderContext'
 import OrderSearch from './OrderSearch'
 import { useFormikContext } from 'formik'
-import { Customer } from '../../contexts/CustomerContext'
 
 type OrderTableProps = {
 	onChangeDateRange: (value: DateRange) => any
@@ -19,7 +18,6 @@ const OrderTable = (props: OrderTableProps) => {
 	const [filteredData, setFilteredData] = React.useState<Array<OrderProps> | undefined>(
 		orders
 	)
-	const { value: customers } = React.useContext(Customer)!
 
 	const formik = useFormikContext<
 		OrderProps & {
@@ -35,18 +33,9 @@ const OrderTable = (props: OrderTableProps) => {
 				setFilteredData(
 					orders.filter((order) => {
 						if (formik.values.searchType === 'Customer') {
-							if (
-								order.customerId
-									?.toLowerCase()
-									.includes(formik.values.searchKeyword.toLowerCase())
-							)
-								return true
-							const index =
-								customers?.findIndex(({ name }) =>
-									name?.toLowerCase().includes(formik.values.searchKeyword.toLowerCase())
-								) || -1
-							if (index > -1) return true
-							return false
+							return order.customerId
+								?.toLowerCase()
+								.includes(formik.values.searchKeyword.toLowerCase())
 						}
 						return (
 							order.items?.findIndex(({ name }) =>

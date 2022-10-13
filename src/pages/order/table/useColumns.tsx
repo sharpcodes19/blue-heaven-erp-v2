@@ -99,7 +99,7 @@ const useColumns = (): Props => {
 				// dataIndex: 'totalCost',
 				key: _.uniqueId('totalCost'),
 				render: (value, record) => {
-					const totalCost = _.sumBy(record.items, 'price')
+					const totalCost = _.sumBy(record.items, 'totalPricePerSet')
 					const amount = new Intl.NumberFormat('en-PH', {
 						style: 'currency',
 						currency: 'PHP'

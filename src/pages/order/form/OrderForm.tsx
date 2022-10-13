@@ -16,6 +16,7 @@ const OrderForm = (props: OrderFormProps) => {
 			__update__?: boolean
 		}
 	>()
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const { value: customers } = React.useContext(Customer)!
 
 	const [status, setStatus] = React.useState<string>('')

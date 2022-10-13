@@ -1,5 +1,6 @@
+import _ from 'lodash'
 import Moment from 'moment'
-import { Col, DatePicker, Form, Input, InputNumber, Row, Tabs } from 'antd'
+import { AutoComplete, Col, DatePicker, Form, Input, InputNumber, Row, Tabs } from 'antd'
 import { useFormikContext } from 'formik'
 import React from 'react'
 import { Customer } from '../../../contexts/CustomerContext'
@@ -20,6 +21,9 @@ const OrderForm = (props: OrderFormProps) => {
 	const { value: customers } = React.useContext(Customer)!
 
 	const [status, setStatus] = React.useState<string>('')
+	const [filteredCustomers, setFilteredCustomers] = React.useState<
+		Array<CustomerProps> | undefined
+	>(customers)
 
 	const tabs = React.useMemo<Array<any>>(
 		() => [
@@ -36,6 +40,7 @@ const OrderForm = (props: OrderFormProps) => {
 		],
 		[]
 	)
+	const [customerKeyword, setCustomerKeyword] = React.useState<string>('')
 
 	return (
 		<Form initialValues={formik.initialValues}>
@@ -75,20 +80,20 @@ const OrderForm = (props: OrderFormProps) => {
 				</Col>
 			</Row>
 			<Form.Item label='Customer Name'>
-				<Input
+				<AutoComplete
 					placeholder='Search customer name'
 					style={{ width: '100%' }}
-					onChange={(e) => {
-						formik.setFieldValue('customerId', e.target.value)
+					onChange={(value) => {
+						formik.setFieldValue('customerId', value)
 					}}
 					value={formik.values.customerId}
-					// options={_.sortBy(
-					// 	customers?.map(({ _id, name }) => ({
-					// 		label: name,
-					// 		value: _id
-					// 	})),
-					// 	'label'
-					// )}
+					options={_.sortBy(
+						filteredCustomers?.map(({ name }) => ({
+							label: name,
+							value: name
+						})),
+						'label'
+					)}
 					// filterOption={(inputValue, option) =>
 					// 	option!.label?.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
 					// }
@@ -96,15 +101,15 @@ const OrderForm = (props: OrderFormProps) => {
 					// onChange={(value) => {
 					// 	formik.setFieldValue('customerId', value)
 					// }}
-					// onSearch={(keyword) => {
-					// 	setKeyword(keyword)
-					// 	setCustomer(
-					// 		keyword.length > 0
-					// 			? customer?.filter((cus) => cus.name?.includes(keyword))
-					// 			: value || []
-					// 	)
-					// }}
-					// searchValue={keyword}
+					onSearch={(keyword) => {
+						setCustomerKeyword(keyword)
+						setFilteredCustomers(
+							keyword.length > 0
+								? customers?.filter((cus) => cus.name?.includes(keyword))
+								: customers || []
+						)
+					}}
+					searchValue={customerKeyword}
 					// value={formik.values.customerId}
 				/>
 			</Form.Item>

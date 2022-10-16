@@ -11,27 +11,26 @@ const columns: Array<ColumnType<RawMaterialProps>> = [
 		key: _.uniqueId('name'),
 		fixed: 'left',
 		render: (value, record: RawMaterialProps) => {
-			return (
-				<Row align='middle' style={{ gap: 5 }}>
-					<Col style={{ marginRight: 10 }}>
-						<Typography>
-							<Typography.Text>{value}</Typography.Text>
-						</Typography>
-					</Col>
-					<Col>
-						{record.type ? (
-							<Tooltip title='Type'>
-								<Tag color='green'>{record.type}</Tag>
-							</Tooltip>
-						) : null}
-						{record.diameter ? (
-							<Tooltip title='Diameter'>
-								<Tag color='orange'>{record.diameter}</Tag>
-							</Tooltip>
-						) : null}
-					</Col>
-				</Row>
-			)
+			return `${record.name} ${record.type} ${record.diameter}`
+			// <Row align='middle' style={{ gap: 5 }}>
+			// 	<Col style={{ marginRight: 10 }}>
+			// 		<Typography>
+			// 			<Typography.Text>{value}</Typography.Text>
+			// 		</Typography>
+			// 	</Col>
+			// 	<Col>
+			// 		{record.type ? (
+			// 			<Tooltip title='Type'>
+			// 				<Tag color='green'>{record.type}</Tag>
+			// 			</Tooltip>
+			// 		) : null}
+			// 		{record.diameter ? (
+			// 			<Tooltip title='Diameter'>
+			// 				<Tag color='orange'>{record.diameter}</Tag>
+			// 			</Tooltip>
+			// 		) : null}
+			// 	</Col>
+			// </Row>
 		},
 		// filters: [
 		// 	{
@@ -103,7 +102,7 @@ const columns: Array<ColumnType<RawMaterialProps>> = [
 			<Row>
 				<Col span={24}>
 					<Typography>
-						<Typography.Text type={value <= 10 ? 'danger' : 'success'} strong>
+						<Typography.Text type={value <= 60 ? 'danger' : 'success'} strong>
 							{value}
 						</Typography.Text>
 					</Typography>
@@ -116,7 +115,8 @@ const columns: Array<ColumnType<RawMaterialProps>> = [
 		dataIndex: 'orderDate',
 		key: _.uniqueId('orderDate'),
 		sorter: (a: RawMaterialProps, b: RawMaterialProps) => {
-			if (a.orderDate && b.orderDate) return Moment(a.orderDate).isBefore(b.orderDate) ? 1 : 0
+			if (a.orderDate && b.orderDate)
+				return Moment(a.orderDate).isBefore(b.orderDate) ? 1 : 0
 			return 0
 		},
 		render: (value) =>
@@ -134,7 +134,8 @@ const columns: Array<ColumnType<RawMaterialProps>> = [
 		dataIndex: 'deliveredDate',
 		key: _.uniqueId('deliveredDate'),
 		sorter: (a: RawMaterialProps, b: RawMaterialProps) => {
-			if (a.deliveredDate && b.deliveredDate) return Moment(a.deliveredDate).isBefore(b.deliveredDate) ? 1 : 0
+			if (a.deliveredDate && b.deliveredDate)
+				return Moment(a.deliveredDate).isBefore(b.deliveredDate) ? 1 : 0
 			return 0
 		},
 		render: (value) =>

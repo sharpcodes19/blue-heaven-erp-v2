@@ -19,7 +19,8 @@ export type DateRange = {
 
 const OrderPage = (props: OrderPageProps) => {
 	const [messageApi, alertContext] = message.useMessage()
-	const customers = React.useContext(Customer)!
+	const { value: customers, dispatch: setCustomers } = React.useContext(Customer)!
+	const { value: rawMaterials, dispatch: setRawMaterials } = React.useContext(Customer)!
 	const [dateRange, setDateRange] = React.useState<DateRange>({
 		from: Moment().startOf('month').startOf('day').toDate(),
 		to: Moment().endOf('month').endOf('day').toDate()
@@ -28,11 +29,19 @@ const OrderPage = (props: OrderPageProps) => {
 
 	React.useEffect(() => {
 		;(async () => {
-			if (!customers.value || !customers.value.length) {
+			if (!customers || !customers.length) {
 				const {
 					data: { packet }
 				} = await instance2().get<ResponseBaseProps<Array<CustomerProps>>>('/customer')
-				customers.dispatch(packet!)
+				setCustomers(packet!)
+			}
+			if (!rawMaterials || !rawMaterials.length) {
+				const {
+					data: { packet }
+				} = await instance2().get<ResponseBaseProps<Array<RawMaterialProps>>>(
+					'/raw-materials'
+				)
+				setRawMaterials(packet!)
 			}
 			const {
 				data: { packet }
@@ -60,32 +69,30 @@ const OrderPage = (props: OrderPageProps) => {
 					searchType: 'Customer' | 'Item'
 				}
 			}
-			onSubmit={(values, { setFieldValue, setSubmitting }) => {
-				instance2()({
-					method: values._id ? 'put' : 'post',
-					url: `/order/${values._id || ''}`,
-					data: {
-						...values,
-						__v: undefined
-					}
-				})
-					.then(({ data: { packet } }) => {
-						const isPUT = !!values._id
-						// console.log(isPUT, packet)
-						if (isPUT) {
-							const updatedData = value?.map((order) =>
-								order._id === values._id ? values : order
-							)
-							console.log(updatedData)
-							dispatch(updatedData)
-						} else {
-							dispatch((prevState) => [values, ...(prevState || [])])
+			onSubmit={async (values, { setFieldValue, setSubmitting }) => {
+				try {
+					await instance2()({
+						method: values._id ? 'put' : 'post',
+						url: `/order/${values._id || ''}`,
+						data: {
+							...values,
+							__v: undefined
 						}
 					})
-					.finally(() => {
-						setFieldValue('visible', false)
-						setSubmitting(false)
-					})
+					const isPUT = !!values._id
+					if (isPUT) {
+						const updatedData = value?.map((order) =>
+							order._id === values._id ? values : order
+						)
+						dispatch(updatedData)
+					} else {
+						dispatch((prevState) => [values, ...(prevState || [])])
+					}
+				} catch (err) {
+				} finally {
+					setFieldValue('visible', false)
+					setSubmitting(false)
+				}
 			}}
 		>
 			{({ isSubmitting, resetForm, submitForm, values }) => (

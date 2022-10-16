@@ -107,7 +107,7 @@ type FinishedProductProps = {
 	orderQuantity?: string
 	washer?: string
 	hexNut?: string
-	unit?: string
+	unit?: string // mm, inch
 	fWPrice?: number
 	hexNutPrice?: number
 	totalPricePerSet?: number

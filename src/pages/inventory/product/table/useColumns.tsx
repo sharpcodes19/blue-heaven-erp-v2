@@ -2,6 +2,7 @@ import _ from 'lodash'
 import { Col, Row, Tag, Tooltip, Typography } from 'antd'
 import { ColumnType } from 'antd/lib/table'
 import OptionCell from './OptionCell'
+import ItemNameCell from '../../../order/table/cells/ItemNameCell'
 
 const columns: Array<ColumnType<FinishedProductProps>> = [
 	{
@@ -9,38 +10,10 @@ const columns: Array<ColumnType<FinishedProductProps>> = [
 		dataIndex: 'name',
 		key: _.uniqueId('name'),
 		fixed: 'left',
-		render: (value, record: FinishedProductProps) => {
-			return (
-				<Row align='middle' style={{ gap: 5 }}>
-					<Col style={{ marginRight: 10 }}>
-						<Typography>
-							<Typography.Text>{value}</Typography.Text>
-						</Typography>
-					</Col>
-					<Col>
-						{record.type ? (
-							<Tooltip title='Type or Material'>
-								<Tag color='green'>{record.type}</Tag>
-							</Tooltip>
-						) : null}
-						{record.size ? (
-							<Tooltip title='Size or Diameter'>
-								<Tag color='orange'>{record.size}</Tag>
-							</Tooltip>
-						) : null}
-						{record.length ? (
-							<Tooltip title='Length'>
-								<Tag color='geekblue'>{record.length}</Tag>
-							</Tooltip>
-						) : null}
-						{record.width ? (
-							<Tooltip title='Bend or Width'>
-								<Tag color='darkslateblue'>{record.width}</Tag>
-							</Tooltip>
-						) : null}
-					</Col>
-				</Row>
-			)
+		render: (_, product: FinishedProductProps) => {
+			const items: Array<FinishedProductProps> = [product]
+			const record: OrderProps = { items }
+			return <ItemNameCell record={record} />
 		},
 		// filters: [
 		// 	{
@@ -57,46 +30,47 @@ const columns: Array<ColumnType<FinishedProductProps>> = [
 			var x = a.name?.toLowerCase() || ''
 			var y = b.name?.toLowerCase() || ''
 			return x < y ? -1 : x > y ? 1 : 0
-		}
-	},
-	{
-		title: 'Thread Type & Length(s)',
-		dataIndex: 'threadType',
-		key: _.uniqueId('thread'),
-		sorter: (a: FinishedProductProps, b: FinishedProductProps) => {
-			var x = a.threadType?.toLowerCase() || ''
-			var y = b.threadType?.toLowerCase() || ''
-			return x < y ? -1 : x > y ? 1 : 0
 		},
-		width: 190,
-		render: (value, record) => (
-			<Row>
-				<Col>
-					<Tooltip title='Thread Length'>
-						<Typography>
-							<Tag color={value ? 'forestgreen' : 'volcano'}>{value || 'N/A'}</Tag>
-						</Typography>
-					</Tooltip>
-				</Col>
-				<Col>
-					{record.threadLength?.map((value) => (
-						<Tag color='pink'>{value}</Tag>
-					))}
-				</Col>
-			</Row>
-		)
+		width: 360
 	},
-	{
-		title: 'Finish Type',
-		dataIndex: 'finishType',
-		key: _.uniqueId('finishType'),
-		sorter: (a: FinishedProductProps, b: FinishedProductProps) => {
-			var x = a.finishType || ''
-			var y = b.finishType || ''
-			return x < y ? -1 : x > y ? 1 : 0
-		},
-		width: 120
-	},
+	// {
+	// 	title: 'Thread Type & Length(s)',
+	// 	dataIndex: 'threadType',
+	// 	key: _.uniqueId('thread'),
+	// 	sorter: (a: FinishedProductProps, b: FinishedProductProps) => {
+	// 		var x = a.threadType?.toLowerCase() || ''
+	// 		var y = b.threadType?.toLowerCase() || ''
+	// 		return x < y ? -1 : x > y ? 1 : 0
+	// 	},
+	// 	width: 190,
+	// 	render: (value, record) => (
+	// 		<Row>
+	// 			<Col>
+	// 				<Tooltip title='Thread Length'>
+	// 					<Typography>
+	// 						<Tag color={value ? 'forestgreen' : 'volcano'}>{value || 'N/A'}</Tag>
+	// 					</Typography>
+	// 				</Tooltip>
+	// 			</Col>
+	// 			<Col>
+	// 				{record.threadLength?.map((value) => (
+	// 					<Tag color='pink'>{value}</Tag>
+	// 				))}
+	// 			</Col>
+	// 		</Row>
+	// 	)
+	// },
+	// {
+	// 	title: 'Finish Type',
+	// 	dataIndex: 'finishType',
+	// 	key: _.uniqueId('finishType'),
+	// 	sorter: (a: FinishedProductProps, b: FinishedProductProps) => {
+	// 		var x = a.finishType || ''
+	// 		var y = b.finishType || ''
+	// 		return x < y ? -1 : x > y ? 1 : 0
+	// 	},
+	// 	width: 120
+	// },
 	{
 		title: 'Weight',
 		dataIndex: 'weight',

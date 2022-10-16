@@ -17,7 +17,9 @@ const ProductTab = (props: ProductTabProps) => {
 		() =>
 			new Promise<ResponseBaseProps<Array<FinishedProductProps>>>((resolve, reject) =>
 				instance2()
-					.get<ResponseBaseProps<Array<FinishedProductProps>>>('/inventory/finished-product?sort=desc')
+					.get<ResponseBaseProps<Array<FinishedProductProps>>>(
+						'/inventory/finished-product?sort=desc'
+					)
 					.then((res) => resolve(res.data))
 					.catch(reject)
 			),
@@ -65,10 +67,21 @@ const ProductTab = (props: ProductTabProps) => {
 						quantity: 0,
 						size: '',
 						type: '',
-						visible: false
-					} as FinishedProductProps & { visible: boolean }
+						visible: false,
+						materials: []
+					} as FinishedProductProps & {
+						visible: boolean
+						materials: []
+					}
 				}
 				onSubmit={async (product, { resetForm, setFieldValue }) => {
+					product.materials.forEach(({ _id, quantity }) => {
+						instance2().post('/inventory/raw-material/mq', {
+							_id,
+							amount: quantity
+						})
+					})
+
 					const postResponse = await instance2()({
 						method: product._id ? 'put' : 'post',
 						url: `/inventory/finished-product/${product._id || ''}`,
@@ -95,9 +108,14 @@ const ProductTab = (props: ProductTabProps) => {
 								setFieldValue('visible', false)
 								resetForm()
 							}}
+							width={1020}
 							maskClosable={false}
 						>
-							<Form autoComplete='off' initialValues={initialValues} onFinish={submitForm}>
+							<Form
+								autoComplete='off'
+								initialValues={initialValues}
+								onFinish={submitForm}
+							>
 								<ProductForm />
 							</Form>
 						</Modal>

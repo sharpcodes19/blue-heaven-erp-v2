@@ -11,9 +11,7 @@ type Props = {
 
 const useData = (productName: string): Props => {
 	const [data, setData] = React.useState<Array<FinishedProductProps>>([])
-	const [options, setOptions] = React.useState<
-		Array<SelectablePricingOptionProps>
-	>([])
+	const [options, setOptions] = React.useState<Array<SelectablePricingOptionProps>>([])
 	const [loading, setLoading] = React.useState<boolean>(true)
 
 	React.useEffect(() => {
@@ -21,11 +19,8 @@ const useData = (productName: string): Props => {
 			setLoading(true)
 			let allData: Array<FinishedProductProps> = []
 			const endpoints: Array<string> = ['/product/abolt']
-			const responses: Array<
-				AxiosResponse<ResponseBaseProps<Array<AnchorBoltProps>>>
-			> = await axios.all(
-				endpoints.map((endpoint) => instance2().get(endpoint))
-			)
+			const responses: Array<AxiosResponse<ResponseBaseProps<Array<AnchorBoltProps>>>> =
+				await axios.all(endpoints.map((endpoint) => instance2().get(endpoint)))
 			for (let i = 0; i < responses.length; i++) {
 				allData.push(
 					...responses[i].data
@@ -142,6 +137,22 @@ const useData = (productName: string): Props => {
 							),
 							isNumber: true,
 							label: 'Bend'
+						},
+						{
+							accessor: 'weight',
+							originFieldName: 'weight',
+							options: _.uniqBy(
+								_.sortBy(
+									allData.map((item) => ({
+										label: item.weight,
+										value: item.weight
+									})),
+									'label'
+								),
+								'label'
+							),
+							// isNumber: true,
+							label: 'Weight'
 						},
 						{
 							accessor: 'price',

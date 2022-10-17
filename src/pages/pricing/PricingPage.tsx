@@ -1,5 +1,5 @@
 import React from 'react'
-import { Col, Divider, Row } from 'antd'
+import { Divider } from 'antd'
 import { Routes, Route, Outlet, Navigate } from 'react-router-dom'
 import { Layout } from 'antd'
 import SagRodProduct from './products/sag-rod/SagRodProduct'

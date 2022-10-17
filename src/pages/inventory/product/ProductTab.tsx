@@ -7,12 +7,14 @@ import ProductForm from './form/ProductForm'
 import { FinishedProduct } from '../../../contexts/ProductContext'
 import instance2 from '../../../api/instance2'
 import { RawMaterial } from '../../../contexts/RawMaterialContext'
+import { Order } from '../../../contexts/OrderContext'
 
 type ProductTabProps = {}
 
 const ProductTab = (props: ProductTabProps) => {
 	const { dispatch: setFinishProduct } = React.useContext(FinishedProduct)!
 	const { dispatch: setRawMaterials } = React.useContext(RawMaterial)!
+	const { dispatch: setOrders } = React.useContext(Order)!
 	const [messageApi, alertContext] = message.useMessage()
 
 	const getAll = React.useCallback(
@@ -38,7 +40,12 @@ const ProductTab = (props: ProductTabProps) => {
 					duration: 10
 				})
 			})
-	}, [messageApi, getAll, setFinishProduct])
+
+		instance2()
+			.get<ResponseBaseProps<Array<OrderProps>>>('/order')
+			.then((res) => res.data.packet!)
+			.then(setOrders)
+	}, [messageApi, getAll, setOrders, setFinishProduct])
 
 	return (
 		<Row>
@@ -70,14 +77,14 @@ const ProductTab = (props: ProductTabProps) => {
 						size: '',
 						type: '',
 						visible: false,
-						materials: []
+						materials: [],
+						quotationId: ''
 					} as FinishedProductProps & {
 						visible: boolean
-						materials: []
 					}
 				}
 				onSubmit={async (product, { resetForm, setFieldValue }) => {
-					product.materials.forEach(({ _id, quantity }) => {
+					product.materials?.forEach(({ _id, quantity }) => {
 						instance2()
 							.post('/inventory/raw-material/mq', {
 								_id,
@@ -89,7 +96,7 @@ const ProductTab = (props: ProductTabProps) => {
 										...rawMaterial,
 										quantity:
 											rawMaterial._id === _id
-												? String(+(rawMaterial.quantity || 0) - quantity)
+												? String(+(rawMaterial.quantity || 0) - (quantity || 0))
 												: rawMaterial.quantity
 									}))
 								)
@@ -99,8 +106,12 @@ const ProductTab = (props: ProductTabProps) => {
 					const postResponse = await instance2()({
 						method: product._id ? 'put' : 'post',
 						url: `/inventory/finished-product/${product._id || ''}`,
-						data: product
+						data: {
+							...product,
+							visible: undefined
+						}
 					})
+
 					const getAllResponse = await getAll()
 					const newData = getAllResponse.packet
 					if (newData) {

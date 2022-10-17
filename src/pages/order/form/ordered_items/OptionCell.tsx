@@ -1,5 +1,5 @@
 import { Button, Col, message, Popconfirm, Row } from 'antd'
-import { EditFilled, DeleteFilled } from '@ant-design/icons'
+import { DeleteFilled } from '@ant-design/icons'
 import React from 'react'
 import { useFormikContext } from 'formik'
 

@@ -3,11 +3,9 @@ import {
 	Button,
 	Col,
 	Form,
-	Input,
 	InputNumber,
 	List,
 	Popconfirm,
-	Popover,
 	Row,
 	Select,
 	Tooltip,
@@ -16,18 +14,21 @@ import {
 import React, { Fragment } from 'react'
 import instance2 from '../../../../api/instance2'
 import { RawMaterial } from '../../../../contexts/RawMaterialContext'
-import { FieldArray } from 'formik'
+import { FieldArray, useFormikContext } from 'formik'
+import { Order } from '../../../../contexts/OrderContext'
 
 type Props = {}
 
 const RawMaterialField = (props: Props) => {
 	const { value: rawMaterials, dispatch: setRawMaterials } =
 		React.useContext(RawMaterial)!
+	const { value: orders } = React.useContext(Order)!
 	const [selectedMaterial, setSelectedMaterial] = React.useState<{
 		_id: string
 		name: string
 	} | null>(null)
 	const [selectedQuantity, setSelectedQuantity] = React.useState<number>(0)
+	const formik = useFormikContext<FinishedProductProps>()
 
 	React.useEffect(() => {
 		if (!rawMaterials)
@@ -140,6 +141,38 @@ const RawMaterialField = (props: Props) => {
 					</Fragment>
 				)}
 			/>
+			<Col span={24} style={{ marginTop: '1rem' }}>
+				<Typography>
+					<Typography.Title style={{ fontSize: 14 }}>
+						Target Quotation Number
+					</Typography.Title>
+				</Typography>
+				<Select
+					style={{ width: '100%' }}
+					showSearch
+					options={_.uniqBy(
+						_.sortBy(
+							orders
+								?.filter((order) => order.quotationNumber)
+								.map((order) => ({
+									label: `${order.quotationNumber} - ${
+										order.customerId || '***UNNAMED CUSTOMER***'
+									}`,
+									value: order.quotationNumber
+								})),
+							'label'
+						),
+						'label'
+					)}
+					filterOption={(inputValue, option) =>
+						_.includes(option?.label.toLowerCase(), inputValue.toLowerCase().trim())
+					}
+					notFoundContent={null}
+					onSelect={(value: string, option: any) => {
+						formik.setFieldValue('quotationId', value)
+					}}
+				/>
+			</Col>
 		</Row>
 	)
 }

@@ -9,6 +9,7 @@ import OrderForm from './form/OrderForm'
 import OrderTable from './OrderTable'
 import { Route, Routes } from 'react-router-dom'
 import PrintPreview from './print/PrintPreview'
+import { RawMaterial } from '../../contexts/RawMaterialContext'
 
 type OrderPageProps = {}
 
@@ -20,38 +21,39 @@ export type DateRange = {
 const OrderPage = (props: OrderPageProps) => {
 	const [messageApi, alertContext] = message.useMessage()
 	const { value: customers, dispatch: setCustomers } = React.useContext(Customer)!
-	const { value: rawMaterials, dispatch: setRawMaterials } = React.useContext(Customer)!
+	const { value: rawMaterials, dispatch: setRawMaterials } =
+		React.useContext(RawMaterial)!
 	const [dateRange, setDateRange] = React.useState<DateRange>({
 		from: Moment().startOf('month').startOf('day').toDate(),
 		to: Moment().endOf('month').endOf('day').toDate()
 	})
-	const { value, dispatch } = React.useContext(Order)!
+	const { value: orders, dispatch: setOrders } = React.useContext(Order)!
 
 	React.useEffect(() => {
 		;(async () => {
 			if (!customers || !customers.length) {
 				const {
-					data: { packet }
+					data: { packet: customers }
 				} = await instance2().get<ResponseBaseProps<Array<CustomerProps>>>('/customer')
-				setCustomers(packet!)
+				setCustomers(customers!)
 			}
 			if (!rawMaterials || !rawMaterials.length) {
 				const {
-					data: { packet }
+					data: { packet: materials }
 				} = await instance2().get<ResponseBaseProps<Array<RawMaterialProps>>>(
 					'/inventory/raw-material'
 				)
-				setRawMaterials(packet!)
+				setRawMaterials(materials!)
 			}
 			const {
-				data: { packet }
+				data: { packet: orders }
 			} = await instance2().get<ResponseBaseProps<Array<OrderProps>>>(
 				`/order?sort=desc&from=${Moment(dateRange.from).format('YYYY-MM-DD')}&to=${Moment(
 					dateRange.to
 				).format('YYYY-MM-DD')}`
 				// '/order?sort=desc'
 			)
-			dispatch(packet || [])
+			setOrders(orders || [])
 		})()
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [messageApi, dateRange])
@@ -81,12 +83,12 @@ const OrderPage = (props: OrderPageProps) => {
 					})
 					const isPUT = !!values._id
 					if (isPUT) {
-						const updatedData = value?.map((order) =>
+						const updatedData = orders?.map((order) =>
 							order._id === values._id ? values : order
 						)
-						dispatch(updatedData)
+						setOrders(updatedData)
 					} else {
-						dispatch((prevState) => [values, ...(prevState || [])])
+						setOrders((prevState) => [values, ...(prevState || [])])
 					}
 				} catch (err) {
 				} finally {

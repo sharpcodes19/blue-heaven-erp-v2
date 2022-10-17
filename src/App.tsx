@@ -20,20 +20,15 @@ const App = (props: AppProps) => {
 				<Layout.Content style={{ padding: '2rem' }}>
 					<CustomerContext>
 						<RawMaterialContext>
-							<Routes>
-								<Route path='pricing/*' element={<PricingPage />} />
-								<Route path='inventory' element={<InventoryPage />} />
-								<Route path='customer' element={<CustomerPage />} />
-								<Route
-									path='order/*'
-									element={
-										<OrderContext>
-											<OrderPage />
-										</OrderContext>
-									}
-								/>
-								<Route path='*' element={<Navigate replace to='/customer' />} />
-							</Routes>
+							<OrderContext>
+								<Routes>
+									<Route path='pricing/*' element={<PricingPage />} />
+									<Route path='inventory' element={<InventoryPage />} />
+									<Route path='customer' element={<CustomerPage />} />
+									<Route path='order/*' element={<OrderPage />} />
+									<Route path='*' element={<Navigate replace to='/customer' />} />
+								</Routes>
+							</OrderContext>
 						</RawMaterialContext>
 					</CustomerContext>
 				</Layout.Content>

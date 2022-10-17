@@ -113,6 +113,11 @@ type FinishedProductProps = {
 	totalPricePerSet?: number
 	fWQuantity?: number
 	hexNutQuantity?: number
+	materials?: Array<{
+		_id?: string
+		quantity?: number
+		name?: string
+	}>
 }
 
 type BasePathname = 'pricing' | 'order' | 'inventory' | 'customer'

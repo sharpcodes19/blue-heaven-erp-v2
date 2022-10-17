@@ -12,14 +12,16 @@ type RawMaterialTabProps = {}
 export const DATE_FORMAT = 'MM/DD/YYYY'
 
 const RawMaterialTab = (props: RawMaterialTabProps) => {
-	const { dispatch } = React.useContext(RawMaterial)!
+	const { dispatch: setRawMaterials } = React.useContext(RawMaterial)!
 	const [messageApi, alertContext] = message.useMessage()
 
 	const getAll = React.useCallback(
 		() =>
 			new Promise<ResponseBaseProps<Array<RawMaterialProps>>>((resolve, reject) =>
 				instance2()
-					.get<ResponseBaseProps<Array<RawMaterialProps>>>('/inventory/raw-material?sort=desc')
+					.get<ResponseBaseProps<Array<RawMaterialProps>>>(
+						'/inventory/raw-material?sort=desc'
+					)
 					.then((res) => resolve(res.data))
 					.catch(reject)
 			),
@@ -29,14 +31,14 @@ const RawMaterialTab = (props: RawMaterialTabProps) => {
 	React.useEffect(() => {
 		getAll()
 			.then((data) => data.packet?.filter((customer) => customer._id) || [])
-			.then(dispatch)
+			.then(setRawMaterials)
 			.catch((err) => {
 				messageApi.error({
 					content: `Unable to get customers data. Please check your internet connection. Error: ${err.message}`,
 					duration: 10
 				})
 			})
-	}, [messageApi, getAll, dispatch])
+	}, [messageApi, getAll, setRawMaterials])
 
 	return (
 		<Row>
@@ -77,7 +79,7 @@ const RawMaterialTab = (props: RawMaterialTabProps) => {
 					const newData = getAllResponse.packet
 					if (newData) {
 						messageApi.success(postResponse.data.message, 5)
-						dispatch(newData)
+						setRawMaterials(newData)
 						setFieldValue('visible', false)
 						resetForm()
 					}
@@ -96,7 +98,11 @@ const RawMaterialTab = (props: RawMaterialTabProps) => {
 							}}
 							maskClosable={false}
 						>
-							<Form autoComplete='off' initialValues={initialValues} onFinish={submitForm}>
+							<Form
+								autoComplete='off'
+								initialValues={initialValues}
+								onFinish={submitForm}
+							>
 								<RawMaterialForm />
 							</Form>
 						</Modal>

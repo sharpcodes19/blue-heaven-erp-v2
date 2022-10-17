@@ -1,5 +1,5 @@
 import React from 'react'
-import { Col, Form, Input, InputNumber, Row, Select, Tooltip } from 'antd'
+import { Col, Form, Input, InputNumber, Row } from 'antd'
 import { FieldArray, useFormikContext } from 'formik'
 
 type ProductFieldsProps = {}
@@ -137,14 +137,15 @@ const ProductFields = (props: ProductFieldsProps) => {
 					</Col>
 					<Col span={12}>
 						<Form.Item label='Cut Length'>
-							<Input
-								value={formik.values.cutLength}
+							<InputNumber
+								value={+(formik.values.cutLength || 0)}
 								status={
 									formik.errors.cutLength && formik.touched.cutLength
 										? 'error'
 										: undefined
 								}
-								onChange={(e) => formik.setFieldValue('cutLength', e.target.value)}
+								min={0}
+								onChange={(value) => formik.setFieldValue('cutLength', value)}
 							/>
 						</Form.Item>
 					</Col>

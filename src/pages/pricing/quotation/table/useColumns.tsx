@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { Col, Row, Tag, Tooltip, Typography } from 'antd'
+import { Row, Tag, Tooltip } from 'antd'
 import { ColumnType } from 'antd/lib/table'
 import OptionCell from './OptionCell'
 import ItemNameComponent from '../../../order/table/cells/ItemNameComponent'

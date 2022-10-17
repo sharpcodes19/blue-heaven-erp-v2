@@ -8,6 +8,7 @@ import CustomerContext from './contexts/CustomerContext'
 import InventoryPage from './pages/inventory/InventoryPage'
 import OrderPage from './pages/order/OrderPage'
 import OrderContext from './contexts/OrderContext'
+import RawMaterialContext from './contexts/RawMaterialContext'
 
 type AppProps = {}
 
@@ -18,20 +19,22 @@ const App = (props: AppProps) => {
 				<SideBar />
 				<Layout.Content style={{ padding: '2rem' }}>
 					<CustomerContext>
-						<Routes>
-							<Route path='pricing/*' element={<PricingPage />} />
-							<Route path='inventory' element={<InventoryPage />} />
-							<Route path='customer' element={<CustomerPage />} />
-							<Route
-								path='order/*'
-								element={
-									<OrderContext>
-										<OrderPage />
-									</OrderContext>
-								}
-							/>
-							<Route path='*' element={<Navigate replace to='/customer' />} />
-						</Routes>
+						<RawMaterialContext>
+							<Routes>
+								<Route path='pricing/*' element={<PricingPage />} />
+								<Route path='inventory' element={<InventoryPage />} />
+								<Route path='customer' element={<CustomerPage />} />
+								<Route
+									path='order/*'
+									element={
+										<OrderContext>
+											<OrderPage />
+										</OrderContext>
+									}
+								/>
+								<Route path='*' element={<Navigate replace to='/customer' />} />
+							</Routes>
+						</RawMaterialContext>
 					</CustomerContext>
 				</Layout.Content>
 			</Layout>

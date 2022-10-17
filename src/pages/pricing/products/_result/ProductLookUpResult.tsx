@@ -124,9 +124,22 @@ const ProductLookUpResult = (props: ProductLookUpResultProps) => {
 								marginRight: 10
 							}}
 						/>
+						<InputNumber
+							min={0}
+							defaultValue={0}
+							addonBefore='Weight'
+							onChange={(value) => {
+								formik.setFieldValue('weight', value)
+							}}
+							value={formik.values.weight}
+							style={{
+								maxWidth: 130,
+								marginRight: 10
+							}}
+						/>
 					</Col>
 				) : null}
-				<Col span={12} style={{ marginTop: '1rem' }}>
+				<Col span={24} style={{ marginTop: '1rem' }}>
 					<InputNumber
 						min={1}
 						defaultValue={1}
@@ -139,6 +152,21 @@ const ProductLookUpResult = (props: ProductLookUpResultProps) => {
 							maxWidth: 150,
 							marginRight: 10
 						}}
+					/>
+					<InputNumber
+						min={0}
+						defaultValue={0.0}
+						addonBefore='Add Price Percentage'
+						addonAfter='%'
+						onChange={(value) => {
+							formik.setFieldValue('pricePercentage', value)
+						}}
+						value={formik.values.pricePercentage}
+						style={{
+							maxWidth: 250,
+							marginRight: 10
+						}}
+						step={0.1}
 					/>
 					<Button
 						type='primary'

@@ -36,14 +36,19 @@ const LagScrewProduct = (props: LagScrewProductProps) => {
 						selection: {
 							name: PRODUCT_NAME
 						},
-						quantity: 1
+						quantity: 1,
+						pricePercentage: 0
 					} as PricingFormProps
 				}
 				onSubmit={(values) => {
+					const total = values.quantity * +(values.product?.price || 0)
+					const denominator = ((values.pricePercentage || 0) / 100) * total
+					const totalPricePerSet = total + denominator
+
 					const product: FinishedProductProps = {
 						...values.product!,
 						quantity: values.quantity,
-						totalPricePerSet: values.quantity * +(values.product?.price || 0)
+						totalPricePerSet
 					}
 					handleSubmit(product)
 				}}
@@ -68,15 +73,12 @@ const LagScrewProduct = (props: LagScrewProductProps) => {
 									onUpdateProductDetails={() =>
 										new Promise<boolean>((resolve, reject) => {
 											if (values.product && values.product._id) {
-												putData(
-													`/api/admin/update/LScew/${values.product._id}`,
-													{
-														_id: values.product._id,
-														screwLength: values.product.length,
-														price: values.product.price,
-														screwSize: values.product.size
-													} as JBoltProps
-												)
+												putData(`/api/admin/update/LScew/${values.product._id}`, {
+													_id: values.product._id,
+													screwLength: values.product.length,
+													price: values.product.price,
+													screwSize: values.product.size
+												} as JBoltProps)
 													.then((success) => {
 														messageApi.open({
 															type: success ? 'success' : 'warning',

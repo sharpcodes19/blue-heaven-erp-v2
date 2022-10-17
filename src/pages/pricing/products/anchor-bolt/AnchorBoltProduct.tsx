@@ -47,7 +47,8 @@ const AnchorBoltProduct = (props: AnchorBoltProductProps) => {
 						},
 						quantity: 1,
 						hexNutQuantity: 0,
-						fWQuantity: 0
+						fWQuantity: 0,
+						pricePercentage: 0
 					} as PricingFormProps
 				}
 				onSubmit={(values) => {
@@ -56,14 +57,19 @@ const AnchorBoltProduct = (props: AnchorBoltProductProps) => {
 					const nut = values.hexNutQuantity * (values.product?.hexNutPrice || 0)
 					const price = +(values.product?.price || 0)
 
+					const total = (washer + nut + price) * values.quantity
+					const denominator = ((values.pricePercentage || 0) / 100) * total
+					const totalPricePerSet = total + denominator
+
 					const product: FinishedProductProps = {
 						...values.product!,
 						name: PRODUCT_NAME,
 						quantity: values.quantity,
 						hexNutQuantity: values.hexNutQuantity,
 						fWQuantity: values.fWQuantity,
-						totalPricePerSet: (washer + nut + price) * values.quantity,
-						price: String(washer + nut + price)
+						totalPricePerSet,
+						price: String(washer + nut + price),
+						weight: String(values.weight)
 					}
 					handleSubmit(product)
 				}}

@@ -41,15 +41,20 @@ const SagRodProduct = (props: SagRodProductProps) => {
 						selection: {
 							name: PRODUCT_NAME
 						},
-						quantity: 1
+						quantity: 1,
+						pricePercentage: 0
 					} as PricingFormProps
 				}
 				onSubmit={(values) => {
 					if (values.product) {
+						const total = values.quantity * +(values.product?.price || 0)
+						const denominator = ((values.pricePercentage || 0) / 100) * total
+						const totalPricePerSet = total + denominator
+
 						const product: FinishedProductProps = {
 							...values.product,
 							quantity: values.quantity,
-							totalPricePerSet: values.quantity * +(values.product?.price || 0)
+							totalPricePerSet
 						}
 						handleSubmit(product)
 					}
@@ -77,11 +82,8 @@ const SagRodProduct = (props: SagRodProductProps) => {
 											if (values.product && values.product._id) {
 												putData(
 													values.product && values.product.type === 'CRS'
-														? '/api/admin/update/Asszabtcrs/'.concat(
-																values.product._id
-														  )
-														: values.product &&
-														  values.product.type === '41401045'
+														? '/api/admin/update/Asszabtcrs/'.concat(values.product._id)
+														: values.product && values.product.type === '41401045'
 														? '/api/admin/update/Asszabt41401045/'.concat(
 																values.product._id
 														  )

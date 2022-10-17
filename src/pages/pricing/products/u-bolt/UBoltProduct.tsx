@@ -37,15 +37,20 @@ const UBoltProduct = (props: UBoltProductProps) => {
 						selection: {
 							name: PRODUCT_NAME
 						},
-						quantity: 1
+						quantity: 1,
+						pricePercentage: 0
 					} as PricingFormProps
 				}
 				onSubmit={(values) => {
 					if (values.product) {
+						const total = values.quantity * +(values.product?.price || 0)
+						const denominator = ((values.pricePercentage || 0) / 100) * total
+						const totalPricePerSet = total + denominator
+
 						const product: FinishedProductProps = {
 							...values.product!,
 							quantity: values.quantity,
-							totalPricePerSet: values.quantity * +(values.product?.price || 0)
+							totalPricePerSet
 						}
 						handleSubmit(product)
 					}
@@ -70,20 +75,12 @@ const UBoltProduct = (props: UBoltProductProps) => {
 									onShowForm={setShowForm}
 									onUpdateProductDetails={() =>
 										new Promise<boolean>((resolve, reject) => {
-											if (
-												values.product &&
-												values.product._id &&
-												values.product.unit
-											) {
+											if (values.product && values.product._id && values.product.unit) {
 												putData(
 													values.product && values.product.unit === 'mm'
-														? '/api/admin/update/uboltmm/'.concat(
-																values.product._id
-														  )
+														? '/api/admin/update/uboltmm/'.concat(values.product._id)
 														: values.product && values.product.unit === 'cm'
-														? '/api/admin/update/uboltcm/'.concat(
-																values.product._id
-														  )
+														? '/api/admin/update/uboltcm/'.concat(values.product._id)
 														: '',
 													{
 														Material: values.product.type,
@@ -130,9 +127,7 @@ const UBoltProduct = (props: UBoltProductProps) => {
 					)}
 					onSubmit={(values: any, { setSubmitting }) => {
 						postData(
-							values.unit === 'mm'
-								? '/api/admin/add/uboltmm'
-								: '/api/admin/add/uboltcm',
+							values.unit === 'mm' ? '/api/admin/add/uboltmm' : '/api/admin/add/uboltcm',
 							values
 						)
 							.then((success) => {

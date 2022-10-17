@@ -36,15 +36,20 @@ const HangerProduct = (props: SagRodProductProps) => {
 						selection: {
 							name: PRODUCT_NAME
 						},
-						quantity: 1
+						quantity: 1,
+						pricePercentage: 0
 					} as PricingFormProps
 				}
 				onSubmit={(values) => {
 					if (values.product) {
+						const total = values.quantity * +(values.product?.price || 0)
+						const denominator = ((values.pricePercentage || 0) / 100) * total
+						const totalPricePerSet = total + denominator
+
 						const product: FinishedProductProps = {
 							...values.product,
 							quantity: values.quantity,
-							totalPricePerSet: values.quantity * +(values.product?.price || 0)
+							totalPricePerSet
 						}
 						handleSubmit(product)
 					}
@@ -71,9 +76,7 @@ const HangerProduct = (props: SagRodProductProps) => {
 										new Promise<boolean>((resolve, reject) => {
 											if (values.product && values.product._id) {
 												putData(
-													'/api/admin/update/loopClevis/'.concat(
-														values.product._id
-													),
+													'/api/admin/update/loopClevis/'.concat(values.product._id),
 													{
 														Type: values.product.type,
 														Size: values.product.size,

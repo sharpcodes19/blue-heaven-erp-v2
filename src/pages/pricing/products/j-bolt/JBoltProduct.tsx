@@ -36,14 +36,19 @@ const JBoltProduct = (props: JBoltProductProps) => {
 						selection: {
 							name: PRODUCT_NAME
 						},
-						quantity: 1
+						quantity: 1,
+						pricePercentage: 0
 					} as PricingFormProps
 				}
 				onSubmit={(values) => {
+					const total = values.quantity * +(values.product?.price || 0)
+					const denominator = ((values.pricePercentage || 0) / 100) * total
+					const totalPricePerSet = total + denominator
+
 					const product: FinishedProductProps = {
 						...values.product!,
 						quantity: values.quantity,
-						totalPricePerSet: values.quantity * +(values.product?.price || 0)
+						totalPricePerSet
 					}
 					handleSubmit(product)
 				}}
@@ -68,16 +73,13 @@ const JBoltProduct = (props: JBoltProductProps) => {
 									onUpdateProductDetails={() =>
 										new Promise<boolean>((resolve, reject) => {
 											if (values.product && values.product._id) {
-												putData(
-													`/api/admin/update/Jbolt/${values.product._id}`,
-													{
-														_id: values.product._id,
-														DateCreated: values.product.createdAt,
-														jboltDiameter: values.product.size,
-														Lenght: values.product.length,
-														Price: values.product.price
-													} as JBoltProps
-												)
+												putData(`/api/admin/update/Jbolt/${values.product._id}`, {
+													_id: values.product._id,
+													DateCreated: values.product.createdAt,
+													jboltDiameter: values.product.size,
+													Lenght: values.product.length,
+													Price: values.product.price
+												} as JBoltProps)
 													.then((success) => {
 														messageApi.open({
 															type: success ? 'success' : 'warning',

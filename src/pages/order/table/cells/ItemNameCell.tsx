@@ -11,7 +11,7 @@ const ItemNameCell = (props: Props) => {
 			{props.record.items.map((item, i) => (
 				<ItemNameComponent
 					{...item}
-					key={item._id}
+					key={i}
 					style={{
 						marginBottom: i > props.record.items.length - 1 ? undefined : 3
 					}}

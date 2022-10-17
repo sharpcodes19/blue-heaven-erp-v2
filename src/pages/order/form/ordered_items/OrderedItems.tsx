@@ -14,7 +14,7 @@ const OrderedItems = (props: OrderedItemsProps) => {
 			<Table
 				dataSource={formik.values.items}
 				columns={columns}
-				scroll={{ x: 'calc(900px + 50%)' }}
+				scroll={{ x: 'calc(1200px + 50%)' }}
 			/>
 		</Row>
 	)

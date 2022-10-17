@@ -1,15 +1,6 @@
 import _ from 'lodash'
 import { ColumnType } from 'antd/lib/table'
-import {
-	Button,
-	DatePicker,
-	Input,
-	InputNumber,
-	Row,
-	Space,
-	Tag,
-	Typography
-} from 'antd'
+import { Button, DatePicker, Input, InputNumber, Row, Space, Tag, Typography } from 'antd'
 import { useFormikContext } from 'formik'
 import React from 'react'
 import Moment from 'moment'
@@ -32,10 +23,7 @@ const useColumns = (): Props => {
 							type='primary'
 							onClick={() => {
 								if (record.__new__ === true) {
-									formik.setFieldValue(
-										`balancePayment.${index}.__new__`,
-										undefined
-									)
+									formik.setFieldValue(`balancePayment.${index}.__new__`, undefined)
 								}
 							}}
 						>
@@ -46,10 +34,7 @@ const useColumns = (): Props => {
 							type='ghost'
 							onClick={() => {
 								if (!record.__new__ && !record.__update__)
-									return formik.setFieldValue(
-										`balancePayment.${index}.__update__`,
-										true
-									)
+									return formik.setFieldValue(`balancePayment.${index}.__update__`, true)
 								if (!record.__new__ && record.__update__) {
 									return formik.setFieldValue(`balancePayment.${index}`, {
 										...record,

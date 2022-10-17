@@ -135,6 +135,7 @@ type AnchorBoltProps = {
 	totalPerSet?: string
 	totalPrice?: string
 	csvSource?: string
+	weight?: string
 }
 
 type SagRodProps = {
@@ -238,6 +239,8 @@ type PricingFormProps = {
 	fWQuantity: number
 	hexNutQuantity: number
 	product?: FinishedProductProps // this one is the item the will be transferred to quantity section
+	weight?: number
+	pricePercentage?: number // add n% to total price
 }
 
 type CustomerProps = {

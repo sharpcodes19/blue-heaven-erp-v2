@@ -39,7 +39,7 @@ const OrderPage = (props: OrderPageProps) => {
 				const {
 					data: { packet }
 				} = await instance2().get<ResponseBaseProps<Array<RawMaterialProps>>>(
-					'/raw-materials'
+					'/inventory/raw-material'
 				)
 				setRawMaterials(packet!)
 			}

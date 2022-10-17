@@ -35,14 +35,19 @@ const CylindricalProduct = (props: CylindricalProductProps) => {
 						selection: {
 							name: PRODUCT_NAME
 						},
-						quantity: 1
+						quantity: 1,
+						pricePercentage: 0.0
 					} as PricingFormProps
 				}
 				onSubmit={(values) => {
+					const total = +(values.quantity * +(values.product?.price || 0))
+					const denominator = ((values.pricePercentage || 0) / 100) * total
+					const totalPricePerSet = total + denominator
+					console.log(totalPricePerSet)
 					const product: FinishedProductProps = {
 						...values.product!,
 						quantity: values.quantity,
-						totalPricePerSet: values.quantity * +(values.product?.price || 0)
+						totalPricePerSet
 					}
 					handleSubmit(product)
 				}}
@@ -67,15 +72,12 @@ const CylindricalProduct = (props: CylindricalProductProps) => {
 									onUpdateProductDetails={() =>
 										new Promise<boolean>((resolve, reject) => {
 											if (values.product && values.product._id) {
-												putData(
-													`/api/admin/update/cyndical/${values.product._id}`,
-													{
-														// _id: values.product._id,
-														DateCreated: values.product.createdAt,
-														Price: values.product.price,
-														cyndicalSize: values.product.size
-													} as CylindricalProps
-												)
+												putData(`/api/admin/update/cyndical/${values.product._id}`, {
+													// _id: values.product._id,
+													DateCreated: values.product.createdAt,
+													Price: values.product.price,
+													cyndicalSize: values.product.size
+												} as CylindricalProps)
 													.then((success) => {
 														messageApi.open({
 															type: success ? 'success' : 'warning',

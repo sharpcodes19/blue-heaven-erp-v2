@@ -1,89 +1,35 @@
 import _ from 'lodash'
 import { ColumnType } from 'antd/lib/table'
-import { Col, Row, Tag, Tooltip, Typography } from 'antd'
+import { Button, Col, InputNumber, Row, Tag, Tooltip, Typography } from 'antd'
 import React from 'react'
 import ItemNameCell from '../../table/cells/ItemNameCell'
+import { FieldArray, useFormikContext } from 'formik'
+import OptionCell from './OptionCell'
+import { RawMaterial } from '../../../../contexts/RawMaterialContext'
 
 type Props = {
 	columns: Array<ColumnType<FinishedProductProps & EditableTableRowProps>>
 }
 
 const useColumns = (): Props => {
+	const formik = useFormikContext<OrderProps>()
+	const { value: rawMaterials } = React.useContext(RawMaterial)!
+
 	const columns = React.useMemo<
 		Array<ColumnType<FinishedProductProps & EditableTableRowProps>>
 	>(
 		() => [
-			// {
-			// 	title: 'Action',
-			// 	render: (_, record, index) =>
-			// 		record.__new__ ? (
-			// 			<Button
-			// 				type='primary'
-			// 				onClick={() => {
-			// 					if (record.__new__ === true) {
-			// 						formik.setFieldValue(`items.${index}.__new__`, undefined)
-			// 					}
-			// 				}}
-			// 			>
-			// 				Add
-			// 			</Button>
-			// 		) : (
-			// 			<Button
-			// 				type='ghost'
-			// 				onClick={() => {
-			// 					if (!record.__new__ && !record.__update__)
-			// 						return formik.setFieldValue(`items.${index}.__update__`, true)
-			// 					if (!record.__new__ && record.__update__) {
-			// 						return formik.setFieldValue(`items.${index}`, {
-			// 							...record,
-			// 							__update__: undefined
-			// 						})
-			// 					}
-			// 				}}
-			// 			>
-			// 				{record.__update__ ? 'Update' : 'Edit'}
-			// 			</Button>
-			// 		),
-			// 	width: 36
-			// },
+			{
+				title: 'Options',
+				dataIndex: '_id',
+				key: _.uniqueId('_id'),
+				render: (_, record) => <OptionCell record={record} />,
+				width: 90
+			},
 			{
 				title: 'Product Name',
 				dataIndex: 'name',
 				key: _.uniqueId('name'),
-				// render: (value, record: FinishedProductProps) => {
-				// 	return (
-				// 		<Row align='middle' style={{ gap: 5 }}>
-				// 			<Col style={{ marginRight: 10 }}>
-				// 				<Typography>
-				// 					<Typography.Text>{value}</Typography.Text>
-				// 				</Typography>
-				// 			</Col>
-				// 			<Col>
-				// 				{record.type ? (
-				// 					<Tooltip title='Type or Material'>
-				// 						<Tag color='green'>{record.type}</Tag>
-				// 					</Tooltip>
-				// 				) : null}
-				// 				{record.size ? (
-				// 					<Tooltip title='Size or Diameter'>
-				// 						<Tag color='orange'>{record.size}</Tag>
-				// 					</Tooltip>
-				// 				) : null}
-				// 				{record.length ? (
-				// 					<Tooltip title='Length'>
-				// 						<Tag color='geekblue'>{record.length}</Tag>
-				// 					</Tooltip>
-				// 				) : null}
-				// 				{record.width ? (
-				// 					<Tooltip title='Bend or Width'>
-				// 						<Tag color='darkslateblue'>{record.width}</Tag>
-				// 					</Tooltip>
-				// 				) : null}
-				// 			</Col>
-				// 		</Row>
-				// 	)
-				// },
-
 				render: (_, product: FinishedProductProps) => {
 					const record: OrderProps = {
 						items: [product]
@@ -95,7 +41,7 @@ const useColumns = (): Props => {
 					var y = b.name?.toLowerCase() || ''
 					return x < y ? -1 : x > y ? 1 : 0
 				},
-				width: 260
+				width: 320
 			},
 			{
 				title: 'Finish Type',
@@ -196,7 +142,35 @@ const useColumns = (): Props => {
 					var y = b.quantity || ''
 					return x < y ? -1 : x > y ? 1 : 0
 				},
-				width: 110
+				width: 250,
+				render: (value, record) => {
+					return (
+						<FieldArray
+							name='items'
+							render={({ replace, form }) => (
+								<InputNumber
+									value={value}
+									min={0}
+									// max={
+									// 	+(
+									// 		rawMaterials?.filter((material) => material._id === record._id)[0]
+									// 			?.quantity || 0
+									// 	)
+									// }
+									onChange={(value) => {
+										replace(
+											form.values.items.findIndex((item: any) => item._id === record._id),
+											{
+												...record,
+												quantity: value
+											}
+										)
+									}}
+								/>
+							)}
+						/>
+					)
+				}
 			},
 			{
 				title: 'Remarks',

@@ -37,14 +37,19 @@ const TurnBuckleProduct = (props: TurnBuckleProductProps) => {
 						selection: {
 							name: PRODUCT_NAME
 						},
-						quantity: 1
+						quantity: 1,
+						pricePercentage: 0
 					} as PricingFormProps
 				}
 				onSubmit={(values) => {
+					const total = values.quantity * +(values.product?.price || 0)
+					const denominator = ((values.pricePercentage || 0) / 100) * total
+					const totalPricePerSet = total + denominator
+
 					const product: FinishedProductProps = {
 						...values.product!,
 						quantity: values.quantity,
-						totalPricePerSet: values.quantity * +(values.product?.price || 0)
+						totalPricePerSet
 					}
 					handleSubmit(product)
 				}}
@@ -69,15 +74,12 @@ const TurnBuckleProduct = (props: TurnBuckleProductProps) => {
 									onUpdateProductDetails={() =>
 										new Promise<boolean>((resolve, reject) => {
 											if (values.product && values.product._id) {
-												putData(
-													`/api/admin/update/turnBuckles/${values.product._id}`,
-													{
-														millimeter: values.product.length,
-														turnBuckle: values.product.type,
-														pipeSize: values.product.size,
-														price: values.product.price
-													} as TurnBuckleProps
-												)
+												putData(`/api/admin/update/turnBuckles/${values.product._id}`, {
+													millimeter: values.product.length,
+													turnBuckle: values.product.type,
+													pipeSize: values.product.size,
+													price: values.product.price
+												} as TurnBuckleProps)
 													.then((success) => {
 														messageApi.open({
 															type: success ? 'success' : 'warning',

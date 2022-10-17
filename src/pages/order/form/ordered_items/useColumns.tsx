@@ -1,20 +1,16 @@
 import _ from 'lodash'
 import { ColumnType } from 'antd/lib/table'
-import { Button, Col, InputNumber, Row, Tag, Tooltip, Typography } from 'antd'
+import { Col, InputNumber, Row, Tag, Tooltip, Typography } from 'antd'
 import React from 'react'
 import ItemNameCell from '../../table/cells/ItemNameCell'
-import { FieldArray, useFormikContext } from 'formik'
+import { FieldArray } from 'formik'
 import OptionCell from './OptionCell'
-import { RawMaterial } from '../../../../contexts/RawMaterialContext'
 
 type Props = {
 	columns: Array<ColumnType<FinishedProductProps & EditableTableRowProps>>
 }
 
 const useColumns = (): Props => {
-	const formik = useFormikContext<OrderProps>()
-	const { value: rawMaterials } = React.useContext(RawMaterial)!
-
 	const columns = React.useMemo<
 		Array<ColumnType<FinishedProductProps & EditableTableRowProps>>
 	>(

@@ -28,7 +28,9 @@ const PlateProduct = (props: PlateProductProps) => {
 						perKilogramPrice: 0,
 						holeQuantity: 0,
 						holePricePerPiece: 0,
-						quantity: 1
+						quantity: 1,
+						cutLength: 0,
+						pricePerCut: 0
 					} as PlateProps
 				}
 				onSubmit={(values) => {
@@ -36,7 +38,9 @@ const PlateProduct = (props: PlateProductProps) => {
 						holeQuantity: String(values.holeQuantity),
 						remarks: `Price per hole: ${values.holePricePerPiece}, Price per kilo: ${
 							values.perKilogramPrice
-						}, ${values.remarks || ''}`,
+						}, ${values.cutLength ? `Price per cut: ${values.pricePerCut}` : ''} ${
+							values.remarks || ''
+						}`,
 						length: String(values.length_mm),
 						width: String(values.width_mm),
 						weight: String(Math.ceil((values.weight || 0) / 5) * 5 || 0),
@@ -46,7 +50,8 @@ const PlateProduct = (props: PlateProductProps) => {
 						price: String(Math.ceil((values.totalWithHole || 0) / 5) * 5 || 0),
 						totalPricePerSet:
 							(Math.ceil((values.totalWithHole || 0) / 5) * 5 || 0) *
-							(values.quantity || 0)
+							(values.quantity || 0),
+						cutLength: String(values.cutLength)
 					}
 					handleSubmit(product)
 				}}

@@ -47,12 +47,22 @@ const PlateProductSpec = (props: PlateProductSpecProps) => {
 				name: 'holeQuantity',
 				label: 'No. of holes',
 				rules
+			},
+			{
+				name: 'holePricePerPiece',
+				label: 'Price per hole',
+				rules
 			}
 		],
 		[
 			{
-				name: 'holePricePerPiece',
-				label: 'Price per hole',
+				name: 'cutLength',
+				label: 'No. of cut',
+				rules
+			},
+			{
+				name: 'pricePerCut',
+				label: 'Price per cut',
 				rules
 			}
 		]
@@ -70,14 +80,13 @@ const PlateProductSpec = (props: PlateProductSpecProps) => {
 									<InputNumber
 										addonBefore={
 											field.name === 'perKilogramPrice' ||
+											field.name === 'pricePerCut' ||
 											field.name === 'holePricePerPiece'
 												? '₱'
 												: undefined
 										}
 										value={formik.values[field.name as keyof PlateProps]}
-										onChange={(value) =>
-											formik.setFieldValue(field.name, value)
-										}
+										onChange={(value) => formik.setFieldValue(field.name, value)}
 									/>
 								</Form.Item>
 							</Col>

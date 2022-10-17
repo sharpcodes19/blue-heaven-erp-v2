@@ -160,6 +160,8 @@ type PlateProps = {
 	totalWithHole?: number
 	quantity?: number
 	remarks?: string
+	pricePerCut?: number
+	cutLength?: number
 }
 
 type HexBoltProps = {

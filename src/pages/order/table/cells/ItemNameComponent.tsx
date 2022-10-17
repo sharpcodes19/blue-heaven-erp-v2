@@ -24,11 +24,13 @@ const ItemNameComponent = (props: Props) => {
 						{props.washer ? `${props.washer}FW` : ''}
 					</Col>
 				)
-			case 'plate':
+			// case 'plate':
+			case 'msp':
 				return (
 					<Col>
 						{props.name} {props.size} x {props.length}{' '}
 						{props.holeQuantity ? `w/ ${props.holeQuantity}HOLES` : ''}
+						{props.cutLength ? ` & ${props.cutLength}CUT` : ''}
 					</Col>
 				)
 			case 'hbolt':

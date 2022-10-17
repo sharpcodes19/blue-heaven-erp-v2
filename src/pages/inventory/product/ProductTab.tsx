@@ -6,11 +6,13 @@ import ProductTable from './ProductTable'
 import ProductForm from './form/ProductForm'
 import { FinishedProduct } from '../../../contexts/ProductContext'
 import instance2 from '../../../api/instance2'
+import { RawMaterial } from '../../../contexts/RawMaterialContext'
 
 type ProductTabProps = {}
 
 const ProductTab = (props: ProductTabProps) => {
-	const { dispatch } = React.useContext(FinishedProduct)!
+	const { dispatch: setFinishProduct } = React.useContext(FinishedProduct)!
+	const { dispatch: setRawMaterials } = React.useContext(RawMaterial)!
 	const [messageApi, alertContext] = message.useMessage()
 
 	const getAll = React.useCallback(
@@ -29,14 +31,14 @@ const ProductTab = (props: ProductTabProps) => {
 	React.useEffect(() => {
 		getAll()
 			.then((data) => data.packet?.filter((customer) => customer._id) || [])
-			.then(dispatch)
+			.then(setFinishProduct)
 			.catch((err) => {
 				messageApi.error({
 					content: `Unable to get customers data. Please check your internet connection. Error: ${err.message}`,
 					duration: 10
 				})
 			})
-	}, [messageApi, getAll, dispatch])
+	}, [messageApi, getAll, setFinishProduct])
 
 	return (
 		<Row>
@@ -76,10 +78,22 @@ const ProductTab = (props: ProductTabProps) => {
 				}
 				onSubmit={async (product, { resetForm, setFieldValue }) => {
 					product.materials.forEach(({ _id, quantity }) => {
-						instance2().post('/inventory/raw-material/mq', {
-							_id,
-							amount: quantity
-						})
+						instance2()
+							.post('/inventory/raw-material/mq', {
+								_id,
+								amount: quantity
+							})
+							.then(() =>
+								setRawMaterials((prevState) =>
+									prevState!.map((rawMaterial) => ({
+										...rawMaterial,
+										quantity:
+											rawMaterial._id === _id
+												? String(+(rawMaterial.quantity || 0) - quantity)
+												: rawMaterial.quantity
+									}))
+								)
+							)
 					})
 
 					const postResponse = await instance2()({
@@ -91,7 +105,7 @@ const ProductTab = (props: ProductTabProps) => {
 					const newData = getAllResponse.packet
 					if (newData) {
 						messageApi.success(postResponse.data.message, 5)
-						dispatch(newData)
+						setFinishProduct(newData)
 						setFieldValue('visible', false)
 						resetForm()
 					}

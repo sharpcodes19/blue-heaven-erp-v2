@@ -15,7 +15,9 @@ const useCalculator = ({
 	width_mm,
 	perKilogramPrice,
 	holeQuantity,
-	holePricePerPiece
+	holePricePerPiece,
+	pricePerCut,
+	cutLength
 }: PlateProps): Props => {
 	const [weight, setWeight] = React.useState<number>(0)
 	const [totalWithoutHole, setTotalWithoutHole] = React.useState<number>(0)
@@ -27,11 +29,10 @@ const useCalculator = ({
 		// const length = Math.round(convert(length_mm).from('in').to('mm')) / 1000
 		const width = (width_mm || 0) / 100
 
-		const weight =
-			((((thickness_mm || 0) / 1000) * (length_mm || 0)) / 1000) * width
+		const weight = ((((thickness_mm || 0) / 1000) * (length_mm || 0)) / 1000) * width
 		setWeight(totalWithoutHole / (perKilogramPrice || 0))
 
-		const total = weight * STEEL * (perKilogramPrice || 0)
+		const total = weight * STEEL * (perKilogramPrice || 0) + (cutLength || 0)
 		// console.log(total)
 		// INFO: Round up by 5
 		// Math.ceil(x/5)*5
@@ -47,7 +48,9 @@ const useCalculator = ({
 		width_mm,
 		perKilogramPrice,
 		holeQuantity,
-		holePricePerPiece
+		holePricePerPiece,
+		cutLength,
+		pricePerCut
 	])
 
 	return {

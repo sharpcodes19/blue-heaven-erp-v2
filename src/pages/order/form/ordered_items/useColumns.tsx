@@ -102,6 +102,34 @@ const useColumns = (): Props => {
 				width: 150
 			},
 			{
+				title: 'Total Price',
+				dataIndex: 'totalPricePerSet',
+				key: _.uniqueId('totalPricePerSet'),
+				sorter: (a: FinishedProductProps, b: FinishedProductProps) => {
+					var x = a.totalPricePerSet?.toString()?.toLowerCase() || ''
+					var y = b.totalPricePerSet?.toString()?.toLowerCase() || ''
+					return x < y ? -1 : x > y ? 1 : 0
+				},
+				render: (value) => {
+					const amount = new Intl.NumberFormat('en-PH', {
+						style: 'currency',
+						currency: 'PHP'
+					}).format(value || 0)
+					return (
+						<Row>
+							{value ? (
+								amount
+							) : (
+								<Tooltip title={amount}>
+									<Tag color='red'>FREE</Tag>
+								</Tooltip>
+							)}
+						</Row>
+					)
+				},
+				width: 135
+			},
+			{
 				title: 'Price / piece',
 				dataIndex: 'price',
 				key: _.uniqueId('price'),
@@ -158,7 +186,8 @@ const useColumns = (): Props => {
 											form.values.items.findIndex((item: any) => item._id === record._id),
 											{
 												...record,
-												quantity: value
+												quantity: value,
+												totalPricePerSet: (record.totalPricePerSet || 0) * value
 											}
 										)
 									}}

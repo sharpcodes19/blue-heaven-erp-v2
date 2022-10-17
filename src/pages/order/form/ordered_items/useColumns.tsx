@@ -174,7 +174,7 @@ const useColumns = (): Props => {
 							render={({ replace, form }) => (
 								<InputNumber
 									value={value}
-									min={0}
+									min={1}
 									// max={
 									// 	+(
 									// 		rawMaterials?.filter((material) => material._id === record._id)[0]
@@ -182,14 +182,11 @@ const useColumns = (): Props => {
 									// 	)
 									// }
 									onChange={(value) => {
-										replace(
-											form.values.items.findIndex((item: any) => item._id === record._id),
-											{
-												...record,
-												quantity: value,
-												totalPricePerSet: (record.totalPricePerSet || 0) * value
-											}
-										)
+										replace(_.findIndex(form.values.items, record), {
+											...record,
+											quantity: value,
+											totalPricePerSet: +(record.price || 1) * value
+										})
 									}}
 								/>
 							)}

@@ -4,6 +4,7 @@ import React from 'react'
 import { useFormikContext } from 'formik'
 import { FinishedProduct } from '../../../../contexts/ProductContext'
 import instance2 from '../../../../api/instance2'
+import { RawMaterial } from '../../../../contexts/RawMaterialContext'
 
 type OptionCellProps = {
 	record: RawMaterialProps
@@ -11,7 +12,8 @@ type OptionCellProps = {
 
 const OptionCell = (props: OptionCellProps) => {
 	const formik = useFormikContext<RawMaterialProps & { visible: boolean }>()
-	const { dispatch, value } = React.useContext(FinishedProduct)!
+	const { dispatch: setRawMaterials, value: rawMaterials } =
+		React.useContext(RawMaterial)!
 	const [messageApi, alertContext] = message.useMessage()
 
 	const handleUpdate = React.useCallback(() => {
@@ -23,22 +25,37 @@ const OptionCell = (props: OptionCellProps) => {
 
 	const handleDelete = React.useCallback(() => {
 		instance2()
-			.delete<ResponseBaseProps<Array<RawMaterialProps>>>(`/inventory/finished-product/${props.record._id}`)
+			.delete<ResponseBaseProps<Array<RawMaterialProps>>>(
+				`/inventory/raw-material/${props.record._id}`
+			)
 			.then((res) => {
-				dispatch(value?.filter((customer) => customer._id !== props.record._id))
+				setRawMaterials(rawMaterials?.filter((raw) => raw._id !== props.record._id))
 				messageApi.success(res.data.message)
 			})
-	}, [props.record._id, messageApi, value, dispatch])
+	}, [props.record._id, messageApi, rawMaterials, setRawMaterials])
 
 	return (
 		<Row align='middle' gutter={10}>
 			{alertContext}
 			<Col>
-				<Button type='dashed' icon={<EditFilled />} style={{ border: 'none' }} onClick={handleUpdate} />
+				<Button
+					type='dashed'
+					icon={<EditFilled />}
+					style={{ border: 'none' }}
+					onClick={handleUpdate}
+				/>
 			</Col>
 			<Col>
-				<Popconfirm title={`Are you sure to delete ${props.record.name}?`} onConfirm={handleDelete}>
-					<Button type='ghost' danger icon={<DeleteFilled />} style={{ border: 'none' }} />
+				<Popconfirm
+					title={`Are you sure to delete ${props.record.name}?`}
+					onConfirm={handleDelete}
+				>
+					<Button
+						type='ghost'
+						danger
+						icon={<DeleteFilled />}
+						style={{ border: 'none' }}
+					/>
 				</Popconfirm>
 			</Col>
 		</Row>

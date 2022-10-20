@@ -10,6 +10,7 @@ const parseName = (product: FinishedProductProps): string => {
 					: ''
 			} ${product.washer && product.washer !== '0' ? `${product.washer}FW` : ''}`
 
+		case 'msp':
 		case 'plate':
 			return `${product.name} ${product.size} x ${product.length} ${
 				product.holeQuantity ? `w/ ${product.holeQuantity}HOLES` : ''
@@ -33,7 +34,7 @@ const parseName = (product: FinishedProductProps): string => {
 		case 'cylindrical':
 			return `${product.type || ''} ${product.name} ${product.size}`
 		default:
-			return `${product.type} ${product.name}`
+			return `${product.type || ''} ${product.name}`
 	}
 }
 

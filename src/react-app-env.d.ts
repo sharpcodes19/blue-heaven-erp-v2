@@ -118,6 +118,7 @@ type FinishedProductProps = {
 		quantity?: number
 		name?: string
 	}>
+	pcsPerLength?: string
 }
 
 type BasePathname = 'pricing' | 'order' | 'inventory' | 'customer'
@@ -141,6 +142,8 @@ type AnchorBoltProps = {
 	totalPrice?: string
 	csvSource?: string
 	weight?: string
+	cutLength?: string
+	pcsPerLength?: string
 }
 
 type SagRodProps = {

@@ -49,7 +49,10 @@ const useData = (productName: string): Props => {
 							hexNutPrice: +(p.hexNutPrice || 0),
 							washerPrice: +(p.fWPrice || 0),
 							totalPricePerSet: +(p.totalPerSet || 0),
-							length_mm: p.lengthByMillimeter
+							length_mm: p.lengthByMillimeter,
+							weight: p.weight,
+							cutLength: p.cutLength,
+							pcsPerLength: p.pcsPerLength
 						}))
 				)
 			}

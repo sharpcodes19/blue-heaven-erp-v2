@@ -116,15 +116,9 @@ const useColumns = (): Props => {
 						currency: 'PHP'
 					}).format(value || 0)
 					return (
-						<Row>
-							{value ? (
-								amount
-							) : (
-								<Tooltip title={amount}>
-									<Tag color='red'>FREE</Tag>
-								</Tooltip>
-							)}
-						</Row>
+						<Typography>
+							<Typography.Text>{amount}</Typography.Text>
+						</Typography>
 					)
 				},
 				width: 135

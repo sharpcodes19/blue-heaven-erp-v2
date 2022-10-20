@@ -126,7 +126,7 @@ const AnchorBoltProduct = (props: AnchorBoltProductProps) => {
 												// fWQuantity?: string
 												totalPerSet: String(values.product.totalPricePerSet)
 												// totalPrice?: string
-												// csvSource?: string
+												// csvSource?: string,
 											} as AnchorBoltProps)
 											.then(({ data }) => {
 												messageApi.success({

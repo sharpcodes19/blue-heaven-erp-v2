@@ -52,7 +52,24 @@ const ProductLookUpResult = (props: ProductLookUpResultProps) => {
 			<Row style={{ marginTop: '1rem' }}>
 				<Col>
 					<Descriptions bordered title='PRODUCT DETAILS' size='small'>
-						{Object.keys(props.target).map((key) =>
+						{(props.target.name === 'ABOLT'
+							? [
+									'size',
+									'type',
+									'length',
+									'length_mm',
+									'width',
+									'hexNut',
+									'threadLength',
+									'hexNutPrice',
+									'cutLength',
+									'price',
+									'washer',
+									'fWPrice',
+									'totalPricePerSet'
+							  ]
+							: Object.keys(props.target)
+						).map((key) =>
 							key === 'createdAt' || key === 'updatedAt' || key === '_id' ? null : (
 								<Descriptions.Item label={key} key={key} span={3}>
 									{props.target[key as keyof FinishedProductProps] instanceof Array ? (

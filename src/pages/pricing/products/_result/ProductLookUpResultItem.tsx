@@ -30,11 +30,13 @@ const ProductLookUpResultItem = (props: ProductLookUpResultItemProps) => {
 				(item) => !item.hideStepComponent
 			).length
 			const finish = selectedKeyCount >= optionKeyCount
-			let product: FinishedProductProps | undefined
-			if (formik.values.selection.name === 'ABOLT') {
-				const response = await instance2().get<ResponseBaseProps<Array<AnchorBoltProps>>>(
-					'/product/abolt',
-					{
+
+			if (!props.loading) {
+				let product: FinishedProductProps | undefined
+				if (formik.values.selection.name === 'ABOLT') {
+					const response = await instance2().get<
+						ResponseBaseProps<Array<AnchorBoltProps>>
+					>('/product/abolt', {
 						params: {
 							diameter: formik.values.selection.size,
 							steel: formik.values.selection.type,
@@ -55,34 +57,31 @@ const ProductLookUpResultItem = (props: ProductLookUpResultItemProps) => {
 							// totalPrice?: string
 							// csvSource?: string
 						}
-					}
-				)
-				const abolt: AnchorBoltProps | undefined = response.data.packet?.at(0)
-				if (abolt)
-					product = {
-						name: props.productName,
-						_id: abolt._id,
-						fWPrice: +(abolt.fWPrice || 0),
-						hexNut: abolt.hexNut,
-						hexNutPrice: +(abolt.hexNutPrice || 0),
-						length_mm: abolt.lengthByMillimeter,
-						length: abolt.lengthByInches,
-						price: abolt.price,
-						size: abolt.diameter,
-						threadLength: [String(abolt.thread)],
-						totalPricePerSet: +(abolt.totalPerSet || 0),
-						type: abolt.steel,
-						washer: abolt.fW,
-						width: abolt.bend,
-						cutLength: abolt.cutLength,
-						pcsPerLength: abolt.pcsPerLength,
-						weight: abolt.weight
-					}
-			} else {
-				product = _.find(props.data, formik.values.selection)
-			}
-
-			if (!props.loading) {
+					})
+					const abolt: AnchorBoltProps | undefined = response.data.packet?.at(0)
+					if (abolt)
+						product = {
+							name: props.productName,
+							_id: abolt._id,
+							fWPrice: +(abolt.fWPrice || 0),
+							hexNut: abolt.hexNut,
+							hexNutPrice: +(abolt.hexNutPrice || 0),
+							length_mm: abolt.lengthByMillimeter,
+							length: abolt.lengthByInches,
+							price: abolt.price,
+							size: abolt.diameter,
+							threadLength: [String(abolt.thread)],
+							totalPricePerSet: +(abolt.totalPerSet || 0),
+							type: abolt.steel,
+							washer: abolt.fW,
+							width: abolt.bend,
+							cutLength: abolt.cutLength,
+							pcsPerLength: abolt.pcsPerLength,
+							weight: abolt.weight
+						}
+				} else {
+					product = _.find(props.data, formik.values.selection)
+				}
 				if (finish && product) {
 					formik.setFieldValue('product', {
 						...product,

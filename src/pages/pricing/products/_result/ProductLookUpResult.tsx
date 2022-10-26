@@ -52,7 +52,7 @@ const ProductLookUpResult = (props: ProductLookUpResultProps) => {
 			<Row style={{ marginTop: '1rem' }}>
 				<Col>
 					<Descriptions bordered title='PRODUCT DETAILS' size='small'>
-						{(props.target.name === 'ABOLT'
+						{(props.target.name.toLowerCase() === 'abolt'
 							? [
 									'size',
 									'type',

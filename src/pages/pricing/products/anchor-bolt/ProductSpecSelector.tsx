@@ -27,7 +27,7 @@ const ProductSpecSelector = (props: Props) => {
 								'label'
 							)}
 							onChange={(value) => {
-								formik.setFieldValue('selection.size', value)
+								formik.setFieldValue('selection.size', value || undefined)
 							}}
 						/>
 					</Descriptions.Item>
@@ -49,7 +49,7 @@ const ProductSpecSelector = (props: Props) => {
 								'label'
 							)}
 							onChange={(value) => {
-								formik.setFieldValue('selection.type', value)
+								formik.setFieldValue('selection.type', value || undefined)
 							}}
 						/>
 					</Descriptions.Item>
@@ -71,7 +71,7 @@ const ProductSpecSelector = (props: Props) => {
 								'label'
 							)}
 							onChange={(value) => {
-								formik.setFieldValue('selection.length_mm', value)
+								formik.setFieldValue('selection.length_mm', value || undefined)
 							}}
 						/>
 					</Descriptions.Item>
@@ -93,7 +93,7 @@ const ProductSpecSelector = (props: Props) => {
 								'label'
 							)}
 							onChange={(value) => {
-								formik.setFieldValue('selection.width', value)
+								formik.setFieldValue('selection.width', value || undefined)
 							}}
 						/>
 					</Descriptions.Item>
@@ -115,7 +115,7 @@ const ProductSpecSelector = (props: Props) => {
 								'label'
 							)}
 							onChange={(value) => {
-								formik.setFieldValue('selection.threadLength', [value])
+								formik.setFieldValue('selection.threadLength', [value || undefined])
 							}}
 						/>
 					</Descriptions.Item>
@@ -137,7 +137,7 @@ const ProductSpecSelector = (props: Props) => {
 								'label'
 							)}
 							onChange={(value) => {
-								formik.setFieldValue('selection.hexNut', value)
+								formik.setFieldValue('selection.hexNut', value || undefined)
 							}}
 						/>
 						{/* <AutoComplete
@@ -156,7 +156,7 @@ const ProductSpecSelector = (props: Props) => {
 								'label'
 							)}
 							onChange={(value) => {
-								formik.setFieldValue('selection.HexNutPrice', value)
+								formik.setFieldValue('selection.HexNutPrice', value || undefined)
 							}}
 						/> */}
 					</Descriptions.Item>
@@ -178,7 +178,7 @@ const ProductSpecSelector = (props: Props) => {
 								'label'
 							)}
 							onChange={(value) => {
-								formik.setFieldValue('selection.washer', value)
+								formik.setFieldValue('selection.washer', value || undefined)
 							}}
 						/>
 						{/* <AutoComplete
@@ -197,7 +197,7 @@ const ProductSpecSelector = (props: Props) => {
 								'label'
 							)}
 							onChange={(value) => {
-								formik.setFieldValue('selection.fWPrice', value)
+								formik.setFieldValue('selection.fWPrice', value || undefined)
 							}}
 						/> */}
 					</Descriptions.Item>
@@ -219,7 +219,7 @@ const ProductSpecSelector = (props: Props) => {
 								'label'
 							)}
 							onChange={(value) => {
-								formik.setFieldValue('selection.price', value)
+								formik.setFieldValue('selection.price', value || undefined || undefined)
 							}}
 						/>
 					</Descriptions.Item>

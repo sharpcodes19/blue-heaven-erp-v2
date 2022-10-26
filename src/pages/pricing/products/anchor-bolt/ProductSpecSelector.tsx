@@ -203,7 +203,7 @@ const ProductSpecSelector = (props: Props) => {
 					</Descriptions.Item>
 				</Descriptions>
 			</Col>
-			<Col span={2}>
+			{/* <Col span={2}>
 				<Descriptions layout='vertical'>
 					<Descriptions.Item label='Price'>
 						<AutoComplete
@@ -224,7 +224,7 @@ const ProductSpecSelector = (props: Props) => {
 						/>
 					</Descriptions.Item>
 				</Descriptions>
-			</Col>
+			</Col> */}
 		</Row>
 	)
 }

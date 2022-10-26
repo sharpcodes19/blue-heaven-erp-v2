@@ -60,11 +60,11 @@ const ProductLookUpResult = (props: ProductLookUpResultProps) => {
 									'length_mm',
 									'width',
 									'hexNut',
+									'washer',
 									'threadLength',
 									'hexNutPrice',
 									'cutLength',
 									'price',
-									'washer',
 									'fWPrice',
 									'totalPricePerSet'
 							  ]

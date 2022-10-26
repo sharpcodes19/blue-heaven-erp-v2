@@ -31,36 +31,37 @@ const ProductLookUpResultItem = (props: ProductLookUpResultItemProps) => {
 				(item) => !item.hideStepComponent
 			).length
 			const finish = selectedKeyCount >= optionKeyCount
+			let product: FinishedProductProps | undefined
 
 			if (!props.loading) {
-				let product: FinishedProductProps | undefined
-				if (formik.values.selection.name === 'ABOLT') {
-					const response = await instance2().get<
-						ResponseBaseProps<Array<AnchorBoltProps>>
-					>('/product/abolt', {
-						params: {
-							diameter: formik.values.selection.size,
-							steel: formik.values.selection.type,
-							// lengthByInches?: string
-							lengthByMillimeter: formik.values.selection.length_mm,
-							bend: formik.values.selection.width,
-							thread: formik.values.selection.threadLength
-								? formik.values.selection.threadLength[0]
-								: undefined,
-							price: formik.values.selection.price || undefined,
-							hexNut: formik.values.selection.hexNut,
-							// hexNutPrice: formik.values.selection.hexNutPrice,
-							// hexNutQuantity?: string
-							fW: formik.values.selection.washer
-							// fWPrice: formik.values.selection.fWPrice
-							// fWQuantity?: string
-							// totalPerSet?: string
-							// totalPrice?: string
-							// csvSource?: string
-						},
-						paramsSerializer: (params) => qs.stringify(params, { encode: false })
-					})
-					const abolt: AnchorBoltProps | undefined = response.data.packet?.at(0)
+				if (formik.values.selection.name === 'ABOLT' && selectedKeyCount >= 7) {
+					const response = await instance2().get<ResponseBaseProps<AnchorBoltProps>>(
+						'/product/abolt/i',
+						{
+							params: {
+								diameter: formik.values.selection.size,
+								steel: formik.values.selection.type,
+								// lengthByInches?: string
+								lengthByMillimeter: formik.values.selection.length_mm,
+								bend: formik.values.selection.width,
+								thread: formik.values.selection.threadLength
+									? formik.values.selection.threadLength[0]
+									: undefined,
+								price: formik.values.selection.price || undefined,
+								hexNut: formik.values.selection.hexNut,
+								// hexNutPrice: formik.values.selection.hexNutPrice,
+								// hexNutQuantity?: string
+								fW: formik.values.selection.washer
+								// fWPrice: formik.values.selection.fWPrice
+								// fWQuantity?: string
+								// totalPerSet?: string
+								// totalPrice?: string
+								// csvSource?: string
+							},
+							paramsSerializer: (params) => qs.stringify(params, { encode: false })
+						}
+					)
+					const abolt: AnchorBoltProps | null | undefined = response.data.packet
 					if (abolt)
 						product = {
 							name: props.productName,
@@ -81,19 +82,17 @@ const ProductLookUpResultItem = (props: ProductLookUpResultItemProps) => {
 							pcsPerLength: abolt.pcsPerLength,
 							weight: abolt.weight
 						}
-					if (finish) {
-					} else {
-						product = _.find(props.data, formik.values.selection)
-					}
-					if (product) {
-						formik.setFieldValue('product', {
-							...product,
-							name: props.productName
-						})
-						setStatus('success')
-					} else {
-						setStatus('error')
-					}
+				} else if (finish) {
+					product = _.find(props.data, formik.values.selection)
+				}
+				if (product) {
+					formik.setFieldValue('product', {
+						...product,
+						name: props.productName
+					})
+					setStatus('success')
+				} else {
+					setStatus('error')
 				}
 			}
 		})()

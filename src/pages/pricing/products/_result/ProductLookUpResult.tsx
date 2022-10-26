@@ -59,13 +59,13 @@ const ProductLookUpResult = (props: ProductLookUpResultProps) => {
 									'length',
 									'length_mm',
 									'width',
-									'hexNut',
-									'washer',
 									'threadLength',
+									'hexNut',
 									'hexNutPrice',
+									'washer',
+									'fWPrice',
 									'cutLength',
 									'price',
-									'fWPrice',
 									'totalPricePerSet'
 							  ]
 							: Object.keys(props.target)

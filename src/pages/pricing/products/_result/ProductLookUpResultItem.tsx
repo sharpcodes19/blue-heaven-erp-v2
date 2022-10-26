@@ -33,55 +33,55 @@ const ProductLookUpResultItem = (props: ProductLookUpResultItemProps) => {
 			const finish = selectedKeyCount >= optionKeyCount
 
 			if (!props.loading) {
-				if (finish) {
-					let product: FinishedProductProps | undefined
-					if (formik.values.selection.name === 'ABOLT') {
-						const response = await instance2().get<
-							ResponseBaseProps<Array<AnchorBoltProps>>
-						>('/product/abolt', {
-							params: {
-								diameter: formik.values.selection.size,
-								steel: formik.values.selection.type,
-								// lengthByInches?: string
-								lengthByMillimeter: formik.values.selection.length_mm,
-								bend: formik.values.selection.width,
-								thread: formik.values.selection.threadLength
-									? formik.values.selection.threadLength[0]
-									: undefined,
-								price: formik.values.selection.price || undefined,
-								hexNut: formik.values.selection.hexNut,
-								// hexNutPrice: formik.values.selection.hexNutPrice,
-								// hexNutQuantity?: string
-								fW: formik.values.selection.washer
-								// fWPrice: formik.values.selection.fWPrice
-								// fWQuantity?: string
-								// totalPerSet?: string
-								// totalPrice?: string
-								// csvSource?: string
-							},
-							paramsSerializer: (params) => qs.stringify(params, { encode: false })
-						})
-						const abolt: AnchorBoltProps | undefined = response.data.packet?.at(0)
-						if (abolt)
-							product = {
-								name: props.productName,
-								_id: abolt._id,
-								fWPrice: +(abolt.fWPrice || 0),
-								hexNut: abolt.hexNut,
-								hexNutPrice: +(abolt.hexNutPrice || 0),
-								length_mm: abolt.lengthByMillimeter,
-								length: abolt.lengthByInches,
-								price: abolt.price,
-								size: abolt.diameter,
-								threadLength: [String(abolt.thread)],
-								totalPricePerSet: +(abolt.totalPerSet || 0),
-								type: abolt.steel,
-								washer: abolt.fW,
-								width: abolt.bend,
-								cutLength: abolt.cutLength,
-								pcsPerLength: abolt.pcsPerLength,
-								weight: abolt.weight
-							}
+				let product: FinishedProductProps | undefined
+				if (formik.values.selection.name === 'ABOLT') {
+					const response = await instance2().get<
+						ResponseBaseProps<Array<AnchorBoltProps>>
+					>('/product/abolt', {
+						params: {
+							diameter: formik.values.selection.size,
+							steel: formik.values.selection.type,
+							// lengthByInches?: string
+							lengthByMillimeter: formik.values.selection.length_mm,
+							bend: formik.values.selection.width,
+							thread: formik.values.selection.threadLength
+								? formik.values.selection.threadLength[0]
+								: undefined,
+							price: formik.values.selection.price || undefined,
+							hexNut: formik.values.selection.hexNut,
+							// hexNutPrice: formik.values.selection.hexNutPrice,
+							// hexNutQuantity?: string
+							fW: formik.values.selection.washer
+							// fWPrice: formik.values.selection.fWPrice
+							// fWQuantity?: string
+							// totalPerSet?: string
+							// totalPrice?: string
+							// csvSource?: string
+						},
+						paramsSerializer: (params) => qs.stringify(params, { encode: false })
+					})
+					const abolt: AnchorBoltProps | undefined = response.data.packet?.at(0)
+					if (abolt)
+						product = {
+							name: props.productName,
+							_id: abolt._id,
+							fWPrice: +(abolt.fWPrice || 0),
+							hexNut: abolt.hexNut,
+							hexNutPrice: +(abolt.hexNutPrice || 0),
+							length_mm: abolt.lengthByMillimeter,
+							length: abolt.lengthByInches,
+							price: abolt.price,
+							size: abolt.diameter,
+							threadLength: [String(abolt.thread)],
+							totalPricePerSet: +(abolt.totalPerSet || 0),
+							type: abolt.steel,
+							washer: abolt.fW,
+							width: abolt.bend,
+							cutLength: abolt.cutLength,
+							pcsPerLength: abolt.pcsPerLength,
+							weight: abolt.weight
+						}
+					if (finish) {
 					} else {
 						product = _.find(props.data, formik.values.selection)
 					}

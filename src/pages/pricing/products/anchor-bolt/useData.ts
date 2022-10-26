@@ -121,7 +121,6 @@ const useData = (productName: string): Props => {
 								),
 								'label'
 							),
-							hideStepComponent: true,
 							isNumber: true,
 							label: 'Length (mm)'
 						},

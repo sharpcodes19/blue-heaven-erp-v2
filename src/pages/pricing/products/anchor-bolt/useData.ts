@@ -47,7 +47,7 @@ const useData = (productName: string): Props => {
 							type: p.steel,
 							threadLength: [p.thread!],
 							hexNutPrice: +(p.hexNutPrice || 0),
-							washerPrice: +(p.fWPrice || 0),
+							fWPrice: +(p.fWPrice || 0),
 							totalPricePerSet: +(p.totalPerSet || 0),
 							length_mm: p.lengthByMillimeter,
 							weight: p.weight,
